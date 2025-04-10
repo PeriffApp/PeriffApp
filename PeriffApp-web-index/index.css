@@ -474,7 +474,7 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Estilos para os modais e formulários */
+/* Estilos para os modais e formul rios */
 .modal {
     display: none;
     position: fixed;
@@ -666,6 +666,53 @@ footer {
     text-decoration: none;
 }
 
+/* Estilos para o widget do WhatsApp */
+.whatsapp-widget {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background-color: #25D366;
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-widget:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.whatsapp-icon {
+    font-size: 30px;
+}
+
+.whatsapp-tooltip {
+    position: absolute;
+    right: 70px;
+    background-color: white;
+    color: #333;
+    padding: 8px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    white-space: nowrap;
+}
+
+.whatsapp-widget:hover .whatsapp-tooltip {
+    opacity: 1;
+}
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -702,4 +749,36 @@ footer {
         flex-direction: column;
     }
     
-} 
+    .step {
+        margin-bottom: 2rem;
+    }
+    
+    .user-type-selector {
+        flex-direction: column;
+    }
+    
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+    
+    .radio-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .whatsapp-widget {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .whatsapp-icon {
+        font-size: 25px;
+    }
+    
+    .whatsapp-tooltip {
+        display: none;
+    }
+}
