@@ -1,7 +1,7 @@
 // Importe as funções que você precisa dos SDKs que você precisa
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
 // Configuração do Firebase
 const firebaseConfig = {
@@ -14,9 +14,21 @@ const firebaseConfig = {
   measurementId: "G-5QE8HQS97D"
 }
 
-// Initialize Firebase
+// Initializa o Firebase
 const app = initializeApp(firebaseConfig);
-// Initialize Firebase Analytics
+
+// Initializa o Firebase Analytics
 const analytics = getAnalytics(app);
+
 // inicializa o Firestore
 const db = getFirestore(app);
+
+
+db.collection("Usuario").doc("1").get().then(function(doc) {
+  if (doc.exists) {
+    console.log("Documento exixtente");
+  } else {
+    console.log("Documento não existe");
+  }
+
+})
