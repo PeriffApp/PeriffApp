@@ -30,6 +30,9 @@ const db = getFirestore(app);
 // Inicializa o Firebase Authentication
 const auth = getAuth(app);
 
+// exporta os serviços do Firebase para serem usados em outros arquivos
+export { auth, db, collection, addDoc };
+
 /*
  try{
     // Adiciona um novo documento a coleção Usuario com um ID gerado automaticamente

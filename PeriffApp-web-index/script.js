@@ -1,3 +1,7 @@
+
+import { auth, db, collection, addDoc } from "./firebase.js"; 
+import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+
 // JavaScript para controle dos modais e formul rios
 document.addEventListener('DOMContentLoaded', function() {
     // Elementos do modal
@@ -95,16 +99,16 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
 
         // Evita o recarregamento da página
-        event.preventDefault(); 
+        event.preventDefault();
         
         // Coleta os dados do formulário
-        const cpf = document.getElementById('clientCPF').value;
         const email = document.getElementById('clientEmail').value;
         const nome = document.getElementById('clientName').value;
         const password = document.getElementById('clientPassword').value;
-        const confirmPassword = document.getElementById('clientConfirmPassword').value;
+        const confirmPassword= document.getElementById('clientConfirmPassword').value;
         const telefone = document.getElementById('clientPhone').value;
-        const tipo = document.getElementById('clientType').value;
+        // const tipo = document.getElementById('clientType').value; // ainda não está implementado no HTML
+        // const cpf = document.getElementById('clientCPF').value; // ainda não está implementado no HTML
         
         
         // Validação básica - verificar se senhas coincidem
@@ -115,6 +119,39 @@ document.addEventListener('DOMContentLoaded', function() {
 
         
         
+
+    // criação do usuário no Firebase Authentication
+    createUserWithEmailAndPassword(auth, email, password)
+        .then((userCredential) => {
+            const uid = userCredential.user.uid;
+
+            // definindo a coleção de usuários no Firestore
+            const UsuarioCollection = collection(db, "Usuario");
+
+            // adicionando documento no Firestore
+            return addDoc(UsuarioCollection, {
+                UID: uid, // ✅ salva o UID aqui dentro
+                CPF: null, // CPF ainda não implementado no HTML
+                Email: email,
+                Nome: nome,
+                Senha: password,
+                Telefone: telefone,
+                Tipo: null, // Tipo ainda não implementado no HTML  
+            });
+        })
+        .then((docRef) => {
+            console.log("Documento criado com ID:", docRef.id);
+            alert("Cadastro de cliente realizado com sucesso!");
+            modal.style.display = "none";
+            document.body.style.overflow = "auto";
+            resetForms();
+        })
+        .catch((error) => {
+            console.error("Erro ao criar usuário ou documento:", error);
+        });
+
+
+
         // Aqui você  pode adicionar a lógica para enviar o formulário
         alert('Cadastro de cliente realizado com sucesso!');
         modal.style.display = 'none';
