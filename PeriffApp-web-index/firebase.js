@@ -1,7 +1,10 @@
-// Importe as funções que você precisa dos SDKs que você precisa
+// importe do FirebaseApp
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-app.js";
+// importe do FirebaseAnalytics
 import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-analytics.js";
-
+// importe do FirebaseAuth
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+// importe do Firestore
 import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-firestore.js";
 
 // Configuração do Firebase
@@ -24,9 +27,13 @@ const analytics = getAnalytics(app);
 // inicializa o Firestore
 const db = getFirestore(app);
 
-try{
-    // Adiciona um novo documento com um ID gerado automaticamente
-    const docRef = collection(db, "usuarios");
+// Inicializa o Firebase Authentication
+const auth = getAuth(app);
+
+/*
+ try{
+    // Adiciona um novo documento a coleção Usuario com um ID gerado automaticamente
+    const docRef = collection(db, "Usuario");
     await addDoc(docRef, {
         CPF: "86525436583",
         Email: "brisanzinga@gmail.com",
@@ -36,8 +43,8 @@ try{
         Tipo: "Cliente"
     });
 
-    console.log("Document written with ID: ", docRef.id);
+    console.log("Novo Documento gerado com ID: ", docRef.id);
 
 }catch (e) {
   console.error("Error adding document: ", e);
-}
+} */
