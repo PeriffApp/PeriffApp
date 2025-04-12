@@ -1,6 +1,7 @@
 
 import { auth, db, collection, addDoc } from "./firebase.js"; 
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
+import { cpf } from 'cpf-cnpj-validator';
 
 // JavaScript para controle dos modais e formul rios
 document.addEventListener('DOMContentLoaded', function() {
@@ -102,13 +103,14 @@ document.addEventListener('DOMContentLoaded', function() {
         event.preventDefault();
         
         // Coleta os dados do formulário
+        const cpf = document.getElementById('clientCPF').value;
         const email = document.getElementById('clientEmail').value;
         const nome = document.getElementById('clientName').value;
         const password = document.getElementById('clientPassword').value;
         const confirmPassword= document.getElementById('clientConfirmPassword').value;
         const telefone = document.getElementById('clientPhone').value;
         // const tipo = document.getElementById('clientType').value; // ainda não está implementado no HTML
-        // const cpf = document.getElementById('clientCPF').value; // ainda não está implementado no HTML
+       
         
         
         // Validação básica - verificar se senhas coincidem
@@ -116,7 +118,18 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('As senhas não coincidem!');
             return;
         }
+        
+        
+        /*
+        const cpfInformado = cpf; // Substitua pelo CPF que deseja validar
+        const cpfValido = cpf.isValid(cpfInformado);
 
+        if (cpfValido) {
+            console.log("CPF válido.");
+        } else {
+            console.log("CPF inválido.");
+        }
+        */
         
         
 
@@ -130,8 +143,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // adicionando documento no Firestore
             return addDoc(UsuarioCollection, {
-                UID: uid, // ✅ salva o UID aqui dentro
-                CPF: null, // CPF ainda não implementado no HTML
+                UID: uid, // ✅ salva o UID do usuário
+                CPF: cpf, 
                 Email: email,
                 Nome: nome,
                 Senha: password,

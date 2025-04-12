@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "cpf-cnpj-validator": "^1.0.3",
     "firebase": "^11.4.0"
   }
 }
