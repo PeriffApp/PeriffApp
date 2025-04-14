@@ -31,12 +31,6 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 
-
-
-
-
-
-
 // exporta os serviços do Firebase para serem usados em outros arquivos
 export { auth, db, collection, addDoc };
 
