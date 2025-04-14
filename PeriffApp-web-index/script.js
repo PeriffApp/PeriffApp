@@ -1,7 +1,13 @@
 
 import { auth, db, collection, addDoc } from "./firebase.js"; 
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
-import { cpf } from 'cpf-cnpj-validator';
+//import { cpf } from "../PeriffApp-web-index/node_modules/cpf-cnpj-validator/dist/cpf-cnpj-validator.es.js";
+
+
+
+
+
+
 
 // JavaScript para controle dos modais e formul rios
 document.addEventListener('DOMContentLoaded', function() {
@@ -119,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        
+
         /*
         const cpfInformado = cpf; // Substitua pelo CPF que deseja validar
         const cpfValido = cpf.isValid(cpfInformado);
