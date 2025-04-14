@@ -207,29 +207,94 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
         
+
         // Valida  o do formulário de prestador
         document.getElementById('providerRegisterForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            // Validação básica
+            // Coleta os dados do formulário
+            const tipoDoc = document.querySelector('input[name="docType"]:checked').value;
+            const email = document.getElementById('providerEmail').value;
+            const nome = document.getElementById('providerName').value;
             const password = document.getElementById('providerPassword').value;
-            const confirmPassword = document.getElementById('providerConfirmPassword').value;
+            const confirmPassword= document.getElementById('providerConfirmPassword').value;
+            const telefone = document.getElementById('providerPhone').value;
+            let cnpj = null; // inicializa como null para evitar erro de escopo
+            let cpf = null; // inicializa como null para evitar erro de escopo
             
+            // Verifica qual tipo de documento foi selecionado
+            if (tipoDoc === 'cpf') {
+                 cpf = document.getElementById('providerCPF').value;
+            } else {
+                 cnpj = document.getElementById('providerCNPJ').value;
+            }
+            
+            // Verificar se senhas coincidem
             if (password !== confirmPassword) {
                 alert('As senhas não coincidem!');
                 return;
             }
+
+            // Chama a função de validação de CPF
+            if (validarCPF(cpf) === false) {
+                alert("CPF inválido!");
+                return;
+            } 
             
             if (!document.getElementById('providerTerms').checked) {
                 alert('Você deve aceitar os Termos de Uso!');
                 return;
             }
+
+            // criação do usuário no Firebase Authentication
+            createUserWithEmailAndPassword(auth, email, password)
+            .then((userCredential) => {
+                const uid = userCredential.user.uid;
+
+                // definindo a coleção de usuários no Firestore
+                const UsuarioCollection = collection(db, "Usuario");
+
+                // adicionando documento no Firestore
+                return addDoc(UsuarioCollection, {
+                    UID: uid, // ✅ salva o UID do usuário
+                    CPF: cpf,
+                    CNPJ: cnpj, 
+                    Email: email,
+                    Nome: nome,
+                    Senha: password,
+                    Telefone: telefone,
+                    Tipo: null, // Tipo ainda não implementado no HTML  
+                });
+            })
+            .then((docRef) => {
+
+                // O documento foi criado com sucesso
+                console.log("Documento criado com ID:", docRef.id);
+                alert("Cadastro de cliente realizado com sucesso!");
+                modal.style.display = "none";
+                document.body.style.overflow = "auto";
+                resetForms();
+
+            })
+            .catch((error) => {
+
+                // Erro de usuario já existente
+                if (error.code === 'auth/email-already-in-use') {
+                    alert('Este e-mail já está em uso.');
+                    return;
+                // Erro de senha menor que 6 caracteres    
+                } else if (error.code === 'auth/password-does-not-meet-requirements') {
+                    alert('A senha deve ter pelo menos 6 caracteres.');
+                    return;
+                } else {
+                    // Outros erros
+                    console.error("Erro ao criar o usuário:", error);
+                    alert('Erro ao criar o usuário. Tente novamente mais tarde.');
+                    return;
+                }
+
+            });
             
-            // Aqui você  pode adicionar a lógica para enviar o formulário
-            alert('Cadastro de profissional realizado com sucesso!');
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
-            resetForms();
         });
 });
 
