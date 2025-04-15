@@ -34,21 +34,8 @@ const auth = getAuth(app);
 // exporta os serviços do Firebase para serem usados em outros arquivos
 export { auth, db, collection, addDoc };
 
-/*
- try{
-    // Adiciona um novo documento a coleção Usuario com um ID gerado automaticamente
-    const docRef = collection(db, "Usuario");
-    await addDoc(docRef, {
-        CPF: "86525436583",
-        Email: "brisanzinga@gmail.com",
-        Nome: "Brisa Nzinga Souza Alves",
-        Senha: "22062006",
-        Telefone: "71983935881",
-        Tipo: "Cliente"
-    });
 
-    console.log("Novo Documento gerado com ID: ", docRef.id);
 
-}catch (e) {
-  console.error("Error adding document: ", e);
-} */
+
+
+

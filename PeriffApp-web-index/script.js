@@ -138,18 +138,16 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validação do formulário de cliente
         document.getElementById('clientRegisterForm').addEventListener('submit', function(e) {
             e.preventDefault();
-
             
             // Coleta os dados do formulário
             const cpf = document.getElementById('clientCPF').value;
             const email = document.getElementById('clientEmail').value;
             const nome = document.getElementById('clientName').value;
             const password = document.getElementById('clientPassword').value;
-            const confirmPassword= document.getElementById('clientConfirmPassword').value;
+            const confirmPassword = document.getElementById('clientConfirmPassword').value;
             const telefone = document.getElementById('clientPhone').value;
             // const tipo = document.getElementById('clientType').value; // ainda não está implementado no HTML
-        
-                        
+                               
             // Validação básica - verificar se senhas coincidem
             if (password !== confirmPassword) {
                 alert('As senhas não coincidem!');
