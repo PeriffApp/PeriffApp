@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebase
 
 // Função para validação de CPF
 function validarCPF(cpf) {
-
+   
     // Remove caracteres não-numéricos (pontos, traços, etc.)
     cpf = cpf.replace(/\D/g, '');
   
