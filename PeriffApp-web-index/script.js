@@ -46,15 +46,15 @@ function validarCPF(cpf) {
 document.addEventListener('DOMContentLoaded', function() {
 
         // Elementos do modal
-        const modal = document.getElementById('loginModal');
+        const modal = document.getElementById('cadastroModal'); 
         const btnOpenModal = document.querySelector('.cta-button');
         const spanClose = document.querySelector('.close-modal');
         
-        // Elementos de sele  o de tipo de usu rio
+        // Elementos de seleção de tipo de usuário
         const clientType = document.getElementById('clientType');
         const providerType = document.getElementById('providerType');
         
-        // Formul rios
+        // Formulários
         const clientForm = document.getElementById('clientForm');
         const providerForm = document.getElementById('providerForm');
         
@@ -63,16 +63,16 @@ document.addEventListener('DOMContentLoaded', function() {
         const cpfField = document.getElementById('cpfField');
         const cnpjField = document.getElementById('cnpjField');
         
-        // Abrir modal quando clicar no bot o Entrar
+        // Abrir modal quando clicar no botão Entrar
         btnOpenModal.addEventListener('click', function() {
-            modal.style.display = 'block';
+            modal.style.display = 'block'; // Exibe o modal
             document.body.style.overflow = 'hidden'; // Impede scroll da página
         });
         
         // Fechar modal quando clicar no X
         spanClose.addEventListener('click', function() {
-            modal.style.display = 'none';
-            document.body.style.overflow = 'auto';
+            modal.style.display = 'none'; // Esconde o modal
+            document.body.style.overflow = 'auto'; // Permite scroll da página
             resetForms();
         });
         
