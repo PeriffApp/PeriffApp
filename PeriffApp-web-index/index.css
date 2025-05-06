@@ -474,7 +474,7 @@ footer {
     font-size: 0.9rem;
 }
 
-/* Estilos para os modais e formul rios */
+/* Estilos para os modais e formulários */
 .modal {
     display: none;
     position: fixed;
@@ -662,6 +662,39 @@ footer {
 }
 
 .login-link a {
+    color: var(--primary);
+    text-decoration: none;
+}
+
+/* Estilos para o formulário de login */
+.login-form-container {
+    margin-top: 1.5rem;
+}
+
+.login-form-container h3 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: var(--dark);
+}
+
+.forgot-password {
+    text-align: right;
+    margin-bottom: 1rem;
+}
+
+.forgot-password a {
+    color: var(--primary);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #666;
+}
+
+.register-link a {
     color: var(--primary);
     text-decoration: none;
 }

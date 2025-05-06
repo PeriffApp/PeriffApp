@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar">
             <div class="logo">
-                <!-- <img src="https://via.placeholder.com/40x40/FF6B00/FFFFFF?text=P" alt="Periff APP Logo">-->
+                <img src="https://via.placeholder.com/40x40/FF6B00/FFFFFF?text=P" alt="Periff APP Logo">
                 <h1>Periff<span>APP</span></h1>
             </div>
             <ul class="nav-links">
@@ -22,15 +22,15 @@
                 <li><a href="#">Para profissionais</a></li>
                 <li><a href="#">Blog</a></li>
             </ul>
-            <button class="cta-button">Entrar</button>
+            <button class="cta-button" id="loginButton">Entrar</button>
         </nav>
     </header>
     
     <section class="hero">
-        <h2>Encontre os melhores <span>profissionais qualificados</span> perto de você </h2>
+        <h2>Encontre os melhores <span>profissionais qualificados</span> perto de você</h2>
         <p>Conectamos quem precisa de serviço com os talentos das comunidades. De eletricista a DJ, de costureira a chef de cozinha - encontre o profissional ideal.</p>
         <div class="search-box">
-            <input type="text" placeholder="Qual serviço você  precisa? Ex: encanador, diarista...">
+            <input type="text" placeholder="Qual serviço você precisa? Ex: encanador, diarista...">
             <button><i class="fas fa-search"></i> Buscar</button>
         </div>
     </section>
@@ -109,12 +109,12 @@
             <div class="step">
                 <div class="step-number">1</div>
                 <h4>Descreva seu serviço</h4>
-                <p>Conte-nos qual serviço você precisa e detalhe importantes</p>
+                <p>Conte-nos qual serviço você precisa e detalhes importantes</p>
             </div>
             <div class="step">
                 <div class="step-number">2</div>
                 <h4>Receba orçamentos</h4>
-                <p>Profissionais qualificados entrar o em contato com propostas</p>
+                <p>Profissionais qualificados entrarão em contato com propostas</p>
             </div>
             <div class="step">
                 <div class="step-number">3</div>
@@ -164,7 +164,7 @@
                     <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Mariana Santos">
                     <div class="client-details">
                         <h5>Mariana Santos</h5>
-                        <p>Cliente - Graja </p>
+                        <p>Cliente - Grajaú</p>
                     </div>
                 </div>
             </div>
@@ -195,14 +195,14 @@
                 <div class="benefit-icon">
                     <i class="fas fa-wallet"></i>
                 </div>
-                <h4>Pre os justos</h4>
+                <h4>Preços justos</h4>
                 <p>Orçamentos competitivos direto do profissional</p>
             </div>
             <div class="benefit-card">
                 <div class="benefit-icon">
                     <i class="fas fa-comments"></i>
                 </div>
-                <h4>Comunica  o f cil</h4>
+                <h4>Comunicação fácil</h4>
                 <p>Chat integrado para combinar todos os detalhes do serviço</p>
             </div>
         </div>
@@ -277,160 +277,40 @@
         </div>
     </footer>
 
-    <!-- Modal de Cadastro -->
-    <div id="cadastroModal" class="modal">
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
             <div class="modal-header">
                 <h2>Entrar na Periff APP</h2>
-                <p>Escolha como deseja continuar</p>
+                <p>Bem-vindo de volta! Faça login para continuar</p>
             </div>
             
-            <div class="user-type-selector">
-                                 
-                        <div class="user-type-card" id="clientType";>
-                            <div class="user-icon">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <h3>Sou Cliente</h3>
-                            <p>Quero contratar serviços</p>
-                        </div>
-                                       
-                        <div class="user-type-card" id="providerType">
-                            <div class="user-icon">
-                                <i class="fas fa-tools"></i>
-                            </div>
-                            <h3>Sou Profissional</h3>
-                            <p>Quero oferecer serviços</p>
-                        </div>
-            </div>
-                    
-            <!-- Formulário de Cliente (inicialmente oculto) -->
-            <div id="clientForm" class="form-container" style="display: none;">
-                <h3>Cadastro de Cliente</h3>
-                <form id="clientRegisterForm">
+            <div class="login-form-container">
+                <form id="loginForm">
                     <div class="form-group">
-                        <label for="clientName">Nome completo</label>
-                        <input type="text" id="clientName" required>
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" id="loginEmail" required>
                     </div>
                     <div class="form-group">
-                        <label for="clientCPF">CPF</label>
-                        <input type="text" id="clientCPF" required>
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required>
                     </div>
-                    <div class="form-group">
-                        <label for="clientEmail">E-mail</label>
-                        <input type="email" id="clientEmail" required>
+                    <div class="forgot-password">
+                        <a href="#">Esqueceu sua senha?</a>
                     </div>
-                    <div class="form-group">
-                        <label for="clientPhone">Celular</label>
-                        <input type="tel" id="clientPhone" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientPassword">Senha</label>
-                        <input type="password" id="clientPassword" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientConfirmPassword">Confirmar senha</label>
-                        <input type="password" id="clientConfirmPassword" required>
-                    </div>
-                    <!-- <div class="form-group">
-                        <label for="clientNeighborhood">Seu bairro</label>
-                        <input type="text" id="clientNeighborhood" required>
-                    </div> -->
-                    <button type="submit" class="submit-btn">Cadastrar</button>
-                    <div class="login-link">
-                        Já tem conta? <a href="#">Faça login</a>
-                    </div>
-                </form>
-            </div>
-            
-            <!-- Formul rio de Prestador (inicialmente oculto) -->
-            <div id="providerForm" class="form-container" style="display: none;">
-                <h3>Cadastro de Profissional</h3>
-                <form id="providerRegisterForm">
-                    <div class="form-group">
-                        <label for="providerName">Nome completo</label>
-                        <input type="text" id="providerName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="providerEmail">E-mail</label>
-                        <input type="email" id="providerEmail" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="providerPhone">Celular (WhatsApp)</label>
-                        <input type="tel" id="providerPhone" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label>Tipo de documento</label>
-                        <div class="radio-group">
-                            <label>
-                                <input type="radio" name="docType" value="cpf" checked> CPF (autônomo)
-                            </label>
-                            <label>
-                                <input type="radio" name="docType" value="cnpj"> CNPJ (MEI/empresa)
-                            </label>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group" id="cpfField">
-                        <label for="providerCPF">CPF</label>
-                        <input type="text" id="providerCPF">
-                    </div>
-                    
-                    <div class="form-group" id="cnpjField" style="display: none;">
-                        <label for="providerCNPJ">CNPJ</label>
-                        <input type="text" id="providerCNPJ">
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="providerService">Principal servi o oferecido</label>
-                        <select id="providerService" required>
-                            <option value="">Selecione...</option>
-                            <option value="eletricista">Eletricista</option>
-                            <option value="encanador">Encanador</option>
-                            <option value="pedreiro">Pedreiro</option>
-                            <option value="pintor">Pintor</option>
-                            <option value="diarista">Diarista</option>
-                            <option value="costureira">Costureira</option>
-                            <option value="chef">Chef de Cozinha</option>
-                            <option value="dj">DJ</option>
-                            <option value="barbeiro">Barbeiro</option>
-                            <option value="manicure">Manicure</option>
-                            <option value="tecnico">Técnico em Informática</option>
-                            <option value="outro">Outro</option>
-                        </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="providerNeighborhood">Bairro onde atua</label>
-                        <input type="text" id="providerNeighborhood" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="providerPassword">Senha</label>
-                        <input type="password" id="providerPassword" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="providerConfirmPassword">Confirmar senha</label>
-                        <input type="password" id="providerConfirmPassword" required>
-                    </div>
-                    
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="providerTerms" required>
-                        <label for="providerTerms">Aceito os Termos de Uso e Política de Privacidade</label>
-                    </div>
-                    
-                    <button type="submit" class="submit-btn">Cadastrar como Profissional</button>
-                    <div class="login-link">
-                        Já tem conta? <a href="#">Faça login</a>
+                    <button type="submit" class="submit-btn">Entrar</button>
+                    <div class="register-link">
+                        Ainda não tem conta? <a href="Cadastro/cadastro.html" id="showRegister">Cadastre-se</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    
+
+    
     <!-- Widget do WhatsApp -->
     <div class="whatsapp-widget" onclick="window.open('https://w.app/periffapp', '_blank')">
         <div class="whatsapp-icon">
