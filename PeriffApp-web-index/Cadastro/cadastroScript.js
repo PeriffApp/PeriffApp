@@ -42,13 +42,29 @@ function validarCPF(cpf) {
 
 }
 
+// Resetar formulários quando fechar modal
+function resetForms() {
+    clientType.classList.remove('selected');
+    providerType.classList.remove('selected');
+    clientForm.style.display = 'none';
+    providerForm.style.display = 'none';
+    
+    // Resetar formulário de cliente
+    document.getElementById('clientRegisterForm').reset();
+    
+    // Resetar formulário de prestador
+    document.getElementById('providerRegisterForm').reset();
+    document.querySelector('input[name="docType"][value="cpf"]').checked = true;
+    cpfField.style.display = 'block';
+    cnpjField.style.display = 'none';
+}
+
 
 // JavaScript para controle dos modais e formulários
 document.addEventListener('DOMContentLoaded', function() {
    
     // Elementos do modal
     const modal = document.getElementById('loginModal');
-    const spanClose = document.querySelector('.close-modal');
     
     // Elementos de seleção de tipo de usuário
     const clientType = document.getElementById('clientType');
@@ -96,23 +112,10 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
+
     
-    // Resetar formulários quando fechar modal
-    function resetForms() {
-        clientType.classList.remove('selected');
-        providerType.classList.remove('selected');
-        clientForm.style.display = 'none';
-        providerForm.style.display = 'none';
-        
-        // Resetar formulário de cliente
-        document.getElementById('clientRegisterForm').reset();
-        
-        // Resetar formulário de prestador
-        document.getElementById('providerRegisterForm').reset();
-        document.querySelector('input[name="docType"][value="cpf"]').checked = true;
-        cpfField.style.display = 'block';
-        cnpjField.style.display = 'none';
-    }
+    
+    
     
     // Validação do formulário de cliente
 document.getElementById('clientRegisterForm').addEventListener('submit', function(e) {
@@ -161,9 +164,9 @@ createUserWithEmailAndPassword(auth, email, password)
     .then((docRef) => {
         console.log("Documento criado com ID:", docRef.id);
         alert("Cadastro de cliente realizado com sucesso!");
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
+        window.location.replace("../index.html"); // Redireciona para a página inicial após o cadastro
         resetForms();
+
     })
     .catch((error) => {
         // Erro de usuario já existente
@@ -248,8 +251,7 @@ document.getElementById('providerRegisterForm').addEventListener('submit', funct
         // O documento foi criado com sucesso
         console.log("Documento criado com ID:", docRef.id);
         alert("Cadastro de cliente realizado com sucesso!");
-        modal.style.display = "none";
-        document.body.style.overflow = "auto";
+        window.location.replace("../index.html"); // Redireciona para a página inicial após o cadastro
         resetForms();
 
     })
