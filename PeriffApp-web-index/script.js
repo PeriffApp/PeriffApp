@@ -5,16 +5,16 @@ import { auth } from "./firebase.js"; // Importando o Firebase
 // JavaScript para controle dos modais e formulários
 document.addEventListener('DOMContentLoaded', function() {
 
-        // Elementos do modal
+    // Elementos do modal
     const modal = document.getElementById('loginModal');
     const btnOpenModal = document.querySelector('.cta-button');
     const spanClose = document.querySelector('.close-modal');
     
-    // Elementos de sele��o de tipo de usu�rio
+    // Elementos de seleçãoo de tipo de usuário
     const clientType = document.getElementById('clientType');
     const providerType = document.getElementById('providerType');
     
-    // Formul�rios
+    // Formulários
     const clientForm = document.getElementById('clientForm');
     const providerForm = document.getElementById('providerForm');
     
@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const cpfField = document.getElementById('cpfField');
     const cnpjField = document.getElementById('cnpjField');
     
-    // Abrir modal quando clicar no bot�o Entrar
+    // Abrir modal quando clicar no botão Entrar
     btnOpenModal.addEventListener('click', function() {
         modal.style.display = 'block';
         document.body.style.overflow = 'hidden'; // Impede scroll da p�gina
@@ -78,14 +78,14 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Resetar formul�rios quando fechar modal
+    // Resetar formulários quando fechar modal
     function resetForms() {
         clientType.classList.remove('selected');
         providerType.classList.remove('selected');
         clientForm.style.display = 'none';
         providerForm.style.display = 'none';
         
-        // Resetar formul�rio de cliente
+        // Resetar formulário de cliente
         document.getElementById('clientRegisterForm').reset();
         
         // Resetar formul�rio de prestador
