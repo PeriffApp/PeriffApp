@@ -1,8 +1,6 @@
 import { auth, signInWithEmailAndPassword } from "./firebase.js"; // Importando o Firebase
 
 
-
-
 // JavaScript para controle dos modais e formulários
 document.addEventListener('DOMContentLoaded', function() {
 
