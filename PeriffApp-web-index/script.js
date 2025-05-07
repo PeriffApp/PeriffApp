@@ -1,4 +1,5 @@
-import { auth } from "./firebase.js"; // Importando o Firebase
+import { auth, signInWithEmailAndPassword } from "./firebase.js"; // Importando o Firebase
+
 
 
 
@@ -9,19 +10,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const modal = document.getElementById('loginModal');
     const btnOpenModal = document.querySelector('.cta-button');
     const spanClose = document.querySelector('.close-modal');
+    const btnLogin = document.getElementById('btnLogin');
+
+    // pegando usuario e senha 
+    const email = document.getElementById('loginEmail')
+    const password = document.getElementById('loginPassword')
     
-    // Elementos de seleçãoo de tipo de usuário
-    const clientType = document.getElementById('clientType');
-    const providerType = document.getElementById('providerType');
-    
-    // Formulários
-    const clientForm = document.getElementById('clientForm');
-    const providerForm = document.getElementById('providerForm');
-    
-    // Campos de documento do prestador
-    const docTypeRadios = document.querySelectorAll('input[name="docType"]');
-    const cpfField = document.getElementById('cpfField');
-    const cnpjField = document.getElementById('cnpjField');
     
     // Abrir modal quando clicar no botão Entrar
     btnOpenModal.addEventListener('click', function() {
@@ -44,40 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
             resetForms();
         }
     });
-    
-    // Selecionar tipo Cliente
-    clientType.addEventListener('click', function() {
-        clientType.classList.add('selected');
-        providerType.classList.remove('selected');
-        clientForm.style.display = 'block';
-        providerForm.style.display = 'none';
-    });
-    
-    // Selecionar tipo Prestador
-    providerType.addEventListener('click', function() {
-        providerType.classList.add('selected');
-        clientType.classList.remove('selected');
-        providerForm.style.display = 'block';
-        clientForm.style.display = 'none';
-    });
-    
-    // Alternar entre CPF e CNPJ
-    docTypeRadios.forEach(radio => {
-        radio.addEventListener('change', function() {
-            if (this.value === 'cpf') {
-                cpfField.style.display = 'block';
-                cnpjField.style.display = 'none';
-                document.getElementById('providerCPF').required = true;
-                document.getElementById('providerCNPJ').required = false;
-            } else {
-                cpfField.style.display = 'none';
-                cnpjField.style.display = 'block';
-                document.getElementById('providerCPF').required = false;
-                document.getElementById('providerCNPJ').required = true;
-            }
-        });
-    });
-    
+       
     // Resetar formulários quando fechar modal
     function resetForms() {
         clientType.classList.remove('selected');
@@ -85,15 +46,29 @@ document.addEventListener('DOMContentLoaded', function() {
         clientForm.style.display = 'none';
         providerForm.style.display = 'none';
         
-        // Resetar formulário de cliente
-        document.getElementById('clientRegisterForm').reset();
-        
-        // Resetar formul�rio de prestador
-        document.getElementById('providerRegisterForm').reset();
-        document.querySelector('input[name="docType"][value="cpf"]').checked = true;
-        cpfField.style.display = 'block';
-        cnpjField.style.display = 'none';
     }
+
+    btnLogin.addEventListener('click', e => {
+        e.preventDefault();
+
+        const Email = email.value.trim();
+        const Password = password.value;
+
+       
+        signInWithEmailAndPassword(auth, Email, Password)
+        .then((userCredential) => {
+          // Signed in 
+          const user = userCredential.user;
+          // ...
+          console.log("LOGADO!");
+        })
+        .catch((error) => {
+          console.log("ERRO: ", error.message);
+        });
+        
+        
+    })
+    
         
         
 });
