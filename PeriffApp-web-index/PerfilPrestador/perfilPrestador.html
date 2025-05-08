@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>periffApp - Perfil do Prestador</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="perfilPrestador.css">
+    <script src="perfilPrestador.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho com foto de perfil -->
+        <div class="profile-header">
+            <div class="profile-pic-container">
+                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Foto do perfil" class="profile-pic" id="profilePic">
+            </div>
+            <div class="profile-actions">
+                <div class="profile-action" onclick="generateAvatar()">
+                    <i class="material-icons">auto_awesome</i>
+                    <span>Gerar Avatar</span>
+                </div>
+                <div class="profile-action" onclick="document.getElementById('fileInput').click()">
+                    <i class="material-icons">photo_camera</i>
+                    <span>Enviar Foto</span>
+                </div>
+                <div class="profile-action" onclick="removePhoto()">
+                    <i class="material-icons">delete</i>
+                    <span>Remover Foto</span>
+                </div>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+        </div>
+
+        <!-- Informações pessoais -->
+        <div class="profile-info">
+            <h1 class="profile-name">
+                <span id="profileName">Marcos Souza</span>
+                <i class="material-icons edit-icon" onclick="openEditModal('name', 'Nome', 'text', 'Marcos Souza')">edit</i>
+            </h1>
+            <p class="profile-profession">
+                <span id="profileProfession">Eletricista Residencial</span>
+                <i class="material-icons edit-icon" onclick="openEditModal('profession', 'Profissão', 'text', 'Eletricista Residencial')">edit</i>
+            </p>
+            <div class="profile-location">
+                <i class="material-icons">location_on</i>
+                <span id="profileLocation">Ribeira, Salvador - BA</span>
+                <i class="material-icons edit-icon" onclick="openEditModal('location', 'Localização', 'text', 'Ribeira, Salvador - BA')">edit</i>
+            </div>
+        </div>
+
+        <!-- Métricas de destaque -->
+        <div class="metrics">
+            <div class="metric">
+                <div class="metric-icon rating">
+                    <i class="material-icons">star</i>
+                </div>
+                <span class="metric-value">4.8</span>
+                <span class="metric-label">Avaliação</span>
+            </div>
+            <div class="metric">
+                <div class="metric-icon experience">
+                    <i class="material-icons">calendar_today</i>
+                </div>
+                <span class="metric-value">5+</span>
+                <span class="metric-label">Anos</span>
+            </div>
+            <div class="metric">
+                <div class="metric-icon services">
+                    <i class="material-icons">build</i>
+                </div>
+                <span class="metric-value">127</span>
+                <span class="metric-label">Serviços</span>
+            </div>
+        </div>
+
+        <!-- Seção Sobre -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="material-icons">info</i>
+                    Sobre Mim
+                </h2>
+                <span class="edit-section" onclick="openEditAboutModal()">
+                    <i class="material-icons">edit</i>
+                    Editar
+                </span>
+            </div>
+            <p class="about-text" id="aboutText">
+                Eletricista com experiência em instalações residenciais e pequenos comércios. 
+                Trabalho com segurança e garantia.
+            </p>
+            
+            <div class="specialties">
+                <h3 class="specialties-title">Especialidades:</h3>
+                <div class="tags-container" id="specialtiesContainer">
+                    <!-- Tags serão adicionadas dinamicamente -->
+                </div>
+                <div class="add-tag">
+                    <input type="text" id="newSpecialty" placeholder="Adicionar especialidade">
+                    <button class="add-tag-btn" onclick="addSpecialty()">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="certifications">
+                <h3 class="certifications-title">Certificações:</h3>
+                <div class="tags-container" id="certificationsContainer">
+                    <!-- Tags serão adicionadas dinamicamente -->
+                </div>
+                <div class="add-tag">
+                    <input type="text" id="newCertification" placeholder="Adicionar certificação">
+                    <button class="add-tag-btn" onclick="addCertification()">
+                        <i class="material-icons">add</i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Serviços oferecidos -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="material-icons">handyman</i>
+                    Serviços Oferecidos
+                </h2>
+                <span class="edit-section" onclick="openAddServiceModal()">
+                    <i class="material-icons">add</i>
+                    Adicionar
+                </span>
+            </div>
+            <div class="services-container" id="servicesContainer">
+                <!-- Serviços serão adicionados dinamicamente -->
+            </div>
+        </div>
+
+        <!-- Portfólio -->
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title">
+                    <i class="material-icons">photo_library</i>
+                    Portfólio
+                </h2>
+            </div>
+            <div class="portfolio-grid">
+                <div class="portfolio-item add-photo" onclick="document.getElementById('portfolioInput').click()">
+                    <i class="material-icons">add</i>
+                    <span>Adicionar Foto</span>
+                </div>
+                <input type="file" id="portfolioInput" accept="image/*" style="display: none;" onchange="addPortfolioImage(event)">
+                
+                <!-- Imagens do portfólio serão adicionadas aqui dinamicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão flutuante de contato -->
+    <div class="floating-button" onclick="contactProvider()">
+        <i class="material-icons">chat</i>
+    </div>
+
+    <!-- Modal de edição genérico -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <h3 class="modal-title" id="editModalTitle">Editar</h3>
+            <div class="form-group">
+                <label id="editModalLabel">Campo:</label>
+                <input type="text" id="editModalInput">
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveEdit()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de edição sobre -->
+    <div class="modal" id="editAboutModal">
+        <div class="modal-content">
+            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <h3 class="modal-title">Editar Sobre Mim</h3>
+            <div class="form-group">
+                <label>Descrição:</label>
+                <textarea id="aboutTextInput"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="saveAboutText()">Salvar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de adicionar serviço -->
+    <div class="modal" id="addServiceModal">
+        <div class="modal-content">
+            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <h3 class="modal-title">Adicionar Serviço</h3>
+            <div class="form-group">
+                <label>Título:</label>
+                <input type="text" id="serviceTitleInput">
+            </div>
+            <div class="form-group">
+                <label>Descrição:</label>
+                <textarea id="serviceDescriptionInput"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Preço (ex: R$ 120–200):</label>
+                <input type="text" id="servicePriceInput">
+            </div>
+            <div class="form-group">
+                <label>Detalhes (um por linha):</label>
+                <textarea id="serviceDetailsInput" placeholder="Cada linha será um item da lista de detalhes"></textarea>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+                <button class="btn btn-primary" onclick="addNewService()">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de serviço -->
+    <div class="modal" id="serviceModal">
+        <div class="modal-content">
+            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <h3 class="modal-service-title" id="modalServiceTitle"></h3>
+            <p class="modal-service-description" id="modalServiceDescription"></p>
+            <p class="modal-service-price" id="modalServicePrice"></p>
+            
+            <div class="modal-service-details">
+                <h4 class="modal-service-details-title">Detalhes do serviço:</h4>
+                <ul class="modal-service-details-list" id="modalServiceDetailsList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de imagem -->
+    <div class="image-modal" id="imageModal">
+        <span class="close-image-modal material-icons" onclick="closeImageModal()">close</span>
+        <div class="image-modal-content">
+            <img id="modalImage" src="" alt="Imagem ampliada">
+        </div>
+    </div>
+
+</body>
+</html>
