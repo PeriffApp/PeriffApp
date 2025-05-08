@@ -3,7 +3,7 @@
     name: "Marcos Souza",
     profession: "Eletricista Residencial",
     location: "Ribeira, Salvador - BA",
-    about: "Eletricista com experiência em instalações residenciais e pequenos comércios. Trabalho com segurança e garantia.",
+    about: "não informado",
     specialties: ["Instalações elétricas", "Troca de lâmpadas", "Quadros de distribuição"],
     certifications: ["NR-10", "Eletricista Predial"],
     services: [
@@ -383,3 +383,13 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Botão de voltar pro home
+const botaoHome = document.querySelector('botaoHome');
+
+botaoHome.addEventListener('click', function() {
+
+    window.location.replace("../index.html");
+
+});
+
