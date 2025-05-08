@@ -92,6 +92,19 @@ header {
     background-color: var(--primary-light);
 }
 
+.logout-button{
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    display: none;
+}
+
+
 .hero {
     background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), 
                 url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
