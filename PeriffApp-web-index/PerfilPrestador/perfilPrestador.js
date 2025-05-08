@@ -1,3 +1,6 @@
+ import{auth, signOut} from "../firebase.js" 
+ 
+ 
  // Dados iniciais
  let profileData = {
     name: "Marcos Souza",
@@ -384,12 +387,24 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
-// Botão de voltar pro home
-const botaoHome = document.querySelector('botaoHome');
 
-botaoHome.addEventListener('click', function() {
+const btnLogout = document.getElementById('logoutButton');
 
-    window.location.replace("../index.html");
+btnLogout.addEventListener('click', e => {
+    e.preventDefault();
 
-});
+    signOut(auth)
+    .then(() => {
+      // Logout bem‑sucedido
+      alert("Você saiu da sua conta.");
+      window.location.replace("../index.html");
+    })
+    .catch((error) => {
+      console.error("Erro ao sair:", error);
+      alert("Não foi possível deslogar. Tente novamente.");
+    });
+
+
+
+})
 

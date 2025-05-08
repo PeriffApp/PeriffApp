@@ -1,3 +1,13 @@
+:root {
+    --primary: #FF6B00;
+    --primary-light: #FF8C42;
+    --secondary: #FFFFFF;
+    --dark: #333333;
+    --light-gray: #F5F5F5;
+    --gray: #DDDDDD;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -640,4 +650,26 @@ body {
   'wght' 400,
   'GRAD' 0,
   'opsz' 24
+}
+
+/*Botão de Logout*/
+.logout-button{
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.buttonLogoutDiv{
+    display: flex;
+    justify-content: center; /* alinha o botão à direita */
+    align-items: center;       /* alinha verticalmente ao centro */
+    /* opcional: tamanho e padding do container */
+    padding: 1rem;
+    
+
 }

@@ -1,4 +1,4 @@
-import { auth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "./firebase.js"; // Importando o Firebase
+import { auth, signInWithEmailAndPassword, onAuthStateChanged } from "./firebase.js"; // Importando o Firebase
 
 
 // JavaScript para controle dos modais e formulários
@@ -90,25 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     })
 
-    btnLogout.addEventListener('click', e => {
-        e.preventDefault();
-
-        signOut(auth)
-        .then(() => {
-          // Logout bem‑sucedido
-          alert("Você saiu da sua conta.");
-          // Redireciona de volta para a página de login
-          btnLogout.style.display = 'none';
-          btnOpenModal.style.display = 'block';
-        })
-        .catch((error) => {
-          console.error("Erro ao sair:", error);
-          alert("Não foi possível deslogar. Tente novamente.");
-        });
-
-
-
-    })
+    
 
 
     
