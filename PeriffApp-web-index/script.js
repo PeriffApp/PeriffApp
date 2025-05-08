@@ -58,10 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
           // Signed in 
           const user = userCredential.user;
           // ...
-          console.log("LOGADO!");
+          alert("Login realizado com sucesso!")
+          // redirecionar para a pagina perfilPrestador.html
+          window.location.replace("./PerfilPrestador/perfilPrestador.html");
+
         })
         .catch((error) => {
-          console.log("ERRO: ", error.message);
+          alert("Erro ao realizar login!")
         });
         
         
