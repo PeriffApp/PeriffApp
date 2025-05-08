@@ -65,6 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch((error) => {
           alert("Erro ao realizar login!")
+
         });
         
         
