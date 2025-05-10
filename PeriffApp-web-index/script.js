@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnOpenModal = document.querySelector('.cta-button');
     const spanClose = document.querySelector('.close-modal');
     const btnLogin = document.getElementById('btnLogin');
+    const btnPerfil = document.getElementById('btnPerfil');
+    const btnEntrar = document.getElementById('btnEntrar');
 
     // pegando usuario e senha 
     const email = document.getElementById('loginEmail')
@@ -54,10 +56,13 @@ document.addEventListener('DOMContentLoaded', function() {
                       
             const uid = user.uid;
             console.log("STATUS: Usuário logado com UID: " + uid);
-            btnLogin
+            btnEntrar.style.display = 'none' // Esconde o botão de entrar se o usuario estiver logado
+            btnPerfil.style.display = 'block' // Exibe o botão para ir pro perfil
             
         } else {
             console.log("STATUS: Usuário não logado");
+            btnEntrar.style.display = 'block'
+            btnPerfil.style.display = 'none' 
         }
     });
 
@@ -87,6 +92,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
     })
+
+    
+
+
 
     
 

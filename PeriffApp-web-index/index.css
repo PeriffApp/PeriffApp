@@ -762,12 +762,15 @@ footer {
   }
 
 .botaoPerfil{
-    position: absolute;
-    top: 20px;    /* distância do topo */
-    left: 20px;   /* distância da esquerda */
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 30px;
+    font-weight: 600;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
+    transition: background-color 0.3s;
+    height: 53px;
 }
 
 @media (max-width: 768px) {
