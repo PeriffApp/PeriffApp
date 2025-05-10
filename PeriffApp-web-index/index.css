@@ -75,6 +75,7 @@ header {
     font-weight: 600;
     cursor: pointer;
     transition: background-color 0.3s;
+    display: none;
 }
 
 .cta-button:hover {
