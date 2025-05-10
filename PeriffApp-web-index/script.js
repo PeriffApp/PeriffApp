@@ -9,7 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Elementos do modal
     const modal = document.getElementById('loginModal');
     const btnOpenModal = document.querySelector('.cta-button');
-    const btnLogout = document.getElementById('logoutButton');
     const spanClose = document.querySelector('.close-modal');
     const btnLogin = document.getElementById('btnLogin');
 
@@ -55,9 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
                       
             const uid = user.uid;
             console.log("STATUS: Usuário logado com UID: " + uid);
-            btnOpenModal.style.display = 'none'; // Esconde o botão de login
-            btnLogout.style.display = 'block'; // Mostra o botão de logout
-
+            btnLogin
+            
         } else {
             console.log("STATUS: Usuário não logado");
         }
