@@ -62,9 +62,6 @@ function resetForms() {
 
 // JavaScript para controle dos modais e formulários
 document.addEventListener('DOMContentLoaded', function() {
-   
-    // Elementos do modal
-    const modal = document.getElementById('loginModal');
     
     // Elementos de seleção de tipo de usuário
     const clientType = document.getElementById('clientType');
