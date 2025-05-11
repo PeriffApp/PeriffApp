@@ -1,3 +1,6 @@
+ import { auth, signOut } from "../firebase.js" 
+ 
+
  // Dados iniciais
  let profileData = {
     name: "Marcos Souza",
@@ -102,6 +105,9 @@ function renderServices() {
 }
 
 // Função para gerar avatar aleatório
+
+
+
 function generateAvatar() {
     const avatars = [
         'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Prescription02&hairColor=Black&facialHairType=BeardLight&facialHairColor=Black&clotheType=ShirtCrewNeck&clotheColor=Gray01&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light',
