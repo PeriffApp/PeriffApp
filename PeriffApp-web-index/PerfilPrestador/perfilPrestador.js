@@ -1,6 +1,3 @@
- import{auth, signOut} from "../firebase.js" 
- 
- 
  // Dados iniciais
  let profileData = {
     name: "Marcos Souza",
