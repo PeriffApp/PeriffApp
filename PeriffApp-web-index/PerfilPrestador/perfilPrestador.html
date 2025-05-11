@@ -22,7 +22,7 @@
                     <i class="material-icons">auto_awesome</i>
                     <span>Gerar Avatar</span>
                 </div>
-                <div class="profile-action" onclick="document.getElementById('fileInput').click()">
+                <div class="profile-action" id="profileAction">
                     <i class="material-icons">photo_camera</i>
                     <span>Enviar Foto</span>
                 </div>
@@ -34,7 +34,7 @@
                     <a href="/PeriffApp-web-index/"><span class="material-symbols-outlined">arrow_back</span></a>
                 </div>
             </div>
-            <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="handleFileSelect(event)">
+            <input type="file" id="fileInput" accept="image/*" style="display: none;">
             
         </div>
         
@@ -151,11 +151,11 @@
                 </h2>
             </div>
             <div class="portfolio-grid">
-                <div class="portfolio-item add-photo" onclick="document.getElementById('portfolioInput').click()">
+                <div class="portfolio-item add-photo" id="portifolioAdd">
                     <i class="material-icons">add</i>
                     <span>Adicionar Foto</span>
                 </div>
-                <input type="file" id="portfolioInput" accept="image/*" style="display: none;" onchange="addPortfolioImage(event)">
+                <input type="file" id="portifolioInput" accept="image/*" style="display: none;">
                 
                 <!-- Imagens do portfólio serão adicionadas aqui dinamicamente -->
             </div>

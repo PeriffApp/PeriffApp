@@ -114,9 +114,23 @@ function renderServices() {
 // Pegando os elementos
 const gerarAvatar = document.getElementById('gerarAvatar');
 const removerFt = document.getElementById('removerFt');
+const profileAction = document.getElementById('profileAction');
+const fileInput = document.getElementById('fileInput');
+const portifolioAdd = document.getElementById('portifolioAdd');1
+const portifolioInput = document.getElementById('portifolioInput');
+
+
  
 
+// ao clicar, dispara uma função.
+profileAction.addEventListener('click', () => fileInput.click());
+portifolioAdd.addEventListener('click', () => portifolioInput.click())
 
+
+
+//chama diretamente a função 
+fileInput.addEventListener('change', handleFileSelect);
+portifolioInput.addEventListener('change', addPortfolioImage);
 
 // Função para gerar avatar aleatório
 gerarAvatar.addEventListener('click', function() {
@@ -170,10 +184,13 @@ function addPortfolioImage(event) {
             newImage.className = 'portfolio-item';
             newImage.innerHTML = `
                 <img src="${e.target.result}" alt="Trabalho realizado">
-                <div class="delete-photo" onclick="removePortfolioImage(event, this.parentNode)">
+                <div class="delete-photo">
                     <i class="material-icons">close</i>
                 </div>
-            `;
+                `;
+
+            
+                
             newImage.onclick = function() {
                 openImageModal(e.target.result);
             };
@@ -185,6 +202,7 @@ function addPortfolioImage(event) {
             profileData.portfolio.push(e.target.result);
             
             showToast('Foto adicionada ao portfólio');
+            
         }
         
         reader.readAsDataURL(file);
