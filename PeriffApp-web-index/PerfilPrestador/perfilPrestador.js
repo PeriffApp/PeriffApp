@@ -1,4 +1,4 @@
- import { auth, signOut } from "../firebase" 
+ import { auth, signOut } from "../firebase.js" 
  
 
  // Dados iniciais
