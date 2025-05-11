@@ -104,11 +104,23 @@ function renderServices() {
     });
 }
 
+
+
+//--------------------------------------------------------------------------------
+
+
+
+
+// Pegando os elementos
+const gerarAvatar = document.getElementById('gerarAvatar');
+const removerFt = document.getElementById('removerFt');
+ 
+
+
+
 // Função para gerar avatar aleatório
+gerarAvatar.addEventListener('click', function() {
 
-
-
-function generateAvatar() {
     const avatars = [
         'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortFlat&accessoriesType=Prescription02&hairColor=Black&facialHairType=BeardLight&facialHairColor=Black&clotheType=ShirtCrewNeck&clotheColor=Gray01&eyeType=Default&eyebrowType=DefaultNatural&mouthType=Default&skinColor=Light',
         'https://avataaars.io/?avatarStyle=Circle&topType=ShortHairShortWaved&accessoriesType=Blank&hairColor=BrownDark&facialHairType=Blank&clotheType=BlazerShirt&eyeType=Default&eyebrowType=Default&mouthType=Default&skinColor=Light',
@@ -119,13 +131,13 @@ function generateAvatar() {
     document.getElementById('profilePic').src = randomAvatar;
     
     showToast('Avatar gerado com sucesso!');
-}
+});
 
 // Função para remover foto
-function removePhoto() {
+removerFt.addEventListener('click', function() {
     document.getElementById('profilePic').src = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
     showToast('Foto removida');
-}
+})
 
 // Função para lidar com seleção de arquivo
 function handleFileSelect(event) {
