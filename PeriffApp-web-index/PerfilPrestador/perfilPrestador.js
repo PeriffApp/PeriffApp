@@ -184,7 +184,7 @@ function addPortfolioImage(event) {
             newImage.className = 'portfolio-item';
             newImage.innerHTML = `
                 <img src="${e.target.result}" alt="Trabalho realizado">
-                <div class="delete-photo">
+                <div class="delete-photo" id="deleteFoto">
                     <i class="material-icons">close</i>
                 </div>
                 `;
@@ -210,6 +210,7 @@ function addPortfolioImage(event) {
 }
 
 // Função para remover imagem do portfólio
+
 function removePortfolioImage(event, element) {
     event.stopPropagation();
     const portfolioGrid = document.querySelector('.portfolio-grid');
@@ -373,9 +374,10 @@ function openImageModal(imageSrc) {
 }
 
 // Função para fechar modal de imagem
-function closeImageModal() {
+const closeImageModal = document.getElementById('closeImagemModal');
+closeImageModal.addEventListener('click', function(){
     document.getElementById('imageModal').style.display = 'none';
-}
+})
 
 // Função para contatar o prestador
 function contactProvider() {

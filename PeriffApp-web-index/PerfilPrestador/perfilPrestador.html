@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back" />
     <link rel="stylesheet" href="perfilPrestador.css">
-    <script type="module" src="perfilPrestador.js"></script>
+    
 </head>
 <body>
     <div class="container">
@@ -244,7 +244,7 @@
 
     <!-- Modal de imagem -->
     <div class="image-modal" id="imageModal">
-        <span class="close-image-modal material-icons" onclick="closeImageModal()">close</span>
+        <span class="close-image-modal material-icons" id="closeImagemModal">close</span>
         <div class="image-modal-content">
             <img id="modalImage" src="" alt="Imagem ampliada">
         </div>
@@ -253,6 +253,7 @@
     <div class="buttonLogoutDiv">
         <button class="logout-button" id="logoutButton">Sair</button>
     </div>
-
+    
+    <script type="module" src="perfilPrestador.js"></script>
 </body>
 </html>
