@@ -115,7 +115,6 @@ function renderServices() {
 const gerarAvatar = document.getElementById('gerarAvatar');
 const removerFt = document.getElementById('removerFt');
 const profileAction = document.getElementById('profileAction');
-const fileInput = document.getElementById('fileInput');
 const portifolioAdd = document.getElementById('portifolioAdd');1
 const portifolioInput = document.getElementById('portifolioInput');
 
@@ -172,58 +171,76 @@ function handleFileSelect(event) {
     }
 }
 
-// Função para adicionar imagem ao portfólio
+// 1) Função para adicionar imagem ao portfólio
 function addPortfolioImage(event) {
-    const file = event.target.files[0];
-    if (file && file.type.match('image.*')) {
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            const portfolioGrid = document.querySelector('.portfolio-grid');
-            const newImage = document.createElement('div');
-            newImage.className = 'portfolio-item';
-            newImage.innerHTML = `
-                <img src="${e.target.result}" alt="Trabalho realizado">
-                <div class="delete-photo" id="deleteFoto">
-                    <i class="material-icons">close</i>
-                </div>
-                `;
+  const file = event.target.files[0];
+  if (file && file.type.match('image.*')) {
+    const reader = new FileReader();
+    
+    reader.onload = function(e) {
+      const portfolioGrid = document.querySelector('.portfolio-grid');
+      const newImage = document.createElement('div');
+      newImage.className = 'portfolio-item';
+      newImage.innerHTML = `
+        <img src="${e.target.result}" alt="Trabalho realizado">
+        <div class="delete-photo">
+          <i class="material-icons">close</i>
+        </div>
+      `;
 
-            
-                
-            newImage.onclick = function() {
-                openImageModal(e.target.result);
-            };
-            
-            // Insere antes do botão de adicionar
-            portfolioGrid.insertBefore(newImage, portfolioGrid.children[portfolioGrid.children.length - 2]);
-            
-            // Adiciona ao array de portfolio
-            profileData.portfolio.push(e.target.result);
-            
-            showToast('Foto adicionada ao portfólio');
-            
-        }
-        
-        reader.readAsDataURL(file);
-    }
+      // 1.1) Abre modal ao clicar na imagem
+      newImage.querySelector('img').addEventListener('click', () => {
+        openImageModal(e.target.result);
+      });
+
+      // 1.2) Anexa o listener de remoção
+      newImage.querySelector('.delete-photo')
+              .addEventListener('click', removePortfolioImage);
+
+      // 1.3) Insere antes do botão de "add-photo"
+      const addBtn = document.getElementById('portifolioAdd');
+      portfolioGrid.insertBefore(newImage, addBtn);
+
+      // 1.4) Guarda no array de dados
+      profileData.portfolio.push(e.target.result);
+
+      showToast('Foto adicionada ao portfólio');
+    };
+    
+    reader.readAsDataURL(file);
+    // limpa o input para permitir o mesmo arquivo de novo
+    event.target.value = '';
+  }
 }
 
-// Função para remover imagem do portfólio
+// 2) Função para remover imagem do portfólio
+function removePortfolioImage(event) {
+  event.stopPropagation();
 
-function removePortfolioImage(event, element) {
-    event.stopPropagation();
-    const portfolioGrid = document.querySelector('.portfolio-grid');
-    portfolioGrid.removeChild(element);
-    
-    // Remove do array de portfolio (precisaríamos de um ID melhor na implementação real)
-    const index = Array.from(portfolioGrid.children).indexOf(element) - 1;
-    if (index >= 0) {
-        profileData.portfolio.splice(index, 1);
-    }
-    
-    showToast('Foto removida do portfólio');
+  // 2.1) Localiza o <div class="portfolio-item"> pai
+  const item = event.currentTarget.closest('.portfolio-item');
+  if (!item) return;
+
+  // 2.2) Gera lista só dos items reais (exclui o botão de add)
+  const portfolioGrid = document.querySelector('.portfolio-grid');
+  const items = Array.from(
+    portfolioGrid.querySelectorAll('.portfolio-item:not(.add-photo)')
+  );
+
+  // 2.3) Descobre o índice deste item no array
+  const index = items.indexOf(item);
+  if (index === -1) return;
+
+  // 2.4) Remove do DOM e do array de dados
+  portfolioGrid.removeChild(item);
+  profileData.portfolio.splice(index, 1);
+
+  showToast('Foto removida do portfólio');
 }
+
+// 3) Gatilho para abrir file picker
+fileInput.addEventListener('change', addPortfolioImage);
+
 
 // Função para abrir modal de edição genérico
 function openEditModal(field, label, type, currentValue) {

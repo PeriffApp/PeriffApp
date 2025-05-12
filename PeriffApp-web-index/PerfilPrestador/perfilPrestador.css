@@ -1,3 +1,6 @@
+/* Importação da fonte Material Icons */
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+
 :root {
     --primary: #FF6B00;
     --primary-light: #FF8C42;
@@ -6,7 +9,6 @@
     --light-gray: #F5F5F5;
     --gray: #DDDDDD;
 }
-
 
 * {
     margin: 0;
@@ -34,7 +36,7 @@ body {
     flex-direction: column;
     align-items: center;
     padding: 20px;
-    background-color: #FF6B00;
+    background-color: var(--primary);
     color: white;
     position: relative;
 }
@@ -68,7 +70,7 @@ body {
 
 .profile-action i {
     background-color: white;
-    color: #FF6B00;
+    color: var(--primary);
     width: 36px;
     height: 36px;
     border-radius: 50%;
@@ -77,7 +79,6 @@ body {
     justify-content: center;
     margin-bottom: 5px;
     font-size: 18px;
-
 }
 
 .profile-action span {
@@ -85,11 +86,11 @@ body {
     color: white;
 }
 
-/*Botão de voltar pro home*/
+/* Botão de voltar para o home */
 .botaoHome {
     position: absolute;
-    top: 20px;    /* distância do topo */
-    left: 20px;   /* distância da esquerda */
+    top: 20px;
+    left: 20px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -98,7 +99,6 @@ body {
 .botaoHome a {
     color: white;
 }
-
 
 /* Informações pessoais */
 .profile-info {
@@ -143,7 +143,7 @@ body {
 }
 
 .edit-icon {
-    color: #FF6B00;
+    color: var(--primary);
     cursor: pointer;
     font-size: 18px;
 }
@@ -203,7 +203,7 @@ body {
     color: #777777;
 }
 
-/* Seção Sobre */
+/* Seção */
 .section {
     padding: 15px 20px;
     margin-bottom: 10px;
@@ -226,11 +226,11 @@ body {
 
 .section-title i {
     margin-right: 8px;
-    color: #FF6B00;
+    color: var(--primary);
 }
 
 .edit-section {
-    color: #FF6B00;
+    color: var(--primary);
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
@@ -250,7 +250,8 @@ body {
     margin-bottom: 15px;
 }
 
-.specialties-title, .certifications-title {
+.specialties-title,
+.certifications-title {
     font-weight: 500;
     margin-bottom: 8px;
     color: #5A5A5A;
@@ -269,7 +270,7 @@ body {
 
 .specialties-list li:before {
     content: "•";
-    color: #FF6B00;
+    color: var(--primary);
     font-weight: bold;
     position: absolute;
     left: -15px;
@@ -283,7 +284,7 @@ body {
 
 .certification-badge {
     background-color: #FFF2E0;
-    color: #FF6B00;
+    color: var(--primary);
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 12px;
@@ -354,7 +355,7 @@ body {
     justify-content: center;
     overflow: hidden;
     cursor: pointer;
-    position: relative;
+    position: relative; /* necessário para o botão de delete */
 }
 
 .portfolio-item.add-photo {
@@ -375,26 +376,34 @@ body {
     object-fit: cover;
 }
 
+/* Botão de remover */
 .delete-photo {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    background-color: rgba(255, 0, 0, 0.7);
-    color: white;
+    top: 8px;
+    right: 8px;
     width: 24px;
     height: 24px;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    opacity: 0;
-    transition: opacity 0.2s;
+    font-size: 16px;
+    cursor: pointer;
+    z-index: 10;
+     opacity: 0;
+    pointer-events: none;              /* NÃO recebe clique enquanto invisível */
+    transition: opacity 0.2s ease-in-out;
 }
 
+
+/* Ao passar o mouse no card, mostra e habilita clique */
 .portfolio-item:hover .delete-photo {
-    opacity: 1;
+  opacity: 1;
+  pointer-events: auto;              /* passa a receber clique */
 }
+
 
 /* Botão flutuante */
 .floating-button {
@@ -500,8 +509,8 @@ body {
 }
 
 .btn-primary {
-    background-color: #FF6B00;
-    color: white;
+    background-color: var(--primary);
+    color: var(--secondary);
 }
 
 .btn-secondary {
@@ -554,7 +563,7 @@ body {
 
 .modal-service-details-list li:before {
     content: "•";
-    color: #FF6B00;
+    color: var(--primary);
     font-weight: bold;
     position: absolute;
     left: 5px;
@@ -631,7 +640,7 @@ body {
 }
 
 .add-tag-btn {
-    background-color: #FF6B00;
+    background-color: var(--primary);
     color: white;
     border: none;
     border-radius: 50%;
@@ -643,17 +652,16 @@ body {
     cursor: pointer;
 }
 
-
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 24
+    font-variation-settings:
+      'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
 }
 
-/*Botão de Logout*/
-.logout-button{
+/* Botão de Logout */
+.logout-button {
     background-color: var(--primary);
     color: var(--secondary);
     border: none;
@@ -664,12 +672,10 @@ body {
     transition: background-color 0.3s;
 }
 
-.buttonLogoutDiv{
+.buttonLogoutDiv {
     display: flex;
-    justify-content: center; /* alinha o botão à direita */
-    align-items: center;       /* alinha verticalmente ao centro */
-    /* opcional: tamanho e padding do container */
+    justify-content: center;
+    align-items: center;
     padding: 1rem;
-    
-
 }
+
