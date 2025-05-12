@@ -115,7 +115,7 @@ function renderServices() {
 const gerarAvatar = document.getElementById('gerarAvatar');
 const removerFt = document.getElementById('removerFt');
 const profileAction = document.getElementById('profileAction');
-const portifolioAdd = document.getElementById('portifolioAdd');1
+const portifolioAdd = document.getElementById('portifolioAdd');
 const portifolioInput = document.getElementById('portifolioInput');
 
 
@@ -246,17 +246,32 @@ fileInput.addEventListener('change', addPortfolioImage);
 function openEditModal(field, label, type, currentValue) {
     currentEditField = field;
     currentEditType = type;
-    
+
     document.getElementById('editModalTitle').textContent = `Editar ${label}`;
     document.getElementById('editModalLabel').textContent = label;
     document.getElementById('editModalInput').type = type;
     document.getElementById('editModalInput').value = currentValue;
-    
+
     document.getElementById('editModal').style.display = 'flex';
 }
 
+// Eventos de clique nos botões de edição
+document.getElementById('editNameBtn').addEventListener('click', () => {
+    openEditModal('name', 'Nome', 'text', document.getElementById('profileName').textContent);
+});
+
+document.getElementById('editProfessionBtn').addEventListener('click', () => {
+    openEditModal('profession', 'Profissão', 'text', document.getElementById('profileProfession').textContent);
+});
+
+document.getElementById('editLocationBtn').addEventListener('click', () => {
+    openEditModal('location', 'Localização', 'text', document.getElementById('profileLocation').textContent);
+});
+
+
 // Função para salvar edição
-function saveEdit() {
+const saveEdit = document.getElementById('saveEdit');
+saveEdit.addEventListener('click', function(){
     const newValue = document.getElementById('editModalInput').value;
     
     if (currentEditField && newValue) {
@@ -265,7 +280,7 @@ function saveEdit() {
         showToast('Alterações salvas');
         closeModal();
     }
-}
+})
 
 // Função para abrir modal de edição do sobre
 function openEditAboutModal() {
@@ -378,6 +393,10 @@ function openServiceModal(title, description, price, details) {
 }
 
 // Função para fechar modal
+const modalClose = document.getElementById('closeModal') 
+const cancelModal = document.getElementById('cancelModal')
+cancelModal.addEventListener('click', closeModal);
+modalClose.addEventListener('click', closeModal);
 function closeModal() {
     document.querySelectorAll('.modal').forEach(modal => {
         modal.style.display = 'none';

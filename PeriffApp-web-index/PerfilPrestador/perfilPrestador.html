@@ -43,18 +43,19 @@
         <div class="profile-info">
             <h1 class="profile-name">
                 <span id="profileName">Marcos Souza</span>
-                <i class="material-icons edit-icon" onclick="openEditModal('name', 'Nome', 'text', 'Marcos Souza')">edit</i>
+                <i id="editNameBtn" class="material-icons edit-icon">edit</i>
             </h1>
             <p class="profile-profession">
                 <span id="profileProfession">Eletricista Residencial</span>
-                <i class="material-icons edit-icon" onclick="openEditModal('profession', 'Profissão', 'text', 'Eletricista Residencial')">edit</i>
+                <i id="editProfessionBtn" class="material-icons edit-icon">edit</i>
             </p>
             <div class="profile-location">
                 <i class="material-icons">location_on</i>
                 <span id="profileLocation">Ribeira, Salvador - BA</span>
-                <i class="material-icons edit-icon" onclick="openEditModal('location', 'Localização', 'text', 'Ribeira, Salvador - BA')">edit</i>
+                <i id="editLocationBtn" class="material-icons edit-icon">edit</i>
             </div>
         </div>
+
 
         <!-- Métricas de destaque -->
         <div class="metrics">
@@ -170,15 +171,15 @@
     <!-- Modal de edição genérico -->
     <div class="modal" id="editModal">
         <div class="modal-content">
-            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <span class="close-modal material-icons" id="closeModal">close</span>
             <h3 class="modal-title" id="editModalTitle">Editar</h3>
             <div class="form-group">
                 <label id="editModalLabel">Campo:</label>
                 <input type="text" id="editModalInput">
             </div>
             <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="saveEdit()">Salvar</button>
+                <button class="btn btn-secondary" id="cancelModal">Cancelar</button>
+                <button class="btn btn-primary" id="saveEdit">Salvar</button>
             </div>
         </div>
     </div>
