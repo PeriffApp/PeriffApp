@@ -89,7 +89,7 @@
                     <i class="material-icons">info</i>
                     Sobre Mim
                 </h2>
-                <span class="edit-section" onclick="openEditAboutModal()">
+                <span class="edit-section" id="editAbout">
                     <i class="material-icons">edit</i>
                     Editar
                 </span>
@@ -187,15 +187,15 @@
     <!-- Modal de edição sobre -->
     <div class="modal" id="editAboutModal">
         <div class="modal-content">
-            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <span class="close-modal material-icons" id="closeEditAbout">close</span>
             <h3 class="modal-title">Editar Sobre Mim</h3>
             <div class="form-group">
                 <label>Descrição:</label>
                 <textarea id="aboutTextInput"></textarea>
             </div>
             <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="saveAboutText()">Salvar</button>
+                <button class="btn btn-secondary" id="cancelEditAbout">Cancelar</button>
+                <button class="btn btn-primary" id="saveAbout">Salvar</button>
             </div>
         </div>
     </div>

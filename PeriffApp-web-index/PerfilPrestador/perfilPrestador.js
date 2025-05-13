@@ -283,22 +283,23 @@ saveEdit.addEventListener('click', function(){
 })
 
 // Função para abrir modal de edição do sobre
-function openEditAboutModal() {
+const editAbout = document.getElementById('editAbout');
+editAbout.addEventListener('click', function(){
     document.getElementById('aboutTextInput').value = profileData.about;
     document.getElementById('editAboutModal').style.display = 'flex';
-}
+})
 
 // Função para salvar texto sobre
-function saveAboutText() {
-    const newAbout = document.getElementById('aboutTextInput').value;
-    
+const saveAbout = document.getElementById('saveAbout'); 
+saveAbout.addEventListener('click', function() {
+    const newAbout = document.getElementById('aboutTextInput').value; 
     if (newAbout) {
         profileData.about = newAbout;
         updateProfileInfo();
         showToast('Descrição atualizada');
         closeModal();
     }
-}
+})
 
 // Função para adicionar especialidade
 function addSpecialty() {
@@ -393,10 +394,16 @@ function openServiceModal(title, description, price, details) {
 }
 
 // Função para fechar modal
-const modalClose = document.getElementById('closeModal') 
-const cancelModal = document.getElementById('cancelModal')
+const modalClose = document.getElementById('closeModal'); 
+const cancelModal = document.getElementById('cancelModal');
+const closeEditAbout = document.getElementById('closeEditAbout');
+const cancelEditAbout = document.getElementById('cancelEditAbout');
+
 cancelModal.addEventListener('click', closeModal);
 modalClose.addEventListener('click', closeModal);
+closeEditAbout.addEventListener('click', closeModal);
+cancelEditAbout.addEventListener('click', closeModal);
+
 function closeModal() {
     document.querySelectorAll('.modal').forEach(modal => {
         modal.style.display = 'none';
