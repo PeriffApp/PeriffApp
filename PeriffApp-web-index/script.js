@@ -52,8 +52,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // observador para verificar se o usuario está logado
     onAuthStateChanged(auth, (user) => {
-        if (user) {
-                      
+        if (user) {      
             const uid = user.uid;
             console.log("STATUS: Usuário logado com UID: " + uid);
             btnEntrar.style.display = 'none' // Esconde o botão de entrar se o usuario estiver logado

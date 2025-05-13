@@ -1,5 +1,35 @@
- import { auth, signOut } from "../firebase.js" 
- 
+ import { auth, signOut, onAuthStateChanged } from "../firebase.js" 
+
+
+// Logout 
+const btnLogout = document.getElementById('logoutButton');
+btnLogout.addEventListener('click', e => {
+    e.preventDefault();
+
+    signOut(auth)
+    .then(() => {
+      // Logout bem‑sucedido
+      alert("Você saiu da sua conta.");
+      window.location.replace("../index.html");
+    })
+    .catch((error) => {
+      console.error("Erro ao sair:", error);
+      alert("Não foi possível deslogar. Tente novamente.");
+    });
+
+})
+
+// observador para verificar se o usuario está logado
+onAuthStateChanged(auth, (user) => {
+        if (user) {      
+            const uid = user.uid;
+            console.log("STATUS: Usuário logado com UID: " + uid);
+        } else {
+            console.log("STATUS: Usuário não logado"); 
+        }
+});
+
+
 
  // Dados iniciais
  let profileData = {
@@ -7,8 +37,6 @@
     profession: "Eletricista Residencial",
     location: "Ribeira, Salvador - BA",
     about: "não informado",
-    specialties: ["Instalações elétricas", "Troca de lâmpadas", "Quadros de distribuição"],
-    certifications: ["NR-10", "Eletricista Predial"],
     services: [
         {
             title: "Instalação de Chuveiro",
@@ -44,6 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // Atualiza as informações do perfil
 function updateProfileInfo() {
+
     document.getElementById('profileName').textContent = profileData.name;
     document.getElementById('profileProfession').textContent = profileData.profession;
     document.getElementById('profileLocation').textContent = profileData.location;
@@ -403,23 +432,7 @@ style.textContent = `
 document.head.appendChild(style);
 
 
-const btnLogout = document.getElementById('logoutButton');
-
-btnLogout.addEventListener('click', e => {
-    e.preventDefault();
-
-    signOut(auth)
-    .then(() => {
-      // Logout bem‑sucedido
-      alert("Você saiu da sua conta.");
-      window.location.replace("../index.html");
-    })
-    .catch((error) => {
-      console.error("Erro ao sair:", error);
-      alert("Não foi possível deslogar. Tente novamente.");
-    });
 
 
 
-})
 
