@@ -52,21 +52,34 @@ function updateProfileInfo() {
     document.getElementById('aboutText').textContent = profileData.about;
 }
 
-// Renderiza as especialidades
+// Renderiza as especialidades 
 function renderSpecialties() {
     const container = document.getElementById('specialtiesContainer');
     container.innerHTML = '';
     
     profileData.specialties.forEach(specialty => {
+        // Cria a tag
         const tag = document.createElement('div');
         tag.className = 'tag';
-        tag.innerHTML = `
-            ${specialty}
-            <span class="tag-remove material-icons" onclick="removeSpecialty('${specialty}')">close</span>
-        `;
+        
+        // Texto da especialidade
+        const textNode = document.createTextNode(specialty);
+        tag.appendChild(textNode);
+        
+        // Botão de remover
+        const removeBtn = document.createElement('span');
+        removeBtn.className = 'tag-remove material-icons';
+        removeBtn.textContent = 'close';
+        removeBtn.style.cursor = 'pointer';
+        removeBtn.addEventListener('click', () => {
+            removeSpecialty(specialty);
+        });
+        
+        tag.appendChild(removeBtn);
         container.appendChild(tag);
     });
 }
+
 
 // Renderiza as certificações
 function renderCertifications() {
@@ -302,7 +315,8 @@ saveAbout.addEventListener('click', function() {
 })
 
 // Função para adicionar especialidade
-function addSpecialty() {
+const addEspecialidade = document.getElementById('addEspecialidade');
+addEspecialidade.addEventListener('click', function(){
     const input = document.getElementById('newSpecialty');
     const specialty = input.value.trim();
     
@@ -312,7 +326,7 @@ function addSpecialty() {
         input.value = '';
         showToast('Especialidade adicionada');
     }
-}
+})
 
 // Função para remover especialidade
 function removeSpecialty(specialty) {
