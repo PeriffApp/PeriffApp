@@ -39,8 +39,6 @@ let currentEditType = null;
 // Inicializa a página
 document.addEventListener('DOMContentLoaded', function() {
     updateProfileInfo();
-    renderSpecialties();
-    renderCertifications();
     renderServices();
 });
 
@@ -52,50 +50,6 @@ function updateProfileInfo() {
     document.getElementById('aboutText').textContent = profileData.about;
 }
 
-// Renderiza as especialidades 
-function renderSpecialties() {
-    const container = document.getElementById('specialtiesContainer');
-    container.innerHTML = '';
-    
-    profileData.specialties.forEach(specialty => {
-        // Cria a tag
-        const tag = document.createElement('div');
-        tag.className = 'tag';
-        
-        // Texto da especialidade
-        const textNode = document.createTextNode(specialty);
-        tag.appendChild(textNode);
-        
-        // Botão de remover
-        const removeBtn = document.createElement('span');
-        removeBtn.className = 'tag-remove material-icons';
-        removeBtn.textContent = 'close';
-        removeBtn.style.cursor = 'pointer';
-        removeBtn.addEventListener('click', () => {
-            removeSpecialty(specialty);
-        });
-        
-        tag.appendChild(removeBtn);
-        container.appendChild(tag);
-    });
-}
-
-
-// Renderiza as certificações
-function renderCertifications() {
-    const container = document.getElementById('certificationsContainer');
-    container.innerHTML = '';
-    
-    profileData.certifications.forEach(certification => {
-        const tag = document.createElement('div');
-        tag.className = 'tag';
-        tag.innerHTML = `
-            ${certification}
-            <span class="tag-remove material-icons" onclick="removeCertification('${certification}')">close</span>
-        `;
-        container.appendChild(tag);
-    });
-}
 
 // Renderiza os serviços
 function renderServices() {
@@ -133,12 +87,9 @@ const portifolioInput = document.getElementById('portifolioInput');
 const fileInput = document.getElementById('fileInput'); 
 
 
- 
-
 // ao clicar, dispara uma função.
 profileAction.addEventListener('click', () => fileInput.click());
 portifolioAdd.addEventListener('click', () => portifolioInput.click())
-
 
 
 //chama diretamente a função 
@@ -315,46 +266,7 @@ saveAbout.addEventListener('click', function() {
     }
 })
 
-// Função para adicionar especialidade
-const addEspecialidade = document.getElementById('addEspecialidade');
-addEspecialidade.addEventListener('click', function(){
-    const input = document.getElementById('newSpecialty');
-    const specialty = input.value.trim();
-    
-    if (specialty && !profileData.specialties.includes(specialty)) {
-        profileData.specialties.push(specialty);
-        renderSpecialties();
-        input.value = '';
-        showToast('Especialidade adicionada');
-    }
-})
 
-// Função para remover especialidade
-function removeSpecialty(specialty) {
-    profileData.specialties = profileData.specialties.filter(item => item !== specialty);
-    renderSpecialties();
-    showToast('Especialidade removida');
-}
-
-// Função para adicionar certificação
-function addCertification() {
-    const input = document.getElementById('newCertification');
-    const certification = input.value.trim();
-    
-    if (certification && !profileData.certifications.includes(certification)) {
-        profileData.certifications.push(certification);
-        renderCertifications();
-        input.value = '';
-        showToast('Certificação adicionada');
-    }
-}
-
-// Função para remover certificação
-function removeCertification(certification) {
-    profileData.certifications = profileData.certifications.filter(item => item !== certification);
-    renderCertifications();
-    showToast('Certificação removida');
-}
 
 // Função para abrir modal de adicionar serviço
 const openAddServiceModal = document.getElementById('openAddServiceModal'); 
