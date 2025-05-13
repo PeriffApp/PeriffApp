@@ -133,7 +133,7 @@
                     <i class="material-icons">handyman</i>
                     Serviços & Produtos
                 </h2>
-                <span class="edit-section" onclick="openAddServiceModal()">
+                <span class="edit-section" id="openAddServiceModal">
                     <i class="material-icons">add</i>
                     Adicionar
                 </span>
@@ -203,7 +203,7 @@
     <!-- Modal de adicionar serviço -->
     <div class="modal" id="addServiceModal">
         <div class="modal-content">
-            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <span class="close-modal material-icons" id="closeService">close</span>
             <h3 class="modal-title">Adicionar Serviço</h3>
             <div class="form-group">
                 <label>Título:</label>
@@ -222,8 +222,8 @@
                 <textarea id="serviceDetailsInput" placeholder="Cada linha será um item da lista de detalhes"></textarea>
             </div>
             <div class="modal-actions">
-                <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
-                <button class="btn btn-primary" onclick="addNewService()">Adicionar</button>
+                <button class="btn btn-secondary" id="cancelService">Cancelar</button>
+                <button class="btn btn-primary" id="addNewService">Adicionar</button>
             </div>
         </div>
     </div>
@@ -231,7 +231,7 @@
     <!-- Modal de serviço -->
     <div class="modal" id="serviceModal">
         <div class="modal-content">
-            <span class="close-modal material-icons" onclick="closeModal()">close</span>
+            <span class="close-modal material-icons" id="closeModalService">close</span>
             <h3 class="modal-service-title" id="modalServiceTitle"></h3>
             <p class="modal-service-description" id="modalServiceDescription"></p>
             <p class="modal-service-price" id="modalServicePrice"></p>

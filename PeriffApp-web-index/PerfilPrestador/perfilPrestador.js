@@ -130,6 +130,7 @@ const removerFt = document.getElementById('removerFt');
 const profileAction = document.getElementById('profileAction');
 const portifolioAdd = document.getElementById('portifolioAdd');
 const portifolioInput = document.getElementById('portifolioInput');
+const fileInput = document.getElementById('fileInput'); 
 
 
  
@@ -356,16 +357,19 @@ function removeCertification(certification) {
 }
 
 // Função para abrir modal de adicionar serviço
-function openAddServiceModal() {
+const openAddServiceModal = document.getElementById('openAddServiceModal'); 
+openAddServiceModal.addEventListener('click', function(){
     document.getElementById('serviceTitleInput').value = '';
     document.getElementById('serviceDescriptionInput').value = '';
     document.getElementById('servicePriceInput').value = '';
     document.getElementById('serviceDetailsInput').value = '';
     document.getElementById('addServiceModal').style.display = 'flex';
-}
+})
 
 // Função para adicionar novo serviço
-function addNewService() {
+const addNewService = document.getElementById('addNewService');
+addNewService.addEventListener('click', function(e){
+      e.preventDefault(); 
     const title = document.getElementById('serviceTitleInput').value.trim();
     const description = document.getElementById('serviceDescriptionInput').value.trim();
     const price = document.getElementById('servicePriceInput').value.trim();
@@ -387,7 +391,7 @@ function addNewService() {
     } else {
         showToast('Preencha todos os campos obrigatórios');
     }
-}
+})
 
 // Função para abrir modal de serviço
 function openServiceModal(title, description, price, details) {
@@ -412,11 +416,18 @@ const modalClose = document.getElementById('closeModal');
 const cancelModal = document.getElementById('cancelModal');
 const closeEditAbout = document.getElementById('closeEditAbout');
 const cancelEditAbout = document.getElementById('cancelEditAbout');
+const closeService = document.getElementById('closeService');
+const cancelService = document.getElementById('cancelService');
+const closeModalService = document.getElementById('closeModalService');
 
 cancelModal.addEventListener('click', closeModal);
 modalClose.addEventListener('click', closeModal);
 closeEditAbout.addEventListener('click', closeModal);
 cancelEditAbout.addEventListener('click', closeModal);
+closeService.addEventListener('click', closeModal);
+cancelService.addEventListener('click', closeModal);
+closeModalService.addEventListener('click', closeModal)
+
 
 function closeModal() {
     document.querySelectorAll('.modal').forEach(modal => {
