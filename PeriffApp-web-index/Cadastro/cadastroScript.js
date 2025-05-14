@@ -41,6 +41,8 @@ function resetForms() {
   cnpjField.style.display = 'none';
 }
 
+
+
 document.addEventListener('DOMContentLoaded', function() {
   const clientType = document.getElementById('clientType');
   const providerType = document.getElementById('providerType');
@@ -49,12 +51,16 @@ document.addEventListener('DOMContentLoaded', function() {
   const docTypeRadios = document.querySelectorAll('input[name="docType"]');
   const cpfField = document.getElementById('cpfField');
   const cnpjField = document.getElementById('cnpjField');
+  let tipo = null;
+  
 
   clientType.addEventListener('click', () => {
     clientType.classList.add('selected');
     providerType.classList.remove('selected');
     clientForm.style.display = 'block';
     providerForm.style.display = 'none';
+    tipo = "Cliente"
+    
   });
 
   providerType.addEventListener('click', () => {
@@ -62,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
     clientType.classList.remove('selected');
     providerForm.style.display = 'block';
     clientForm.style.display = 'none';
+    tipo = "Prestador"
   });
 
   docTypeRadios.forEach(radio => {
@@ -83,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
   // Validação do formulário de cliente
   document.getElementById('clientRegisterForm').addEventListener('submit', function(e) {
     e.preventDefault();
+    
     const cpf = document.getElementById('clientCPF').value;
     const email = document.getElementById('clientEmail').value;
     const nome = document.getElementById('clientName').value;
@@ -98,10 +106,14 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('CPF inválido!');
       return;
     }
-
+    
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         const uid = userCredential.user.uid;
+        
+        
+
+
         // Usa setDoc e propaga o UID para o próximo then
         return setDoc(doc(db, 'Usuario', uid), {
           UID: uid,
@@ -110,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
           Nome: nome,
           Senha: password,
           Telefone: telefone,
-          Tipo: null
+          Tipo: tipo
         }).then(() => uid);
       })
       .then(uid => {

@@ -34,6 +34,7 @@ window.addEventListener('DOMContentLoaded', async () => {
     ],
     portfolio: []
 };
+
 // Logout 
 const btnLogout = document.getElementById('logoutButton');
 btnLogout.addEventListener('click', e => {
