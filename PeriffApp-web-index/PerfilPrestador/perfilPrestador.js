@@ -1,33 +1,8 @@
- import { auth, signOut, onAuthStateChanged } from "../firebase.js" 
+ import { auth, signOut, onAuthStateChanged, getDocs, db, collection, doc, getDoc } from "../firebase.js" 
 
 
-// Logout 
-const btnLogout = document.getElementById('logoutButton');
-btnLogout.addEventListener('click', e => {
-    e.preventDefault();
+window.addEventListener('DOMContentLoaded', async () => {
 
-    signOut(auth)
-    .then(() => {
-      // Logout bem‑sucedido
-      alert("Você saiu da sua conta.");
-      window.location.replace("../index.html");
-    })
-    .catch((error) => {
-      console.error("Erro ao sair:", error);
-      alert("Não foi possível deslogar. Tente novamente.");
-    });
-
-})
-
-// observador para verificar se o usuario está logado
-onAuthStateChanged(auth, (user) => {
-        if (user) {      
-            const uid = user.uid;
-            console.log("STATUS: Usuário logado com UID: " + uid);
-        } else {
-            console.log("STATUS: Usuário não logado"); 
-        }
-});
 
 
 
@@ -59,21 +34,59 @@ onAuthStateChanged(auth, (user) => {
     ],
     portfolio: []
 };
+// Logout 
+const btnLogout = document.getElementById('logoutButton');
+btnLogout.addEventListener('click', e => {
+    e.preventDefault();
+
+    signOut(auth)
+    .then(() => {
+      // Logout bem‑sucedido
+      alert("Você saiu da sua conta.");
+      window.location.replace("../index.html");
+    })
+    .catch((error) => {
+      console.error("Erro ao sair:", error);
+      alert("Não foi possível deslogar. Tente novamente.");
+    });
+
+})
+
+
+
+// observador para verificar se o usuario está logado
+onAuthStateChanged(auth, async (user) => {
+        if (user) {      
+            const uid = user.uid;
+            console.log("STATUS: Usuário logado com UID: " + uid);
+            // Acesse o documento do próprio usuário
+            const userDocRef = doc(db, "Usuario", uid); 
+            const docSnap = await getDoc(userDocRef);
+
+            if (docSnap.exists()) {
+                // Carrega dados e atualiza o DOM
+                const data = docSnap.data();
+                updateProfileInfo(data);
+            } else {
+            console.log("Documento não encontrado para UID:", uid);
+            }
+           
+        } else {
+            console.log("STATUS: Usuário não logado"); 
+        }
+});
+
+
 
 // Variáveis para controle de edição
 let currentEditField = null;
 let currentEditType = null;
 
-// Inicializa a página
-document.addEventListener('DOMContentLoaded', function() {
-    updateProfileInfo();
-    renderServices();
-});
 
 // Atualiza as informações do perfil
-function updateProfileInfo() {
+function updateProfileInfo(data) {
 
-    document.getElementById('profileName').textContent = profileData.name;
+    document.getElementById('profileName').textContent = data.Nome;
     document.getElementById('profileProfession').textContent = profileData.profession;
     document.getElementById('profileLocation').textContent = profileData.location;
     document.getElementById('aboutText').textContent = profileData.about;
@@ -100,7 +113,7 @@ function renderServices() {
     });
 }
 
-
+});
 
 //--------------------------------------------------------------------------------
 
