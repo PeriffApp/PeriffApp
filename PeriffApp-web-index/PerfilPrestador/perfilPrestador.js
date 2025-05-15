@@ -1,7 +1,7 @@
  import { auth, signOut, onAuthStateChanged, getDocs, db, collection, doc, getDoc } from "../firebase.js" 
 
 
-window.addEventListener('DOMContentLoaded', async () => {
+
 
 
 
@@ -94,7 +94,7 @@ function updateProfileInfo(data) {
 }
 
 
-// Renderiza os serviços
+// Renderiza os serviços    
 function renderServices() {
     const container = document.getElementById('servicesContainer');
     container.innerHTML = '';
@@ -114,6 +114,8 @@ function renderServices() {
     });
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+  renderServices();
 });
 
 //--------------------------------------------------------------------------------
@@ -339,7 +341,7 @@ addNewService.addEventListener('click', function(e){
             price,
             details
         });
-        
+
         renderServices();
         showToast('Serviço adicionado');
         closeModal();
