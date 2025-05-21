@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
           Nome: nome,
           Senha: password,
           Telefone: telefone,
-          Tipo: tipo
+          Tipo: 'Cliente'
         }).then(() => uid);
       })
       .then(uid => {
@@ -152,6 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const password = document.getElementById('providerPassword').value;
     const confirmPassword = document.getElementById('providerConfirmPassword').value;
     const telefone = document.getElementById('providerPhone').value;
+  
     let cnpj = null;
     let cpf = null;
     if (tipoDoc === 'cpf') {
@@ -184,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
           Nome: nome,
           Senha: password,
           Telefone: telefone,
-          Tipo: null
+          Tipo: 'Prestador'
         }).then(() => uid);
       })
       .then(uid => {

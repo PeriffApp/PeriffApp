@@ -843,4 +843,83 @@ footer {
     .whatsapp-tooltip {
         display: none;
     }
+    
 }
+
+/* Estilos para o container dos cards */
+#listaPrestadores {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: space-around;
+    padding: 20px;
+  }
+  
+  /* Estilo geral do card */
+  .card-prestador {
+    width: 280px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+  
+  .card-prestador:hover {
+    transform: translateY(-10px);
+  }
+  
+  /* Estilos para o cabeçalho do card */
+  .card-header {
+    display: flex;
+    padding: 15px;
+    align-items: center;
+  }
+  
+  .foto-prestador {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+  }
+  
+  .info-prestador {
+    flex-grow: 1;
+  }
+  
+  .nome-prestador {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .email-prestador {
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  /* Estilos para o rodapé do card */
+  .card-footer {
+    padding: 15px;
+    background-color: #f4f4f4;
+    text-align: center;
+    border-top: 1px solid #ddd;
+  }
+  
+  .btn-ver-perfil {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--primary);
+    color: white;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-ver-perfil:hover {
+    background-color: var(--primary-light);
+  }
+  
+  

@@ -1,10 +1,62 @@
-import { auth, signInWithEmailAndPassword, onAuthStateChanged } from "./firebase.js"; // Importando o Firebase
+import {
+  auth,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  query,
+  where,
+  collection,
+  db,
+  getDocs
+} from "./firebase.js"; // Importando o Firebase
+
+
+
+async function carregarPrestadores() {
+  const prestadoresRef = collection(db, "Usuario");
+  const q = query(prestadoresRef, where("Tipo", "==", "Prestador"));
+  const querySnapshot = await getDocs(q);
+
+  querySnapshot.forEach((doc) => {
+    const dados = doc.data();
+    renderizarCardPrestador(dados, doc.id);
+  });
+}
+
+function renderizarCardPrestador(dados, uid) {
+  const container = document.getElementById("listaPrestadores");
+
+  const card = document.createElement("div");
+  card.classList.add("card-prestador");
+
+  card.innerHTML = `
+      <div class="card-header">
+        
+        <div class="info-prestador">
+          <h3 class="nome-prestador">${dados.Nome || "Nome não disponível"}</h3>
+          <p class="email-prestador">${
+            dados.Email || "Email não disponível"
+          }</p>
+        </div>
+      </div>
+      <div class="card-footer">
+        <a href="perfilPrestador2/perfilPrestador.html?uid=${uid}" class="btn-ver-perfil">Ver Perfil</a>
+      </div>
+    `;
+
+  container.appendChild(card);
+}
+
+
+
+
+
+
 
 
 // JavaScript para controle dos modais e formulários
 document.addEventListener('DOMContentLoaded', function() {
 
-    
+    carregarPrestadores();
 
     // Elementos do modal
     const modal = document.getElementById('loginModal');
@@ -58,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btnEntrar.style.display = 'none' // Esconde o botão de entrar se o usuario estiver logado
             btnPerfil.style.display = 'block' // Exibe o botão para ir pro perfil
             
+            
         } else {
             console.log("STATUS: Usuário não logado");
             btnEntrar.style.display = 'block'
@@ -82,7 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
           alert("Login realizado com sucesso!")
 
           // redirecionar para a pagina perfilPrestador.html
-          window.location.replace("./PerfilPrestador/perfilPrestador.html");
+          window.location.replace("./PerfilPrestador2/perfilPrestador.html");
           
 
         })
