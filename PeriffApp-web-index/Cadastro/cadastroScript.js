@@ -28,6 +28,21 @@ function validarCPF(cpf) {
   return true;
 }
 
+function validarEmail(email) {
+  // regex simples: texto@texto.texto
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email.toLowerCase());
+}
+
+function validarApenasNumeros(valor) {
+  // ^   início da string
+  // \d  qualquer dígito (0–9)
+  // +   um ou mais dígitos
+  // $   fim da string
+  const re = /^\d+$/;
+  return re.test(valor);
+}
+
 // Resetar formulários quando fechar modal
 function resetForms() {
   clientType.classList.remove('selected');
@@ -106,6 +121,24 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('CPF inválido!');
       return;
     }
+
+    if(!validarEmail(email)) {
+      alert('Email inválido! Verifique se foi digitado corretamente');
+      return;
+    }
+
+    if(!validarApenasNumeros(telefone)){
+      alert('Por favor, digite apenas números');
+      return;
+    }
+
+    if (!document.getElementById("providerTermsC").checked) {
+      alert("Você deve aceitar os Termos de Uso!");
+      return;
+    }
+
+    
+    
     
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
@@ -152,6 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const password = document.getElementById('providerPassword').value;
     const confirmPassword = document.getElementById('providerConfirmPassword').value;
     const telefone = document.getElementById('providerPhone').value;
+    const categoriaServico = document.getElementById("providerService").value;
   
     let cnpj = null;
     let cpf = null;
@@ -168,8 +202,19 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('CPF inválido!');
       return;
     }
+
     if (!document.getElementById('providerTerms').checked) {
       alert('Você deve aceitar os Termos de Uso!');
+      return;
+    }
+
+    if (!validarEmail(email)) {
+      alert("Email inválido! Verifique se foi digitado corretamente");
+      return;
+    }
+
+    if (!validarApenasNumeros(telefone)) {
+      alert("Por favor, digite apenas números");
       return;
     }
 
@@ -185,7 +230,8 @@ document.addEventListener('DOMContentLoaded', function() {
           Nome: nome,
           Senha: password,
           Telefone: telefone,
-          Tipo: 'Prestador'
+          Tipo: 'Prestador',
+          categoriaServico: categoriaServico
         }).then(() => uid);
       })
       .then(uid => {

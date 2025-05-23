@@ -184,7 +184,7 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("openAddServiceModal").style.display = "none";
         document.getElementById("portifolioAdd").style.display = "none";
     }else{
-      document.getElementById("logoutButton").style.display = 'block';
+       document.getElementById("logoutButton").style.display = 'block';
     }
 
   } else {
