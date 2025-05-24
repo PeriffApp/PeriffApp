@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperação de Senha</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="recuperacao.css">
+</head>
+<body>
+    <div class="recovery-container">
+        <div class="logo">
+            <i class="fas fa-lock"></i>
+            <h1>Redefinir Senha</h1>
+        </div>
+
+        <!-- Passo 1: Identificação do usuário -->
+        <div id="step1" class="recovery-steps active">
+            <h2 class="step-title">Recuperação de Senha</h2>
+            <p class="step-description">Informe seu e-mail, nome de usuário ou número de telefone associado à sua conta para redefinir sua senha.</p>
+            
+            <form id="recoveryForm">
+                <div class="form-group">
+                    <label for="userIdentity">E-mail, nome de usuário ou telefone</label>
+                    <input type="text" id="userIdentity" class="form-control" placeholder="Digite seu e-mail, usuário ou telefone" required>
+                </div>
+                
+                <button type="button" class="btn btn-primary" onclick="nextStep(2)">Continuar</button>
+            </form>
+        </div>
+
+        <!-- Passo 2: Métodos de recuperação -->
+        <div id="step2" class="recovery-steps">
+            <h2 class="step-title">Escolha como redefinir sua senha</h2>
+            <p class="step-description">Como você gostaria de receber o código para redefinir sua senha?</p>
+            
+            <div class="recovery-options">
+                <label class="recovery-option">
+                    <input type="radio" name="recoveryMethod" value="email" checked>
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>Enviar por e-mail</strong>
+                        <p>Enviaremos um código para ex****@gmail.com</p>
+                    </div>
+                </label>
+                
+                <label class="recovery-option">
+                    <input type="radio" name="recoveryMethod" value="sms">
+                    <i class="fas fa-mobile-alt"></i>
+                    <div>
+                        <strong>Enviar por SMS</strong>
+                        <p>Enviaremos um código para (••) •••••-••••</p>
+                    </div>
+                </label>
+            </div>
+            
+            <button type="button" class="btn btn-primary" onclick="sendCode()">Enviar Código</button>
+            <button type="button" class="btn btn-secondary" onclick="prevStep(2)">Voltar</button>
+        </div>
+
+        <!-- Passo 3: Verificação do código -->
+        <div id="step3" class="recovery-steps">
+            <h2 class="step-title">Verificação de Segurança</h2>
+            <p class="step-description">Insira o código de 6 dígitos que enviamos para ex****@gmail.com</p>
+            
+            <div class="form-group">
+                <label for="verificationCode">Código de verificação</label>
+                <input type="text" id="verificationCode" class="form-control" placeholder="Digite o código" maxlength="6" required>
+            </div>
+            
+            <div class="timer" id="timer">O código expira em: 04:59</div>
+            
+            <div class="resend-link">
+                <a href="#" onclick="resendCode()">Não recebeu o código? Reenviar</a>
+            </div>
+            
+            <button type="button" class="btn btn-primary" onclick="verifyCode()">Verificar Código</button>
+            <button type="button" class="btn btn-secondary" onclick="prevStep(3)">Voltar</button>
+        </div>
+
+        <!-- Passo 4: Nova senha -->
+        <div id="step4" class="recovery-steps">
+            <h2 class="step-title">Crie uma nova senha</h2>
+            <p class="step-description">Sua nova senha deve ser diferente das senhas usadas anteriormente.</p>
+            
+            <div class="form-group">
+                <label for="newPassword">Nova senha</label>
+                <input type="password" id="newPassword" class="form-control" placeholder="Digite sua nova senha" required>
+                <div class="password-strength">
+                    <div class="password-strength-bar" id="passwordStrength"></div>
+                </div>
+                <div class="password-rules" id="passwordRules">
+                    <ul>
+                        <li id="ruleLength">Mínimo de 8 caracteres</li>
+                        <li id="ruleNumber">Pelo menos 1 número</li>
+                        <li id="ruleSpecial">Pelo menos 1 caractere especial</li>
+                    </ul>
+                </div>
+                <div class="show-password">
+                    <input type="checkbox" id="showPassword" onchange="togglePasswordVisibility()">
+                    <label for="showPassword">Mostrar senha</label>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirmPassword">Confirme a nova senha</label>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Digite novamente sua nova senha" required>
+            </div>
+            
+            <button type="button" class="btn btn-primary" onclick="updatePassword()">Redefinir Senha</button>
+            <button type="button" class="btn btn-secondary" onclick="prevStep(4)">Voltar</button>
+        </div>
+
+        <!-- Passo 5: Confirmação -->
+        <div id="step5" class="recovery-steps">
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h2>Senha redefinida com sucesso!</h2>
+                <p>Sua senha foi atualizada com sucesso. Agora você pode fazer login com sua nova senha.</p>
+                <button type="button" class="btn btn-primary" onclick="redirectToLogin()">Fazer Login4
+            </div>
+        </div>        
+        
+        
+
+
+
+
+
+
+

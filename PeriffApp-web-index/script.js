@@ -128,16 +128,20 @@ document.addEventListener('DOMContentLoaded', function() {
         // realiza o login com o firebase autentication
         signInWithEmailAndPassword(auth, Email, Password)
         .then((userCredential) => {
-          
-          // pega o usuario logado  
+          // pega o usuario logado
           const user = userCredential.user;
 
-          alert("Login realizado com sucesso!")
+          // Verifica se o e-mail está verificado
+          if (user.emailVerified) {
+            alert("Login realizado com sucesso!");
+            // Redirecionar para a página perfilPrestador.html
+            window.location.replace("./index.html");
+          } else {
+            alert("Por favor, verifique seu e-mail antes de fazer login.");
+            auth.signOut(); // opcional: desloga o usuário
+          }
 
-          // redirecionar para a pagina perfilPrestador.html
-          window.location.replace("./PerfilPrestador2/perfilPrestador.html");
-          
-
+        
         })
         .catch((error) => {
           alert("Erro ao realizar login!")

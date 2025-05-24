@@ -2,6 +2,9 @@
 import { auth, db, collection, addDoc, setDoc, doc } from "../firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
+
+
+
 // Função para validação de CPF
 function validarCPF(cpf) {
   cpf = cpf.replace(/\D/g, '');
@@ -158,11 +161,14 @@ document.addEventListener('DOMContentLoaded', function() {
           Tipo: 'Cliente'
         }).then(() => uid);
       })
-      .then(uid => {
+      .then(async uid => {
+        let Endereco = { estado: " ", cidade: " ", bairro: " ", rua: " ", numero: " ", cep: " " };
+        const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
+        await setDoc(enderecoRef, { ...Endereco });
         console.log('Documento criado com ID:', uid);
         alert('Cadastro de cliente realizado com sucesso!');
-        window.location.replace('../index.html');
         resetForms();
+        window.location.replace("../ConfirmacaoEmail/confirmacao.html");
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {
@@ -234,11 +240,14 @@ document.addEventListener('DOMContentLoaded', function() {
           categoriaServico: categoriaServico
         }).then(() => uid);
       })
-      .then(uid => {
+      .then(async uid => {
+        let Endereco = { estado: " ", cidade: " ", bairro: " ", rua: " ", numero: " ", cep: " " };
+        const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
+        await setDoc(enderecoRef, { ...Endereco });
         console.log('Documento criado com ID:', uid);
         alert('Cadastro de cliente realizado com sucesso!');
-        window.location.replace('../index.html');
         resetForms();
+        window.location.replace("../ConfirmacaoEmail/confirmacao.html");
       })
       .catch(error => {
         if (error.code === 'auth/email-already-in-use') {

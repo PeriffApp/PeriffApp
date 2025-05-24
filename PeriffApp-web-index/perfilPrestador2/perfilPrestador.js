@@ -159,6 +159,7 @@ onAuthStateChanged(auth, async (user) => {
     const uid = uidFromUrl || user.uid; // se tiver na URL, usa; senão, usa o do logado
     currentUserUID = uid;
     console.log("STATUS: Usuário logado com UID: " + uid);
+    console.log(user.emailVerified);
 
     // Carrega dados do usuário
     const userDocRef = doc(db, "Usuario", uid);
@@ -183,8 +184,11 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("editEndereco").style.display = "none";
         document.getElementById("openAddServiceModal").style.display = "none";
         document.getElementById("portifolioAdd").style.display = "none";
+        document.getElementById("logoutButton").style.display = "none";
+        document.getElementById("contatarButton").style.display = 'block'
     }else{
-       document.getElementById("logoutButton").style.display = 'block';
+        document.getElementById("contatarButton").style.display = "none";
+       
     }
 
   } else {
