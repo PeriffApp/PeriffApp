@@ -16,18 +16,35 @@ import {
   doc,
 } from "../firebase.js";
 
+// ------------------------------
+// Funções de Loading
+// ------------------------------
+function showLoading() {
+  const ov = document.getElementById("loading-overlay");
+  if (ov) ov.style.display = "flex";
+}
 
+function hideLoading() {
+  const ov = document.getElementById("loading-overlay");
+  if (!ov) return;
+  ov.style.transition = "opacity 0.3s ease";
+  ov.style.opacity = "0";
+  setTimeout(() => ov.remove(), 300);
+}
 
 // ------------------------------
 // Variáveis Globais
 // ------------------------------
 let currentUserUID = null;
-let Endereco = { estado: "", cidade: "", bairro: "", rua: "", numero: "", cep: "" };
+let Endereco = {
+  estado: "",
+  cidade: "",
+  bairro: "",
+  rua: "",
+  numero: "",
+  cep: "",
+};
 let profileData = { services: [], portfolio: [], reviews: [] };
-
-
-
-
 
 // ------------------------------
 // Firestore CRUD Functions
@@ -118,20 +135,20 @@ async function deleteService(serviceId) {
   }
 }
 
-
 // AVALIAÇÕES
 async function addReviewDB(uid, review) {
-  await addDoc(collection(db, "Usuario", uid, "Avaliacoes"), { ...review, date: new Date() });
+  await addDoc(collection(db, "Usuario", uid, "Avaliacoes"), {
+    ...review,
+    date: new Date(),
+  });
   showToast("Avaliação enviada");
 }
 async function loadReviewsDB(uid) {
   const snap = await getDocs(collection(db, "Usuario", uid, "Avaliacoes"));
   return snap.docs
-    .map(d => ({ id: d.id, ...d.data() }))
-    .sort((a,b) => b.date.toMillis() - a.date.toMillis());
+    .map((d) => ({ id: d.id, ...d.data() }))
+    .sort((a, b) => b.date.toMillis() - a.date.toMillis());
 }
-
-
 
 // ------------------------------
 // Autenticação e Perfil
@@ -142,7 +159,6 @@ btnLogout.addEventListener("click", (e) => {
   e.preventDefault();
   signOut(auth)
     .then(() => {
-      // Logout bem‑sucedido
       alert("Você saiu da sua conta.");
       window.location.replace("../index.html");
     })
@@ -154,77 +170,77 @@ btnLogout.addEventListener("click", (e) => {
 
 // Observador de autenticação
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    const uidFromUrl = getUidFromUrl();
-    const uid = uidFromUrl || user.uid; // se tiver na URL, usa; senão, usa o do logado
-    currentUserUID = uid;
-    console.log("STATUS: Usuário logado com UID: " + uid);
-    console.log(user.emailVerified);
+  showLoading();
+  try {
+    if (user) {
+      const uidFromUrl = getUidFromUrl();
+      const uid = uidFromUrl || user.uid;
+      currentUserUID = uid;
+      console.log("STATUS: Usuário logado com UID: " + uid);
+      console.log(user.emailVerified);
 
-    // Carrega dados do usuário
-    const userDocRef = doc(db, "Usuario", uid);
-    const docSnap = await getDoc(userDocRef);
-
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      // Pega o endereço do usuário
+      // referências dos docs
+      const userDocRef = doc(db, "Usuario", uid);
       const enderecoDocRef = doc(db, "Usuario", uid, "Endereco", uid);
-      const endSnap = await getDoc(enderecoDocRef);
-      const endereco = endSnap.exists() ? endSnap.data() : null;
-      updateProfileInfo(data, endereco);
-    } else {
-      console.log("Documento não encontrado para UID:", uid);
-    }
 
-    await loadServicesDB(currentUserUID);
-    renderServices();
+      // Carrega dados e serviços/avaliações em paralelo
+      const [userSnap, endSnap] = await Promise.all([
+        getDoc(userDocRef),
+        getDoc(enderecoDocRef),
+        loadServicesDB(uid),
+        loadReviewsDB(uid),
+      ]);
 
-    if (uidFromUrl !== null) {
-        document.getElementById("editAbout").style.display = 'none';
+      // Atualiza UI
+      if (userSnap.exists()) {
+        const data = userSnap.data();
+        const endereco = endSnap.exists() ? endSnap.data() : null;
+        updateProfileInfo(data, endereco);
+      }
+      renderServices();
+
+      if (uidFromUrl !== null) {
+        document.getElementById("editAbout").style.display = "none";
         document.getElementById("editEndereco").style.display = "none";
         document.getElementById("openAddServiceModal").style.display = "none";
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
-        document.getElementById("contatarButton").style.display = 'block'
-    }else{
+        document.getElementById("contatarButton").style.display = "block";
+      } else {
         document.getElementById("contatarButton").style.display = "none";
-       
-    }
-
-  } else {
-
-    // USUÁRIO NÃO LOGADO
-    console.log("STATUS: Usuário não logado");
-
-    document.getElementById("editAbout").style.display = "none";
-    document.getElementById("editEndereco").style.display = "none";
-    document.getElementById("openAddServiceModal").style.display = "none";
-    document.getElementById("portifolioAdd").style.display = "none";
-    document.getElementById("openAddReview").style.display = 'none';
-    document.getElementById("lixeirinha").style.display = "none"
-    
-    const uidFromUrl = getUidFromUrl();
-    const uid = uidFromUrl 
-    currentUserUID = uid;
-
-    // Carrega dados do usuário
-    const userDocRef = doc(db, "Usuario", uid);
-    const docSnap = await getDoc(userDocRef);
-
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      // Pega o endereço do usuário
-      const enderecoDocRef = doc(db, "Usuario", uid, "Endereco", uid);
-      const endSnap = await getDoc(enderecoDocRef);
-      const endereco = endSnap.exists() ? endSnap.data() : null;
-      updateProfileInfo(data, endereco);
+      }
     } else {
-      console.log("Documento não encontrado para UID:", uid);
-    }
+      console.log("STATUS: Usuário não logado");
+      document.getElementById("editAbout").style.display = "none";
+      document.getElementById("editEndereco").style.display = "none";
+      document.getElementById("openAddServiceModal").style.display = "none";
+      document.getElementById("portifolioAdd").style.display = "none";
+      document.getElementById("openAddReview").style.display = "none";
+      document.getElementById("logoutButton").style.display = "none";
+      document.getElementById("contatarButton").style.display = "none";
+      const uidFromUrl = getUidFromUrl();
+      const uid = uidFromUrl;
+      currentUserUID = uid;
 
-    await loadServicesDB(currentUserUID);
-    renderServices();
-    
+      const userDocRef = doc(db, "Usuario", uid);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const enderecoDocRef = doc(db, "Usuario", uid, "Endereco", uid);
+        const endSnap = await getDoc(enderecoDocRef);
+        const endereco = endSnap.exists() ? endSnap.data() : null;
+        updateProfileInfo(data, endereco);
+      } else {
+        console.log("Documento não encontrado para UID:", uid);
+      }
+
+      await loadServicesDB(currentUserUID);
+      renderServices();
+    }
+  } catch (err) {
+    console.error("Erro no preload:", err);
+  } finally {
+    hideLoading();
   }
 });
 
@@ -237,7 +253,7 @@ function updateProfileInfo(data, endereco) {
   document.getElementById("rua").textContent = endereco.rua;
   document.getElementById("cep").textContent = endereco.cep;
   document.getElementById("complemento").textContent = endereco.numero;
-  document.getElementById("aboutText").textContent = data.Sobre
+  document.getElementById("aboutText").textContent = data.Sobre;
 }
 
 // ------------------------------
@@ -284,16 +300,10 @@ function getUidFromUrl() {
   return params.get("uid");
 }
 
-
-
-
-
 // -------------------------------------------------------------------------
 // Interações de UI
 // -------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
-
-
   // Foto de perfil
   const fileInput = document.getElementById("fileInput");
   const profileAction = document.getElementById("profileAction");
@@ -384,7 +394,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // --------------------------
   // Produtos e Serviços
   // --------------------------
-  document.getElementById("openAddServiceModal").addEventListener("click", () => {
+  document
+    .getElementById("openAddServiceModal")
+    .addEventListener("click", () => {
       [
         "serviceTitleInput",
         "serviceDescriptionInput",
@@ -395,14 +407,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   // 2) Transforme o callback em async e chame addServiceDB:
-  document.getElementById("addNewService").addEventListener("click", async (e) => {
-    e.preventDefault();
+  document
+    .getElementById("addNewService")
+    .addEventListener("click", async (e) => {
+      e.preventDefault();
 
       // 2.1) Lê valores do formulário
       const title = document.getElementById("serviceTitleInput").value.trim();
-      const description = document.getElementById("serviceDescriptionInput").value.trim();
+      const description = document
+        .getElementById("serviceDescriptionInput")
+        .value.trim();
       const price = document.getElementById("servicePriceInput").value.trim();
-      const details = document.getElementById("serviceDetailsInput").value.trim().split("\n").filter((l) => l.trim());
+      const details = document
+        .getElementById("serviceDetailsInput")
+        .value.trim()
+        .split("\n")
+        .filter((l) => l.trim());
 
       // 2.2) Valida campos obrigatórios
       if (!(title && description && price)) {

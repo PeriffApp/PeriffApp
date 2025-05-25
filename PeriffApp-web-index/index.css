@@ -921,5 +921,30 @@ footer {
   .btn-ver-perfil:hover {
     background-color: var(--primary-light);
   }
+
+  /* overlay cobrindo tudo, visível por padrão */
+#loading-overlay {
+    position: fixed;
+    inset: 0;                 /* top:0; right:0; bottom:0; left:0 */
+    background: rgba(255,255,255,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  /* spinner */
+  .spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #ddd;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
   
   
