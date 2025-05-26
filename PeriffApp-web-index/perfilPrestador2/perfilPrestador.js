@@ -103,15 +103,22 @@ function renderServices() {
 
     container.appendChild(card);
 
-    // 2) Pega o botão recém-criado e adiciona listener
-    const deleteBtn = card.querySelector(".delete-service-btn");
-    deleteBtn.addEventListener("click", (event) => {
-      // Recupera o id do serviço
-      const serviceId = event.currentTarget.dataset.id;
-      console.log("Deletar serviço com id:", serviceId);
-      // Chama sua função de delete, por exemplo:
-      deleteService(serviceId);
-    });
+    // 1. Detecta uid na URL
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("uid")) {
+      // 2. Esconde todos os botões de delete
+      container
+        .querySelectorAll(".delete-service-btn")
+        .forEach((btn) => (btn.style.display = "none"));
+    } else {
+      // Se não tiver uid na URL, conecta os listeners
+      container.querySelectorAll(".delete-service-btn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const serviceId = e.currentTarget.dataset.id;
+          deleteService(serviceId);
+        });
+      });
+    }
 
   });
 
@@ -249,6 +256,7 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
         document.getElementById("contatarButton").style.display = "block";
+        
       } else {
         document.getElementById("contatarButton").style.display = "none";
         document.getElementById("openAddReview").style.display = "none";
