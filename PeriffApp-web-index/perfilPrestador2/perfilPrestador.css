@@ -386,6 +386,7 @@
             cursor: pointer;
             border: none;
             margin-top: -15px;
+            display: none;
         }
 
         .btn-primary {

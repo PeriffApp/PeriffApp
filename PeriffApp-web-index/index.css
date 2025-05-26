@@ -777,20 +777,33 @@ footer {
 
 @media (max-width: 768px) {
     .navbar {
-        flex-direction: column;
+        flex-wrap: wrap;   
         padding: 1rem;
     }
     
     .logo {
         margin-bottom: 1rem;
+        flex: 0 0 50%;  
+    }
+
+    .botaoPerfil{
+        flex: 0 0 10%;
+        
+          
     }
     
     .nav-links {
         margin: 1rem 0;
+        order: 1;
+        flex-basis: 100%;       /* força nova linha */
+        display: flex;          /* vira contêiner flex */
+        justify-content: center;/* centraliza no eixo principal */
+        
     }
     
     .nav-links li {
         margin: 0 0.5rem;
+        font-size: 14px;
     }
     
     .search-box {
@@ -844,6 +857,15 @@ footer {
         display: none;
     }
     
+}
+
+@media (max-width: 383px) {
+
+    .nav-links li {
+        font-size: 13px;
+    }
+
+
 }
 
 /* Estilos para o container dos cards */

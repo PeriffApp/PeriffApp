@@ -135,20 +135,61 @@ async function deleteService(serviceId) {
   }
 }
 
-// AVALIAÇÕES
-async function addReviewDB(uid, review) {
-  await addDoc(collection(db, "Usuario", uid, "Avaliacoes"), {
-    ...review,
-    date: new Date(),
+// AVALIAÇÕES 
+
+async function addReviewDB(uidPrestador, review) {
+  const col = collection(db, "Usuario", uidPrestador, "Avaliacoes");
+  const ref = await addDoc(col, {
+    name: review.name,
+    text: review.text,
+    rating: review.rating,
+    date: review.date,           // Timestamp ou string "dd/mm/yyyy"
   });
-  showToast("Avaliação enviada");
+  showToast("Avaliação enviada com sucesso");
+  return ref.id;
 }
-async function loadReviewsDB(uid) {
-  const snap = await getDocs(collection(db, "Usuario", uid, "Avaliacoes"));
-  return snap.docs
-    .map((d) => ({ id: d.id, ...d.data() }))
-    .sort((a, b) => b.date.toMillis() - a.date.toMillis());
+
+async function loadReviewsDB(uidPrestador) {
+  const snap = await getDocs(collection(db, "Usuario", uidPrestador, "Avaliacoes"));
+  const reviews = snap.docs
+    .map(d => ({ id: d.id, ...d.data() }))
+    // opcional: ordenar por data desc
+    .sort((a, b) => {
+      // se for Timestamp: b.date.toMillis() - a.date.toMillis()
+      const da = parseDateBR(a.date), db_ = parseDateBR(b.date);
+      return db_ - da;
+    });
+  profileData.reviews = reviews;
+  return reviews;
 }
+
+// Utilitário para datas em "DD/MM/YYYY"
+function parseDateBR(str) {
+  const [d, m, y] = str.split("/").map(Number);
+  return new Date(y, m - 1, d).getTime();
+}
+
+function renderReviews() {
+  const container = document.getElementById("reviewsList");
+  container.innerHTML = "";
+  profileData.reviews.forEach((r) => {
+    const div = document.createElement("div");
+    div.className = "review";
+    div.innerHTML = `
+      <div class="review-header">
+        <span class="reviewer">${r.name}</span>
+        <span class="stars">${
+          "★".repeat(r.rating) + "☆".repeat(5 - r.rating)
+        }</span>
+      </div>
+      <p class="review-text">${r.text}</p>
+      <p class="review-date">${r.date}</p>
+    `;
+    container.appendChild(div);
+  });
+}
+
+
 
 // ------------------------------
 // Autenticação e Perfil
@@ -187,8 +228,9 @@ onAuthStateChanged(auth, async (user) => {
       const [userSnap, endSnap] = await Promise.all([
         getDoc(userDocRef),
         getDoc(enderecoDocRef),
-        loadServicesDB(uid),
-        loadReviewsDB(uid),
+        await loadServicesDB(uid),
+        await loadReviewsDB(uid),
+        renderReviews()
       ]);
 
       // Atualiza UI
@@ -206,6 +248,7 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
         document.getElementById("contatarButton").style.display = "block";
+        document.getElementById("openAddReview").style.display = "block"
       } else {
         document.getElementById("contatarButton").style.display = "none";
       }
@@ -599,33 +642,59 @@ document.addEventListener("DOMContentLoaded", function () {
     );
   }
 
-  submitReviewBtn.addEventListener("click", () => {
+  submitReviewBtn.addEventListener("click", async () => {
     const name =
       document.getElementById("reviewerName").value.trim() || "Anônimo";
     const text = document.getElementById("reviewText").value.trim();
     if (!text || selectedStars === 0) {
-      alert("Preencha a descrição e selecione uma nota.");
-      return;
+      return alert("Preencha a descrição e selecione uma nota.");
     }
-    const reviewDiv = document.createElement("div");
-    reviewDiv.className = "review";
-    reviewDiv.innerHTML = `
-            <div class="review-header">
-                <span class="reviewer">${name}</span>
-                <span class="stars">${"★".repeat(selectedStars)}${"☆".repeat(
-      5 - selectedStars
-    )}</span>
-            </div>
-            <p class="review-text">${text}</p>
-            <p class="review-date">${new Date().toLocaleDateString("pt-BR")}</p>
-        `;
-    document.getElementById("reviewsList").appendChild(reviewDiv);
-    document.getElementById("reviewerName").value = "";
-    document.getElementById("reviewText").value = "";
-    selectedStars = 0;
-    highlightStars(0);
-    addReviewModal.style.display = "none";
+    const newReview = {
+      name,
+      text,
+      rating: Number(selectedStars),
+      date: new Date().toLocaleDateString("pt-BR"),
+    };
+
+    try {
+      // 1) salva no Firestore
+      await addReviewDB(currentUserUID, newReview);
+
+      // 2) atualiza array local e re-renderiza
+      profileData.reviews.unshift(newReview);
+      renderReviews();
+
+      // 3) limpa e fecha modal
+      document.getElementById("reviewerName").value = "";
+      document.getElementById("reviewText").value = "";
+      selectedStars = 0;
+      highlightStars(0);
+      addReviewModal.style.display = "none";
+    } catch (err) {
+      console.error(err);
+      alert("Falha ao enviar avaliação. Tente novamente.");
+    }
   });
+
+  function renderReviews() {
+    const container = document.getElementById("reviewsList");
+    container.innerHTML = "";
+    profileData.reviews.forEach(r => {
+      const div = document.createElement("div");
+      div.className = "review";
+      div.innerHTML = `
+        <div class="review-header">
+          <span class="reviewer">${r.name}</span>
+          <span class="stars">${
+            "★".repeat(r.rating) + "☆".repeat(5 - r.rating)
+          }</span>
+        </div>
+        <p class="review-text">${r.text}</p>
+        <p class="review-date">${r.date}</p>
+      `;
+      container.appendChild(div);
+    });
+  }
 
   // --------------------------
   // Função genérica: fechar modais
