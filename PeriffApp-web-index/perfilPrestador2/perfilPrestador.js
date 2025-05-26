@@ -102,16 +102,19 @@ function renderServices() {
     `;
 
     container.appendChild(card);
+
+    // 2) Pega o botão recém-criado e adiciona listener
+    const deleteBtn = card.querySelector(".delete-service-btn");
+    deleteBtn.addEventListener("click", (event) => {
+      // Recupera o id do serviço
+      const serviceId = event.currentTarget.dataset.id;
+      console.log("Deletar serviço com id:", serviceId);
+      // Chama sua função de delete, por exemplo:
+      deleteService(serviceId);
+    });
+
   });
 
-  // Adiciona os event listeners de delete depois de renderizar os cards
-  const deleteButtons = document.querySelectorAll(".delete-service-btn");
-  deleteButtons.forEach((btn) => {
-    btn.addEventListener("click", async (e) => {
-      const serviceId = e.currentTarget.getAttribute("data-id");
-      await deleteService(serviceId);
-    });
-  });
 }
 
 async function deleteService(serviceId) {
@@ -189,8 +192,6 @@ function renderReviews() {
   });
 }
 
-
-
 // ------------------------------
 // Autenticação e Perfil
 // ------------------------------
@@ -248,9 +249,9 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
         document.getElementById("contatarButton").style.display = "block";
-        document.getElementById("openAddReview").style.display = "block"
       } else {
         document.getElementById("contatarButton").style.display = "none";
+        document.getElementById("openAddReview").style.display = "none";
       }
     } else {
       console.log("STATUS: Usuário não logado");
@@ -623,6 +624,7 @@ document.addEventListener("DOMContentLoaded", function () {
     "click",
     () => (addReviewModal.style.display = "flex")
   );
+
   [closeAddReview, cancelAddReview].forEach((el) =>
     el.addEventListener("click", () => (addReviewModal.style.display = "none"))
   );
