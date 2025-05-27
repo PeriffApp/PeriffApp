@@ -1,8 +1,10 @@
+// Importa funções de autenticação do Firebase
 import { auth, sendEmailVerification, signOut } from "../firebase.js";
 
-// ------------------------------
-// Funções de Loading
-// ------------------------------
+/**
+ * Exibe o overlay de loading na tela.
+ * Procura pelo elemento com id "loading-overlay" e altera seu estilo para visível.
+ */
 function showLoading() {
   const ov = document.getElementById("loading-overlay");
   if (ov) {
@@ -11,37 +13,40 @@ function showLoading() {
   }
 }
 
+/**
+ * Esconde o overlay de loading da tela.
+ * Aplica uma transição de opacidade e, após 300ms, oculta o elemento.
+ */
 function hideLoading() {
   const ov = document.getElementById("loading-overlay");
   if (!ov) return;
-  // anima fade-out
   ov.style.transition = "opacity 0.3s ease";
   ov.style.opacity = "0";
   setTimeout(() => {
     ov.style.display = "none";
-    // reset para próxima vez
     ov.style.transition = "";
     ov.style.opacity = "1";
   }, 300);
 }
 
+// Executa quando o DOM estiver carregado
 document.addEventListener("DOMContentLoaded", () => {
-  // Esconde overlay inicialmente caso permaneça
+  // Esconde overlay de loading caso esteja visível
   hideLoading();
 
-  // ------------------------------
-  // Variáveis Globais
-  // ------------------------------
+  // Variáveis globais para armazenar UID do usuário e status de verificação
   let uid = null;
   let verifiquei = null;
 
-  // Esconde passo 5 até envio
+  // Esconde o passo 5 da interface até que o e-mail seja enviado
   const step5 = document.getElementById("step5");
   if (step5) step5.style.display = "none";
 
-  // ------------------------------
-  // Envio de Verificação
-  // ------------------------------
+  /**
+   * Envio de e-mail de verificação
+   * Ao clicar no botão "enviar", envia um e-mail de verificação para o usuário autenticado.
+   * Após o envio, exibe uma mensagem e avança para o passo 5 da interface.
+   */
   const enviarBtn = document.getElementById("enviar");
   if (enviarBtn) {
     enviarBtn.addEventListener("click", async () => {
@@ -60,7 +65,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Verifique seu e-mail para ativar a conta.");
         verifiquei = user.emailVerified;
 
-        // Avança etapas de UI
+        // Atualiza interface: esconde passo 2 e mostra passo 5
         document.getElementById("step2").style.display = "none";
         step5.style.display = "block";
       } catch (error) {
@@ -74,9 +79,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ------------------------------
-  // Confirmação e Logout
-  // ------------------------------
+  /**
+   * Confirmação de verificação e logout
+   * Ao clicar no botão "verifiquei", faz logout do usuário e redireciona para a página inicial.
+   */
   const verifiqueiBtn = document.getElementById("verifiquei");
   if (verifiqueiBtn) {
     verifiqueiBtn.addEventListener("click", async () => {
