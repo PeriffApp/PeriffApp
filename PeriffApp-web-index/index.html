@@ -11,43 +11,40 @@
     <script type="module" src="firebase.js"></script>
 </head>
 <body>
+    <!-- Spinenr de Loading --> 
     <div id="loading-overlay">
         <div class="spinner"></div>
     </div>
     <header>
+        <!-- Container inicial -->
         <nav class="navbar">
-            
-            <div class="logo">
+            <div class="logo">   <!-- Logo -->
                 <img src="imagens/logo.png" alt="Logo do PeriffApp">
             </div>
-            <ul class="nav-links">
+            <ul class="nav-links"> <!--links de navegações -->
                 <li><a href="#">Como funciona</a></li>
                 <li><a href="#">Serviços</a></li>
                 <li><a href="#">Para profissionais</a></li>
                 <li><a href="#">Blog</a></li>
             </ul>
-            <button class="cta-button" id="btnEntrar">Entrar</button>
-
-            <div class="botaoPerfil" id="btnPerfil">
+            <button class="cta-button" id="btnEntrar">Entrar</button>  <!-- Botão de Login -->
+            <div class="botaoPerfil" id="btnPerfil"> <!-- Botão do Perfil -->
                     <a href="perfilPrestador2/perfilPrestador.html">
                         <span class="material-symbols-outlined" >person</span>
                     </a>
             </div> 
-           
-            
-            
         </nav>
     </header>
-    
+    <!-- Section de Pesquisa -->
     <section class="hero">
         <h2>Encontre os melhores <span>profissionais qualificados</span> perto de você</h2>
         <p>Conectamos quem precisa de serviço com os talentos das comunidades. De eletricista a DJ, de costureira a chef de cozinha - encontre o profissional ideal.</p>
         <div class="search-box">
             <input type="text" placeholder="Qual serviço você precisa? Ex: encanador, diarista...">
-            <button><i class="fas fa-search"></i> Buscar</button>
+            <button><i class="fas fa-search"></i> Buscar</button> <!-- Buscar Serviços -->
         </div>
     </section>
-    
+    <!-- Section de Categorias -->
     <section class="categories">
         <div class="section-title">
             <h3>Serviços em destaque</h3>
@@ -112,19 +109,18 @@
             </div>
         </div>
     </section>
-
+    
+    <!-- Section de demostraçãos de Prestadores -->
     <section class="categories">
         <div class="section-title">
             <h3>Conheça Alguns dos nossos Prestadores</h3>
             <p>Encontre profissionais qualificados para diversos tipos de serviços</p>
         </div>
-
-
         <div id="listaPrestadores" class="grid grid-cols-3 gap-4 p-4">
             <!-- Os cards vão aparecer aqui -->
         </div>
     </section>
-    
+    <!-- Section de Informações sobre o site -->
     <section class="how-it-works">
         <div class="section-title">
             <h3>Como funciona</h3>
@@ -154,6 +150,7 @@
         </div>
     </section>
     
+    <!-- Section de Avaliações sobre o site (Exemplos fictícios) -->
     <section class="testimonials">
         <div class="section-title">
             <h3>O que estão dizendo</h3>

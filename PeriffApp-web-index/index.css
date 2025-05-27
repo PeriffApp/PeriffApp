@@ -82,7 +82,7 @@ header {
     background-color: var(--primary-light);
 }
 
-.logout-button{
+.logout-button {
     background-color: var(--primary);
     color: var(--secondary);
     border: none;
@@ -96,8 +96,8 @@ header {
 
 
 .hero {
-    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)), 
-                url('imagens/background.png');
+    background: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),
+        url('imagens/background.png');
     background-size: cover;
     background-position: center;
     padding: 5rem 5%;
@@ -752,18 +752,18 @@ footer {
 
 
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 40   
+    font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 40
 }
 
 .material-symbols-outlined {
-    height: 50px; 
-  }
+    height: 50px;
+}
 
-.botaoPerfil{
+.botaoPerfil {
     background-color: var(--primary);
     color: var(--secondary);
     border: none;
@@ -777,86 +777,89 @@ footer {
 
 @media (max-width: 768px) {
     .navbar {
-        flex-wrap: wrap;   
+        flex-wrap: wrap;
         padding: 1rem;
     }
-    
+
     .logo {
         margin-bottom: 1rem;
-        flex: 0 0 50%;  
+        flex: 0 0 50%;
     }
 
-    .botaoPerfil{
+    .botaoPerfil {
         flex: 0 0 10%;
-        
-          
+
+
     }
-    
+
     .nav-links {
         margin: 1rem 0;
         order: 1;
-        flex-basis: 100%;       /* força nova linha */
-        display: flex;          /* vira contêiner flex */
-        justify-content: center;/* centraliza no eixo principal */
-        
+        flex-basis: 100%;
+        /* força nova linha */
+        display: flex;
+        /* vira contêiner flex */
+        justify-content: center;
+        /* centraliza no eixo principal */
+
     }
-    
+
     .nav-links li {
         margin: 0 0.5rem;
         font-size: 14px;
     }
-    
+
     .search-box {
         flex-direction: column;
         border-radius: 10px;
     }
-    
+
     .search-box input {
         padding: 1rem;
     }
-    
+
     .search-box button {
         padding: 1rem;
         border-radius: 0 0 10px 10px;
     }
-    
+
     .steps {
         flex-direction: column;
     }
-    
+
     .step {
         margin-bottom: 2rem;
     }
-    
+
     .user-type-selector {
         flex-direction: column;
     }
-    
+
     .modal-content {
         width: 95%;
         padding: 1.5rem;
     }
-    
+
     .radio-group {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .whatsapp-widget {
         bottom: 20px;
         right: 20px;
         width: 50px;
         height: 50px;
     }
-    
+
     .whatsapp-icon {
         font-size: 25px;
     }
-    
+
     .whatsapp-tooltip {
         display: none;
     }
-    
+
 }
 
 @media (max-width: 383px) {
@@ -875,61 +878,61 @@ footer {
     gap: 20px;
     justify-content: space-around;
     padding: 20px;
-  }
-  
-  /* Estilo geral do card */
-  .card-prestador {
+}
+
+/* Estilo geral do card */
+.card-prestador {
     width: 280px;
     background-color: #fff;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     transition: transform 0.3s ease;
-  }
-  
-  .card-prestador:hover {
+}
+
+.card-prestador:hover {
     transform: translateY(-10px);
-  }
-  
-  /* Estilos para o cabeçalho do card */
-  .card-header {
+}
+
+/* Estilos para o cabeçalho do card */
+.card-header {
     display: flex;
     padding: 15px;
     align-items: center;
-  }
-  
-  .foto-prestador {
+}
+
+.foto-prestador {
     width: 60px;
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
     margin-right: 15px;
-  }
-  
-  .info-prestador {
+}
+
+.info-prestador {
     flex-grow: 1;
-  }
-  
-  .nome-prestador {
+}
+
+.nome-prestador {
     font-size: 1.1rem;
     font-weight: bold;
     margin: 0;
-  }
-  
-  .email-prestador {
+}
+
+.email-prestador {
     font-size: 0.9rem;
     color: #555;
-  }
-  
-  /* Estilos para o rodapé do card */
-  .card-footer {
+}
+
+/* Estilos para o rodapé do card */
+.card-footer {
     padding: 15px;
     background-color: #f4f4f4;
     text-align: center;
     border-top: 1px solid #ddd;
-  }
-  
-  .btn-ver-perfil {
+}
+
+.btn-ver-perfil {
     display: inline-block;
     padding: 10px 20px;
     background-color: var(--primary);
@@ -938,35 +941,36 @@ footer {
     text-decoration: none;
     font-weight: bold;
     transition: background-color 0.3s;
-  }
-  
-  .btn-ver-perfil:hover {
-    background-color: var(--primary-light);
-  }
+}
 
-  /* overlay cobrindo tudo, visível por padrão */
+.btn-ver-perfil:hover {
+    background-color: var(--primary-light);
+}
+
+/* overlay cobrindo tudo, visível por padrão */
 #loading-overlay {
     position: fixed;
-    inset: 0;                 /* top:0; right:0; bottom:0; left:0 */
-    background: rgba(255,255,255,0.9);
+    inset: 0;
+    /* top:0; right:0; bottom:0; left:0 */
+    background: rgba(255, 255, 255, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 9999;
-  }
-  
-  /* spinner */
-  .spinner {
+}
+
+/* spinner */
+.spinner {
     width: 60px;
     height: 60px;
     border: 6px solid #ddd;
     border-top-color: var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-  
-  
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
