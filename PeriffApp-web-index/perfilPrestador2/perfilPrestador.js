@@ -17,6 +17,22 @@ import {
 } from "../firebase.js";
 
 // ------------------------------
+// Variáveis Globais
+// ------------------------------
+let currentUserUID = null;
+let Endereco = {
+  estado: "",
+  cidade: "",
+  bairro: "",
+  rua: "",
+  numero: "",
+  cep: "",
+};
+
+let profileData = { services: [], portfolio: [], reviews: [] };
+
+
+// ------------------------------
 // Funções de Loading
 // ------------------------------
 function showLoading() {
@@ -33,27 +49,20 @@ function hideLoading() {
 }
 
 // ------------------------------
-// Variáveis Globais
-// ------------------------------
-let currentUserUID = null;
-let Endereco = {
-  estado: "",
-  cidade: "",
-  bairro: "",
-  rua: "",
-  numero: "",
-  cep: "",
-};
-let profileData = { services: [], portfolio: [], reviews: [] };
-
-// ------------------------------
 // Firestore CRUD Functions
 // ------------------------------
 // SOBRE
+
 async function updateAboutDB(uid, newAbout) {
   const userRef = doc(db, "Usuario", uid);
-  await setDoc(userRef, { Sobre: newAbout }, { merge: true });
-  showToast("Texto “Sobre” salvo com sucesso");
+  try {
+    // merge=true para não sobrescrever outros campos
+    await setDoc(userRef, { Sobre: newAbout }, { merge: true });
+    showToast("Texto “Sobre” salvo com sucesso");
+  } catch (err) {
+    console.error("Erro ao salvar Sobre:", err);
+    alert("Falha ao salvar o Sobre. Tente novamente.");
+  }
 }
 
 // ENDEREÇO
@@ -84,6 +93,7 @@ async function updateServiceDB(uid, serviceId, updated) {
   await updateDoc(doc(db, "Usuario", uid, "Servicos", serviceId), updated);
   showToast("Serviço atualizado");
 }
+
 
 function renderServices() {
   const container = document.getElementById("servicesContainer");
@@ -119,9 +129,7 @@ function renderServices() {
         });
       });
     }
-
   });
-
 }
 
 async function deleteService(serviceId) {
@@ -146,7 +154,6 @@ async function deleteService(serviceId) {
 }
 
 // AVALIAÇÕES 
-
 async function addReviewDB(uidPrestador, review) {
   const col = collection(db, "Usuario", uidPrestador, "Avaliacoes");
   const ref = await addDoc(col, {
@@ -356,6 +363,8 @@ function getUidFromUrl() {
 // Interações de UI
 // -------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
+
+/*  
   // Foto de perfil
   const fileInput = document.getElementById("fileInput");
   const profileAction = document.getElementById("profileAction");
@@ -375,13 +384,7 @@ document.addEventListener("DOMContentLoaded", function () {
       showToast("Por favor, selecione uma imagem");
     }
   }
-
-  // Botão de contato
-  const contactBtn = document.querySelector(".contact-btn");
-  if (contactBtn)
-    contactBtn.addEventListener("click", () =>
-      alert("Abrindo chat com prestador de serviço...")
-    );
+*/
 
   // Botões "Ver tudo"
   document.querySelectorAll(".view-more").forEach((button) => {
@@ -403,21 +406,17 @@ document.addEventListener("DOMContentLoaded", function () {
   // --------------------------
   // Modal "Sobre"
   // --------------------------
-  const editAbout = document.getElementById("editAbout");
   const closeEditAbout = document.getElementById("closeEditAbout");
   const cancelEditAbout = document.getElementById("cancelEditAbout");
-  const saveAbout = document.getElementById("saveAbout");
-
-  editAbout.addEventListener(
-    "click",
-    () => (document.getElementById("editAboutModal").style.display = "flex")
-  );
-
   [closeEditAbout, cancelEditAbout].forEach((el) =>
     el.addEventListener("click", closeModal)
   );
 
-  saveAbout.addEventListener("click", async function () {
+  document.getElementById("editAbout").addEventListener("click",() => (
+    document.getElementById("editAboutModal").style.display = "flex")
+  );
+
+  document.getElementById("saveAbout").addEventListener("click", async function () {
     const newAbout = document.getElementById("aboutTextInput").value;
     if (newAbout) {
       if (!newAbout) return alert("Digite algo antes de salvar.");
@@ -431,24 +430,10 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  async function updateAboutDB(uid, newAbout) {
-    const userRef = doc(db, "Usuario", uid);
-    try {
-      // merge=true para não sobrescrever outros campos
-      await setDoc(userRef, { Sobre: newAbout }, { merge: true });
-      showToast("Texto “Sobre” salvo com sucesso");
-    } catch (err) {
-      console.error("Erro ao salvar Sobre:", err);
-      alert("Falha ao salvar o Sobre. Tente novamente.");
-    }
-  }
-
   // --------------------------
   // Produtos e Serviços
   // --------------------------
-  document
-    .getElementById("openAddServiceModal")
-    .addEventListener("click", () => {
+  document.getElementById("openAddServiceModal").addEventListener("click", () => {
       [
         "serviceTitleInput",
         "serviceDescriptionInput",
@@ -456,25 +441,18 @@ document.addEventListener("DOMContentLoaded", function () {
         "serviceDetailsInput",
       ].forEach((id) => (document.getElementById(id).value = ""));
       document.getElementById("addServiceModal").style.display = "flex";
-    });
+  });
 
   // 2) Transforme o callback em async e chame addServiceDB:
-  document
-    .getElementById("addNewService")
-    .addEventListener("click", async (e) => {
+  document.getElementById("addNewService").addEventListener("click", async (e) => {
       e.preventDefault();
 
       // 2.1) Lê valores do formulário
       const title = document.getElementById("serviceTitleInput").value.trim();
-      const description = document
-        .getElementById("serviceDescriptionInput")
-        .value.trim();
+      const description = document.getElementById("serviceDescriptionInput").value.trim();
       const price = document.getElementById("servicePriceInput").value.trim();
-      const details = document
-        .getElementById("serviceDetailsInput")
-        .value.trim()
-        .split("\n")
-        .filter((l) => l.trim());
+      const details = document.getElementById("serviceDetailsInput").value.trim().split("\n")
+      .filter((l) => l.trim());
 
       // 2.2) Valida campos obrigatórios
       if (!(title && description && price)) {
@@ -500,6 +478,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
 
+  // RESOLVER!!!!!!! ----------------------------------------------------
   function openServiceModal(title, description, price, details) {
     document.getElementById("modalServiceTitle").textContent = title;
     document.getElementById("modalServiceDescription").textContent =
@@ -522,9 +501,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cancelService").addEventListener("click", (e) => {
     closeModal();
   });
-  document
-    .getElementById("closeModalService")
-    .addEventListener("click", (e) => {
+  document.getElementById("closeModalService").addEventListener("click", (e) => {
       closeModal();
     });
 
