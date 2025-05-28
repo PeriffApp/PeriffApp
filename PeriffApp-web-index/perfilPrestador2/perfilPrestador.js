@@ -206,6 +206,12 @@ function renderReviews() {
   });
 }
 
+function highlightStars(count) {
+  document
+    .querySelectorAll("#starRating span")
+    .forEach((s) => s.classList.toggle("selected", s.dataset.value <= count));
+}
+
 // ------------------------------
 // Autenticação e Perfil
 // ------------------------------
@@ -358,6 +364,15 @@ function getUidFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("uid");
 }
+
+// --------------------------
+  // Função genérica: fechar modais
+  // --------------------------
+  function closeModal() {
+    document
+      .querySelectorAll(".modal")
+      .forEach((modal) => (modal.style.display = "none"));
+  }
 
 // -------------------------------------------------------------------------
 // Interações de UI
@@ -555,18 +570,12 @@ document.addEventListener("DOMContentLoaded", function () {
   // --------------------------
   // Modal: Editar Endereço
   // --------------------------
-  const editEnderecoBtn = document.getElementById("editEndereco");
-  editEnderecoBtn.addEventListener("click", () => {
+  document.getElementById("editEndereco").addEventListener("click", () => {
     document.getElementById("editEnderecoModal").style.display = "flex";
   });
-
-  document
-    .getElementById("closeEditEndereco")
-    .addEventListener("click", closeModal);
-  document
-    .getElementById("cancelEditEndereco")
-    .addEventListener("click", closeModal);
-
+  document.getElementById("closeEditEndereco").addEventListener("click", closeModal);
+  document.getElementById("cancelEditEndereco").addEventListener("click", closeModal);
+ 
   document.getElementById("saveEditEndereco").addEventListener("click", () => {
     const e = document.getElementById("estadoInput").value.trim();
     const c = document.getElementById("cidadeInput").value.trim();
@@ -597,23 +606,20 @@ document.addEventListener("DOMContentLoaded", function () {
   // --------------------------
   // Modal: Avaliações
   // --------------------------
-  const openAddReviewBtn = document.getElementById("openAddReview");
   const addReviewModal = document.getElementById("addReviewModal");
   const closeAddReview = document.getElementById("closeAddReview");
   const cancelAddReview = document.getElementById("cancelAddReview");
   const submitReviewBtn = document.getElementById("submitReview");
-  const starEls = document.querySelectorAll("#starRating span");
   let selectedStars = 0;
 
-  openAddReviewBtn.addEventListener(
-    "click",
-    () => (addReviewModal.style.display = "flex")
+  document.getElementById("openAddReview").addEventListener("click", () => (
+    addReviewModal.style.display = "flex")
   );
 
   [closeAddReview, cancelAddReview].forEach((el) =>
     el.addEventListener("click", () => (addReviewModal.style.display = "none"))
   );
-  starEls.forEach((span) => {
+  document.querySelectorAll("#starRating span").forEach((span) => {
     span.addEventListener("mouseover", () =>
       highlightStars(span.dataset.value)
     );
@@ -623,72 +629,39 @@ document.addEventListener("DOMContentLoaded", function () {
     highlightStars(selectedStars)
   );
 
-  function highlightStars(count) {
-    starEls.forEach((s) =>
-      s.classList.toggle("selected", s.dataset.value <= count)
-    );
+submitReviewBtn.addEventListener("click", async () => {
+  const name =
+    document.getElementById("reviewerName").value.trim() || "Anônimo";
+  const text = document.getElementById("reviewText").value.trim();
+  if (!text || selectedStars === 0) {
+    return alert("Preencha a descrição e selecione uma nota.");
   }
+  const newReview = {
+    name,
+    text,
+    rating: Number(selectedStars),
+    date: new Date().toLocaleDateString("pt-BR"),
+  };
 
-  submitReviewBtn.addEventListener("click", async () => {
-    const name =
-      document.getElementById("reviewerName").value.trim() || "Anônimo";
-    const text = document.getElementById("reviewText").value.trim();
-    if (!text || selectedStars === 0) {
-      return alert("Preencha a descrição e selecione uma nota.");
-    }
-    const newReview = {
-      name,
-      text,
-      rating: Number(selectedStars),
-      date: new Date().toLocaleDateString("pt-BR"),
-    };
+  try {
+    // 1) salva no Firestore
+    await addReviewDB(currentUserUID, newReview);
 
-    try {
-      // 1) salva no Firestore
-      await addReviewDB(currentUserUID, newReview);
+    // 2) atualiza array local e re-renderiza
+    profileData.reviews.unshift(newReview);
+    renderReviews();
 
-      // 2) atualiza array local e re-renderiza
-      profileData.reviews.unshift(newReview);
-      renderReviews();
-
-      // 3) limpa e fecha modal
-      document.getElementById("reviewerName").value = "";
-      document.getElementById("reviewText").value = "";
-      selectedStars = 0;
-      highlightStars(0);
-      addReviewModal.style.display = "none";
-    } catch (err) {
-      console.error(err);
-      alert("Falha ao enviar avaliação. Tente novamente.");
-    }
-  });
-
-  function renderReviews() {
-    const container = document.getElementById("reviewsList");
-    container.innerHTML = "";
-    profileData.reviews.forEach(r => {
-      const div = document.createElement("div");
-      div.className = "review";
-      div.innerHTML = `
-        <div class="review-header">
-          <span class="reviewer">${r.name}</span>
-          <span class="stars">${
-            "★".repeat(r.rating) + "☆".repeat(5 - r.rating)
-          }</span>
-        </div>
-        <p class="review-text">${r.text}</p>
-        <p class="review-date">${r.date}</p>
-      `;
-      container.appendChild(div);
-    });
+    // 3) limpa e fecha modal
+    document.getElementById("reviewerName").value = "";
+    document.getElementById("reviewText").value = "";
+    selectedStars = 0;
+    highlightStars(0);
+    addReviewModal.style.display = "none";
+  } catch (err) {
+    console.error(err);
+    alert("Falha ao enviar avaliação. Tente novamente.");
   }
+});
 
-  // --------------------------
-  // Função genérica: fechar modais
-  // --------------------------
-  function closeModal() {
-    document
-      .querySelectorAll(".modal")
-      .forEach((modal) => (modal.style.display = "none"));
-  }
+
 });
