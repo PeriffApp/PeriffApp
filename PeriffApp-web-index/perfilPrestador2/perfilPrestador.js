@@ -220,7 +220,30 @@ function renderReviews() {
     `;
     container.appendChild(div);
   });
+  updateHeaderRating();
 }
+
+// Atualiza a média de estrelas e quantidade de avaliações no header
+function updateHeaderRating() {
+  const reviews = profileData.reviews;
+  const ratingContainer = document.querySelector(".profile-info .rating");
+  if (!ratingContainer) return;
+  if (!reviews || reviews.length === 0) {
+    ratingContainer.innerHTML = `<span class="stars">☆☆☆☆☆</span> <span class="rating-text">Sem avaliações</span>`;
+    return;
+  }
+  const total = reviews.length;
+  const sum = reviews.reduce((acc, r) => acc + (Number(r.rating) || 0), 0);
+  const avg = sum / total;
+  const fullStars = Math.floor(avg);
+  const halfStar = avg - fullStars >= 0.5 ? 1 : 0;
+  const emptyStars = 5 - fullStars - halfStar;
+  let stars = "★".repeat(fullStars) + (halfStar ? "½" : "") + "☆".repeat(emptyStars);
+  // Se quiser usar só estrelas cheias/vazias, com arredondamento:
+  // let stars = "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg));
+  ratingContainer.innerHTML = `<span class="stars">${stars}</span> <span class="rating-text"> ${avg.toFixed(1)} (${total} avaliação${total > 1 ? 's' : ''}) </span>`;
+}
+
 
 // Destaca estrelas selecionadas na avaliação
 function highlightStars(count) {
@@ -329,12 +352,13 @@ onAuthStateChanged(auth, async (user) => {
 // Atualiza as informações do perfil na UI
 function updateProfileInfo(data, endereco) {
   document.getElementById("profileName").textContent = data.Nome;
-  document.getElementById("estado").textContent = endereco.estado;
-  document.getElementById("cidade").textContent = endereco.cidade;
-  document.getElementById("bairro").textContent = endereco.bairro;
-  document.getElementById("rua").textContent = endereco.rua;
-  document.getElementById("cep").textContent = endereco.cep;
-  document.getElementById("complemento").textContent = endereco.numero;
+  // Corrige erro caso endereco seja null
+  document.getElementById("estado").textContent = endereco && endereco.estado ? endereco.estado : "";
+  document.getElementById("cidade").textContent = endereco && endereco.cidade ? endereco.cidade : "";
+  document.getElementById("bairro").textContent = endereco && endereco.bairro ? endereco.bairro : "";
+  document.getElementById("rua").textContent = endereco && endereco.rua ? endereco.rua : "";
+  document.getElementById("cep").textContent = endereco && endereco.cep ? endereco.cep : "";
+  document.getElementById("complemento").textContent = endereco && endereco.numero ? endereco.numero : "";
   document.getElementById("aboutText").textContent = data.Sobre;
 }
 
