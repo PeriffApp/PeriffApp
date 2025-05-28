@@ -1,6 +1,7 @@
 // ------------------------------
 // Imports
 // ------------------------------
+// Importa funções e objetos do módulo firebase.js para autenticação e operações no Firestore
 import {
   auth,
   signOut,
@@ -19,6 +20,9 @@ import {
 // ------------------------------
 // Variáveis Globais
 // ------------------------------
+// currentUserUID: Armazena o UID do usuário atualmente autenticado
+// Endereco: Objeto para armazenar dados de endereço do usuário
+// profileData: Objeto global para armazenar serviços, portfólio e avaliações do perfil
 let currentUserUID = null;
 let Endereco = {
   estado: "",
@@ -35,11 +39,13 @@ let profileData = { services: [], portfolio: [], reviews: [] };
 // ------------------------------
 // Funções de Loading
 // ------------------------------
+// Exibe o overlay de loading
 function showLoading() {
   const ov = document.getElementById("loading-overlay");
   if (ov) ov.style.display = "flex";
 }
 
+// Esconde o overlay de loading
 function hideLoading() {
   const ov = document.getElementById("loading-overlay");
   if (!ov) return;
@@ -51,8 +57,9 @@ function hideLoading() {
 // ------------------------------
 // Firestore CRUD Functions
 // ------------------------------
+// Funções para manipulação de dados no Firestore: Sobre, Endereço, Serviços, Avaliações
 // SOBRE
-
+// Atualiza o campo 'Sobre' do usuário no Firestore
 async function updateAboutDB(uid, newAbout) {
   const userRef = doc(db, "Usuario", uid);
   try {
@@ -66,6 +73,7 @@ async function updateAboutDB(uid, newAbout) {
 }
 
 // ENDEREÇO
+// Adiciona ou atualiza o endereço do usuário no Firestore
 async function addEnderecoDB(uid) {
   const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
   await setDoc(enderecoRef, { ...Endereco });
@@ -73,28 +81,32 @@ async function addEnderecoDB(uid) {
 }
 
 // SERVIÇOS
+// Adiciona um novo serviço ao Firestore
 async function addServiceDB(uid, service) {
   const col = collection(db, "Usuario", uid, "Servicos");
   const ref = await addDoc(col, service);
   showToast("Serviço adicionado com sucesso");
   return ref.id;
 }
+// Carrega todos os serviços do usuário do Firestore
 async function loadServicesDB(uid) {
   const snap = await getDocs(collection(db, "Usuario", uid, "Servicos"));
   const services = snap.docs.map((d) => ({ id: d.id, ...d.data() }));
   profileData.services = services; // ← atualiza o array global
   return services;
 }
+// Remove um serviço do Firestore
 async function deleteServiceDB(uid, serviceId) {
   await deleteDoc(doc(db, "Usuario", uid, "Servicos", serviceId));
   showToast("Serviço removido");
 }
+// Atualiza um serviço existente no Firestore
 async function updateServiceDB(uid, serviceId, updated) {
   await updateDoc(doc(db, "Usuario", uid, "Servicos", serviceId), updated);
   showToast("Serviço atualizado");
 }
 
-
+// Renderiza os cards de serviços na tela
 function renderServices() {
   const container = document.getElementById("servicesContainer");
   container.innerHTML = "";
@@ -132,6 +144,7 @@ function renderServices() {
   });
 }
 
+// Remove um serviço do usuário autenticado
 async function deleteService(serviceId) {
   const user = auth.currentUser;
   if (!user) {
@@ -153,7 +166,8 @@ async function deleteService(serviceId) {
   }
 }
 
-// AVALIAÇÕES 
+// AVALIAÇÕES
+// Adiciona uma avaliação ao Firestore
 async function addReviewDB(uidPrestador, review) {
   const col = collection(db, "Usuario", uidPrestador, "Avaliacoes");
   const ref = await addDoc(col, {
@@ -166,6 +180,7 @@ async function addReviewDB(uidPrestador, review) {
   return ref.id;
 }
 
+// Carrega avaliações do Firestore e ordena por data
 async function loadReviewsDB(uidPrestador) {
   const snap = await getDocs(collection(db, "Usuario", uidPrestador, "Avaliacoes"));
   const reviews = snap.docs
@@ -180,12 +195,13 @@ async function loadReviewsDB(uidPrestador) {
   return reviews;
 }
 
-// Utilitário para datas em "DD/MM/YYYY"
+// Utilitário para converter datas no formato BR para timestamp
 function parseDateBR(str) {
   const [d, m, y] = str.split("/").map(Number);
   return new Date(y, m - 1, d).getTime();
 }
 
+// Renderiza avaliações na tela
 function renderReviews() {
   const container = document.getElementById("reviewsList");
   container.innerHTML = "";
@@ -206,6 +222,7 @@ function renderReviews() {
   });
 }
 
+// Destaca estrelas selecionadas na avaliação
 function highlightStars(count) {
   document
     .querySelectorAll("#starRating span")
@@ -215,7 +232,7 @@ function highlightStars(count) {
 // ------------------------------
 // Autenticação e Perfil
 // ------------------------------
-// Logout
+// Logout: faz signOut do usuário e redireciona para a página inicial
 const btnLogout = document.getElementById("logoutButton");
 btnLogout.addEventListener("click", (e) => {
   e.preventDefault();
@@ -230,7 +247,7 @@ btnLogout.addEventListener("click", (e) => {
     });
 });
 
-// Observador de autenticação
+// Observador de autenticação: carrega dados do perfil e atualiza UI conforme o status do usuário
 onAuthStateChanged(auth, async (user) => {
   showLoading();
   try {
@@ -309,7 +326,7 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// Atualiza as informações do perfil
+// Atualiza as informações do perfil na UI
 function updateProfileInfo(data, endereco) {
   document.getElementById("profileName").textContent = data.Nome;
   document.getElementById("estado").textContent = endereco.estado;
@@ -324,6 +341,7 @@ function updateProfileInfo(data, endereco) {
 // ------------------------------
 // Feedback: Toast
 // ------------------------------
+// Exibe uma mensagem temporária na tela
 function showToast(message) {
   const toast = document.createElement("div");
   toast.style.position = "fixed";
@@ -346,7 +364,7 @@ function showToast(message) {
   }, 3000);
 }
 
-// Animações do toast
+// Adiciona animações CSS para o toast
 const style = document.createElement("style");
 style.textContent = `
     @keyframes fadeIn {
@@ -360,19 +378,20 @@ style.textContent = `
 `;
 document.head.appendChild(style);
 
+// Recupera o UID da URL, se existir
 function getUidFromUrl() {
   const params = new URLSearchParams(window.location.search);
   return params.get("uid");
 }
 
 // --------------------------
-  // Função genérica: fechar modais
-  // --------------------------
-  function closeModal() {
-    document
-      .querySelectorAll(".modal")
-      .forEach((modal) => (modal.style.display = "none"));
-  }
+// Função genérica: fechar modais
+// --------------------------
+function closeModal() {
+  document
+    .querySelectorAll(".modal")
+    .forEach((modal) => (modal.style.display = "none"));
+}
 
 // -------------------------------------------------------------------------
 // Interações de UI
@@ -401,7 +420,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 */
 
-  // Botões "Ver tudo"
+  // Botões "Ver tudo": mostra alerta ao clicar
   document.querySelectorAll(".view-more").forEach((button) => {
     button.addEventListener("click", function () {
       const sectionTitle =
@@ -410,7 +429,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Links de configurações
+  // Links de configurações: mostra alerta ao clicar
   document.querySelectorAll(".footer-links a").forEach((link) => {
     link.addEventListener("click", function (e) {
       e.preventDefault();
@@ -494,6 +513,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
   // RESOLVER!!!!!!! ----------------------------------------------------
+  // Abre modal de detalhes do serviço
   function openServiceModal(title, description, price, details) {
     document.getElementById("modalServiceTitle").textContent = title;
     document.getElementById("modalServiceDescription").textContent =
@@ -509,7 +529,7 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("serviceModal").style.display = "flex";
   }
 
-  // fechar os modais de Serviço e Produtos
+  // Fecha modais de serviço/produto
   document.getElementById("closeService").addEventListener("click", (e) => {
     closeModal();
   });
