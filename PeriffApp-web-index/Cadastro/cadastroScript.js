@@ -1,11 +1,17 @@
-// Importando o Firebase
+// ---------------------------------------------
+// Importações
+// ---------------------------------------------
+// Importa funções do Firebase para autenticação e manipulação do Firestore
 import { auth, db, collection, addDoc, setDoc, doc } from "../firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 
 
 
-// Função para validação de CPF
+// ---------------------------------------------
+// Funções de Validação
+// ---------------------------------------------
+// Valida CPF conforme regras brasileiras
 function validarCPF(cpf) {
   cpf = cpf.replace(/\D/g, '');
   if (cpf.length !== 11) return false;
@@ -31,12 +37,14 @@ function validarCPF(cpf) {
   return true;
 }
 
+// Valida formato de e-mail
 function validarEmail(email) {
   // regex simples: texto@texto.texto
   const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return re.test(email.toLowerCase());
 }
 
+// Valida se o valor contém apenas números
 function validarApenasNumeros(valor) {
   // ^   início da string
   // \d  qualquer dígito (0–9)
@@ -46,7 +54,9 @@ function validarApenasNumeros(valor) {
   return re.test(valor);
 }
 
-// Resetar formulários quando fechar modal
+// ---------------------------------------------
+// Função para resetar os formulários e UI
+// ---------------------------------------------
 function resetForms() {
   clientType.classList.remove('selected');
   providerType.classList.remove('selected');
@@ -61,7 +71,12 @@ function resetForms() {
 
 
 
+// ---------------------------------------------
+// Lógica principal: manipulação de DOM e eventos
+// ---------------------------------------------
 document.addEventListener('DOMContentLoaded', function() {
+
+  // Seletores de elementos do formulário e variáveis de controle
   const clientType = document.getElementById('clientType');
   const providerType = document.getElementById('providerType');
   const clientForm = document.getElementById('clientForm');
@@ -72,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let tipo = null;
   
 
+  // Alterna entre formulário de cliente e prestador
   clientType.addEventListener('click', () => {
     clientType.classList.add('selected');
     providerType.classList.remove('selected');
@@ -89,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
     tipo = "Prestador"
   });
 
+  // Alterna entre campos de CPF e CNPJ para prestador
   docTypeRadios.forEach(radio => {
     radio.addEventListener('change', function() {
       if (this.value === 'cpf') {
@@ -105,8 +122,11 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
 
-  // Validação do formulário de cliente
+  // ---------------------------------------------
+  // SUBMISSÃO DO FORMULÁRIO DE CLIENTE
+  // ---------------------------------------------
   document.getElementById('clientRegisterForm').addEventListener('submit', function(e) {
+    // Previne envio padrão e coleta dados do formulário
     e.preventDefault();
     
     const cpf = document.getElementById('clientCPF').value;
@@ -116,6 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmPassword = document.getElementById('clientConfirmPassword').value;
     const telefone = document.getElementById('clientPhone').value;
 
+    // Validações
     if (password !== confirmPassword) {
       alert('As senhas não coincidem!');
       return;
@@ -124,32 +145,25 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('CPF inválido!');
       return;
     }
-
     if(!validarEmail(email)) {
       alert('Email inválido! Verifique se foi digitado corretamente');
       return;
     }
-
     if(!validarApenasNumeros(telefone)){
       alert('Por favor, digite apenas números');
       return;
     }
-
     if (!document.getElementById("providerTermsC").checked) {
       alert("Você deve aceitar os Termos de Uso!");
       return;
     }
 
     
-    
-    
+    // Cria usuário no Firebase Auth
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         const uid = userCredential.user.uid;
-        
-        
-
-
+    
         // Usa setDoc e propaga o UID para o próximo then
         return setDoc(doc(db, 'Usuario', uid), {
           UID: uid,
@@ -162,15 +176,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(() => uid);
       })
       .then(async uid => {
+        // Cria documento de endereço vazio no Firestore
         let Endereco = { estado: " ", cidade: " ", bairro: " ", rua: " ", numero: " ", cep: " " };
         const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
         await setDoc(enderecoRef, { ...Endereco });
         console.log('Documento criado com ID:', uid);
         alert('Cadastro de cliente realizado com sucesso!');
         resetForms();
+        // Redireciona para página de confirmação de e-mail
         window.location.replace("../ConfirmacaoEmail/confirmacao.html");
       })
       .catch(error => {
+        // Tratamento de erros específicos do Firebase Auth
         if (error.code === 'auth/email-already-in-use') {
           alert('Este e-mail já está em uso.');
         } else if (error.code === 'auth/password-does-not-meet-requirements') {
@@ -182,8 +199,11 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   });
 
-  // Validação do formulário de prestador
+  // ---------------------------------------------
+  // SUBMISSÃO DO FORMULÁRIO DE PRESTADOR
+  // ---------------------------------------------
   document.getElementById('providerRegisterForm').addEventListener('submit', function(e) {
+    // Previne envio padrão e coleta dados do formulário
     e.preventDefault();
     const tipoDoc = document.querySelector('input[name="docType"]:checked').value;
     const email = document.getElementById('providerEmail').value;
@@ -200,6 +220,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } else {
       cnpj = document.getElementById('providerCNPJ').value;
     }
+    // Validações
     if (password !== confirmPassword) {
       alert('As senhas não coincidem!');
       return;
@@ -208,22 +229,20 @@ document.addEventListener('DOMContentLoaded', function() {
       alert('CPF inválido!');
       return;
     }
-
     if (!document.getElementById('providerTerms').checked) {
       alert('Você deve aceitar os Termos de Uso!');
       return;
     }
-
     if (!validarEmail(email)) {
       alert("Email inválido! Verifique se foi digitado corretamente");
       return;
     }
-
     if (!validarApenasNumeros(telefone)) {
       alert("Por favor, digite apenas números");
       return;
     }
 
+    // Cria usuário no Firebase Auth
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
         const uid = userCredential.user.uid;
@@ -241,15 +260,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }).then(() => uid);
       })
       .then(async uid => {
+        // Cria documento de endereço vazio no Firestore
         let Endereco = { estado: " ", cidade: " ", bairro: " ", rua: " ", numero: " ", cep: " " };
         const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
         await setDoc(enderecoRef, { ...Endereco });
         console.log('Documento criado com ID:', uid);
         alert('Cadastro de cliente realizado com sucesso!');
         resetForms();
+        // Redireciona para página de confirmação de e-mail
         window.location.replace("../ConfirmacaoEmail/confirmacao.html");
       })
       .catch(error => {
+        // Tratamento de erros específicos do Firebase Auth
         if (error.code === 'auth/email-already-in-use') {
           alert('Este e-mail já está em uso.');
         } else if (error.code === 'auth/password-does-not-meet-requirements') {
