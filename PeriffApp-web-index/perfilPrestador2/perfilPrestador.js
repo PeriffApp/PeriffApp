@@ -110,7 +110,10 @@ async function updateServiceDB(uid, serviceId, updated) {
 function renderServices() {
   const container = document.getElementById("servicesContainer");
   container.innerHTML = "";
-
+  if (!profileData.services || profileData.services.length === 0) {
+    container.innerHTML = '<div class="service-card" style="text-align:center; color:#999;">Sem serviços</div>';
+    return;
+  }
   profileData.services.forEach((service) => {
     const card = document.createElement("div");
     card.className = "service-card";
@@ -205,6 +208,11 @@ function parseDateBR(str) {
 function renderReviews() {
   const container = document.getElementById("reviewsList");
   container.innerHTML = "";
+  if (!profileData.reviews || profileData.reviews.length === 0) {
+    container.innerHTML = '<div class="review" style="text-align:center; color:#999;">Sem avaliações</div>';
+    updateHeaderRating();
+    return;
+  }
   profileData.reviews.forEach((r) => {
     const div = document.createElement("div");
     div.className = "review";
@@ -351,15 +359,20 @@ onAuthStateChanged(auth, async (user) => {
 
 // Atualiza as informações do perfil na UI
 function updateProfileInfo(data, endereco) {
-  document.getElementById("profileName").textContent = data.Nome;
-  // Corrige erro caso endereco seja null
-  document.getElementById("estado").textContent = endereco && endereco.estado ? endereco.estado : "";
-  document.getElementById("cidade").textContent = endereco && endereco.cidade ? endereco.cidade : "";
-  document.getElementById("bairro").textContent = endereco && endereco.bairro ? endereco.bairro : "";
-  document.getElementById("rua").textContent = endereco && endereco.rua ? endereco.rua : "";
-  document.getElementById("cep").textContent = endereco && endereco.cep ? endereco.cep : "";
-  document.getElementById("complemento").textContent = endereco && endereco.numero ? endereco.numero : "";
-  document.getElementById("aboutText").textContent = data.Sobre;
+  // Sobre mim: exibe espaço em branco se vazio
+  document.getElementById("profileName").textContent = data.Nome && data.Nome.trim() ? data.Nome : " ";
+  // Monta endereço completo em uma linha, exibe espaço em branco se tudo vazio
+  let partes = [
+    endereco && endereco.estado ? endereco.estado : "",
+    endereco && endereco.cidade ? endereco.cidade : "",
+    endereco && endereco.bairro ? endereco.bairro : "",
+    endereco && endereco.rua ? endereco.rua : "",
+    endereco && endereco.numero ? endereco.numero : "",
+    endereco && endereco.cep ? endereco.cep : ""
+  ];
+  let enderecoCompleto = partes.filter(p => p && p.trim()).join(", ");
+  document.getElementById("enderecoCompleto").textContent = enderecoCompleto ? enderecoCompleto : "Adicione seu endereço aqui. ";
+  document.getElementById("aboutText").textContent = data.Sobre && data.Sobre.trim() ? data.Sobre : "Adicione um texto sobre você aqui. ";
 }
 
 // ------------------------------

@@ -191,6 +191,7 @@ header {
     text-align: center;
     padding: 2rem 1rem;
     border: 1px solid var(--gray);
+    cursor: pointer;
 }
 
 .category-card:hover {
