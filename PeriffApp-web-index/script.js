@@ -26,7 +26,7 @@ function hideLoading() {
 }
 
 // observador para verificar se o usuario está logado
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (user) {
     const uid = user.uid;
     console.log("STATUS: Usuário logado com UID: " + uid);
@@ -37,17 +37,23 @@ onAuthStateChanged(auth, (user) => {
     document.getElementById("btnEntrar").style.display = "block";
     document.getElementById("btnPerfil").style.display = "none";
   }
+  await carregarPrestadores(); // Chama aqui, após saber o usuário logado
 });
 
 // ------------------------------
 // Carrega e renderiza prestadores
 // ------------------------------
 async function carregarPrestadores() {
+  const user = auth.currentUser;
+  let loggedUid = null;
+  if (user) loggedUid = user.uid;
+
   const prestadoresRef = collection(db, "Usuario");
   const q = query(prestadoresRef, where("Tipo", "==", "Prestador"));
   const querySnapshot = await getDocs(q);
 
   querySnapshot.forEach((doc) => {
+    if (doc.id === loggedUid) return; // Não renderiza o card do usuário logado
     const dados = doc.data();
     renderizarCardPrestador(dados, doc.id);
   });
@@ -90,8 +96,7 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Exibe overlay de loading até carregar tudo
   showLoading();
   try {
-
-    await carregarPrestadores(); // cham funcção que carrega os prestadores na tela inicial
+    // await carregarPrestadores(); // REMOVIDO DAQUI
 
     // Elementos do modal
     const modal = document.getElementById("loginModal");
