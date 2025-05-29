@@ -66,6 +66,10 @@ header {
     color: var(--primary);
 }
 
+.nav-links a.active {
+    color: var(--primary);
+}
+
 .cta-button {
     background-color: var(--primary);
     color: var(--secondary);
