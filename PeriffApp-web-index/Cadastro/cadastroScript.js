@@ -135,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const password = document.getElementById('clientPassword').value;
     const confirmPassword = document.getElementById('clientConfirmPassword').value;
     const telefone = document.getElementById('clientPhone').value;
+   
 
     // Validações
     if (password !== confirmPassword) {
@@ -165,14 +166,14 @@ document.addEventListener('DOMContentLoaded', function() {
         const uid = userCredential.user.uid;
     
         // Usa setDoc e propaga o UID para o próximo then
-        return setDoc(doc(db, 'Usuario', uid), {
+        return setDoc(doc(db, "Usuario", uid), {
           UID: uid,
           CPF: cpf,
           Email: email,
           Nome: nome,
           Senha: password,
           Telefone: telefone,
-          Tipo: 'Cliente'
+          Tipo: "Cliente"         
         }).then(() => uid);
       })
       .then(async uid => {
@@ -212,6 +213,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const confirmPassword = document.getElementById('providerConfirmPassword').value;
     const telefone = document.getElementById('providerPhone').value;
     const categoriaServico = document.getElementById("providerService").value;
+    const subCategoria = document.getElementById("subCategoria").value;
   
     let cnpj = null;
     let cpf = null;
@@ -247,7 +249,7 @@ document.addEventListener('DOMContentLoaded', function() {
       .then(userCredential => {
         const uid = userCredential.user.uid;
         // Usa setDoc e propaga o UID para o próximo then
-        return setDoc(doc(db, 'Usuario', uid), {
+        return setDoc(doc(db, "Usuario", uid), {
           UID: uid,
           CPF: cpf,
           CNPJ: cnpj,
@@ -255,8 +257,9 @@ document.addEventListener('DOMContentLoaded', function() {
           Nome: nome,
           Senha: password,
           Telefone: telefone,
-          Tipo: 'Prestador',
-          categoriaServico: categoriaServico
+          Tipo: "Prestador",
+          Categoria: categoriaServico,
+          subCategoria: subCategoria
         }).then(() => uid);
       })
       .then(async uid => {

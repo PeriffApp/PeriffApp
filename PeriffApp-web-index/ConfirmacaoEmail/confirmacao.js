@@ -62,7 +62,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Envia e-mail de verificação
         await sendEmailVerification(user);
-        alert("Verifique seu e-mail para ativar a conta.");
         verifiquei = user.emailVerified;
 
         // Atualiza interface: esconde passo 2 e mostra passo 5
