@@ -22,7 +22,7 @@
             <form id="recoveryForm">
                 <div class="form-group">
                     <label for="userIdentity">E-mail, nome de usuário ou telefone</label>
-                    <input type="text" id="userIdentity" class="form-control" placeholder="Digite seu e-mail, usuário ou telefone" required>
+                    <input type="text" id="userIdentity" class="form-control" placeholder="Digite seu e-mail, usuário ou telefone" required maxlength="60">
                 </div>
                 
                 <button type="button" class="btn btn-primary" onclick="nextStep(2)">Continuar</button>
@@ -85,13 +85,13 @@
             
             <div class="form-group">
                 <label for="newPassword">Nova senha</label>
-                <input type="password" id="newPassword" class="form-control" placeholder="Digite sua nova senha" required>
+                <input type="password" id="newPassword" class="form-control" placeholder="Digite sua nova senha" required maxlength="30">
                 <div class="password-strength">
                     <div class="password-strength-bar" id="passwordStrength"></div>
                 </div>
                 <div class="password-rules" id="passwordRules">
                     <ul>
-                        <li id="ruleLength">Mínimo de 8 caracteres</li>
+                        <li id="ruleLength">Mínimo de 8 caracteres (máximo 30)</li>
                         <li id="ruleNumber">Pelo menos 1 número</li>
                         <li id="ruleSpecial">Pelo menos 1 caractere especial</li>
                     </ul>
@@ -104,7 +104,7 @@
             
             <div class="form-group">
                 <label for="confirmPassword">Confirme a nova senha</label>
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Digite novamente sua nova senha" required>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Digite novamente sua nova senha" required maxlength="30">
             </div>
             
             <button type="button" class="btn btn-primary" onclick="updatePassword()">Redefinir Senha</button>
@@ -117,11 +117,18 @@
                 <i class="fas fa-check-circle"></i>
                 <h2>Senha redefinida com sucesso!</h2>
                 <p>Sua senha foi atualizada com sucesso. Agora você pode fazer login com sua nova senha.</p>
-                <button type="button" class="btn btn-primary" onclick="redirectToLogin()">Fazer Login4
+                <button type="button" class="btn btn-primary" onclick="redirectToLogin()">Fazer Login</button>
             </div>
-        </div>        
-        
-        
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="recuperacao.js"></script>
+</body>
+</html>
+
+
 
 
 
