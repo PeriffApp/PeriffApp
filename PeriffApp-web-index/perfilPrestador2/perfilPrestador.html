@@ -176,8 +176,11 @@
                         <textarea id="serviceDescriptionInput"></textarea>
                     </div>
                     <div class="form-group">
-                        <label>Preço (ex: R$ 120–200):</label>
-                        <input type="text" id="servicePriceInput">
+                        <label>Preço (R$):</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="number" id="servicePriceFromInput" placeholder="De" min="0" style="width: 80px;"> -
+                            <input type="number" id="servicePriceToInput" placeholder="Até" min="0" style="width: 80px;">
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Detalhes (um por linha):</label>

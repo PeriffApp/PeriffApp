@@ -359,8 +359,8 @@ onAuthStateChanged(auth, async (user) => {
 
 // Atualiza as informações do perfil na UI
 function updateProfileInfo(data, endereco) {
-  // Sobre mim: exibe espaço em branco se vazio
-  document.getElementById("profileName").textContent = data.Nome && data.Nome.trim() ? data.Nome : " ";
+  // Carrega nome completo do prestardor
+  document.getElementById("profileName").textContent = data.Nome;
   // Monta endereço completo em uma linha, exibe espaço em branco se tudo vazio
   let partes = [
     endereco && endereco.estado ? endereco.estado : "",
@@ -505,49 +505,58 @@ document.addEventListener("DOMContentLoaded", function () {
   // Produtos e Serviços
   // --------------------------
   document.getElementById("openAddServiceModal").addEventListener("click", () => {
-      [
-        "serviceTitleInput",
-        "serviceDescriptionInput",
-        "servicePriceInput",
-        "serviceDetailsInput",
-      ].forEach((id) => (document.getElementById(id).value = ""));
-      document.getElementById("addServiceModal").style.display = "flex";
+    // Limpa os campos do formulário corretamente
+    [
+      "serviceTitleInput",
+      "serviceDescriptionInput",
+      "serviceDetailsInput",
+      "servicePriceFromInput",
+      "servicePriceToInput"
+    ].forEach((id) => {
+      const el = document.getElementById(id);
+      if (el) el.value = "";
+    });
+    document.getElementById("addServiceModal").style.display = "flex";
   });
 
   // 2) Transforme o callback em async e chame addServiceDB:
   document.getElementById("addNewService").addEventListener("click", async (e) => {
-      e.preventDefault();
+    e.preventDefault();
 
-      // 2.1) Lê valores do formulário
-      const title = document.getElementById("serviceTitleInput").value.trim();
-      const description = document.getElementById("serviceDescriptionInput").value.trim();
-      const price = document.getElementById("servicePriceInput").value.trim();
-      const details = document.getElementById("serviceDetailsInput").value.trim().split("\n")
-      .filter((l) => l.trim());
+    // 2.1) Lê valores do formulário
+    const title = document.getElementById("serviceTitleInput").value.trim();
+    const description = document.getElementById("serviceDescriptionInput").value.trim();
+    const priceFrom = document.getElementById("servicePriceFromInput").value.trim();
+    const priceTo = document.getElementById("servicePriceToInput").value.trim();
+    const details = document.getElementById("serviceDetailsInput").value.trim().split("\n").filter((l) => l.trim());
 
-      // 2.2) Valida campos obrigatórios
-      if (!(title && description && price)) {
-        return alert("Preencha todos os campos obrigatórios");
-      }
+    // 2.2) Valida campos obrigatórios
+    if (!(title && description && priceFrom)) {
+      return alert("Preencha todos os campos obrigatórios (Título, Descrição e Preço De)");
+    }
 
-      // 2.3) Monta o objeto de serviço
-      const service = { title, description, price, details };
+    // Monta faixa de preço
+    let price = "";
+    if (priceTo && Number(priceTo) > Number(priceFrom)) {
+      price = `R$ ${priceFrom} - R$ ${priceTo}`;
+    } else {
+      price = `R$ ${priceFrom}`;
+    }
 
-      // 2.4) Salva no Firestore e captura o ID
-      try {
-        const newId = await addServiceDB(currentUserUID, service);
+    // 2.3) Monta o objeto de serviço
+    const service = { title, description, price, details };
 
-        // 2.5) Atualiza o array local com o ID vindo do Firestore
-        profileData.services.push({ id: newId, ...service });
-
-        // 2.6) Re-renderiza a lista de serviços
-        renderServices();
-        closeModal();
-      } catch (err) {
-        console.error(err);
-        alert("Não foi possível salvar o serviço. Tente novamente.");
-      }
-    });
+    // 2.4) Salva no Firestore e captura o ID
+    try {
+      const newId = await addServiceDB(currentUserUID, service);
+      profileData.services.push({ id: newId, ...service });
+      renderServices();
+      closeModal();
+    } catch (err) {
+      console.error(err);
+      alert("Não foi possível salvar o serviço. Tente novamente.");
+    }
+  });
 
   // RESOLVER!!!!!!! ----------------------------------------------------
   // Abre modal de detalhes do serviço
