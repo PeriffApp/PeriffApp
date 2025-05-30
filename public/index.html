@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Periff APP - Conectando talentos das periferias</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=person" />
+    <link rel="stylesheet" href="/index.css">
+    <script type="module" src="/script.js"></script>
+    <script type="module" src="/firebase.js"></script>
+</head>
+<body>
+    <!-- Spinenr de Loading --> 
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    <header>
+        <!-- Container inicial -->
+        <nav class="navbar">
+            <div class="logo">   <!-- Logo -->
+                <img src="/imagens/logo.png" alt="Logo do PeriffApp">
+            </div>
+            <ul class="nav-links"> <!--links de navegações -->
+                <li><a href="/index.html" class="active">início</a></li>
+                <li><a href="/Pesquisa/TelaPesquisa.html">Pesquisar</a></li>
+                <li><a href="#">Categorias</a></li>
+                <li><a href="#">Como funciona</a></li>
+                <li><a href="#">Ajuda</a></li>
+            </ul>
+            <button class="cta-button" id="btnEntrar">Entrar</button>  <!-- Botão de Login -->
+            <div class="botaoPerfil" id="btnPerfil"> <!-- Botão do Perfil -->
+                    <a href="/perfilPrestador2/perfilPrestador.html">
+                        <span class="material-symbols-outlined" >person</span>
+                    </a>
+            </div> 
+        </nav>
+    </header>
+    <!-- Section de Pesquisa -->
+    <section class="hero">
+        <h2>Encontre os melhores <span>profissionais qualificados</span> perto de você</h2>
+        <p>Conectamos quem precisa de serviço com os talentos das comunidades. De eletricista a DJ, de costureira a chef de cozinha - encontre o profissional ideal.</p>
+        <div class="search-box">
+            <input type="text" id="indexSearchInput" placeholder="Qual serviço você precisa? Ex: encanador, diarista...">
+            <button id="indexSearchBtn"><i class="fas fa-search"></i> Buscar</button> <!-- Buscar Serviços -->
+        </div>
+    </section>
+    <!-- Section de Categorias -->
+    <section class="categories">
+        <div class="section-title">
+            <h3>Serviços em destaque</h3>
+            <p>Encontre profissionais qualificados para diversos tipos de serviços</p>
+        </div>
+        <div class="category-grid">
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h4>Reformas e Reparos</h4>
+                <p>Pedreiros, pintores, eletricistas e mais</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-broom"></i>
+                </div>
+                <h4>Limpeza</h4>
+                <p>Diaristas, faxineiras, limpeza pós-obra</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-tshirt"></i>
+                </div>
+                <h4>Costura</h4>
+                <p>Costureiras, modistas, ajustes de roupas</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-utensils"></i>
+                </div>
+                <h4>Alimentação</h4>
+                <p>Chefs, cozinheiras, marmitas fitness</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-music"></i>
+                </div>
+                <h4>Eventos</h4>
+                <p>DJs, músicos, decoradores de festa</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-cut"></i>
+                </div>
+                <h4>Beleza</h4>
+                <p>Cabeleireiros, barbeiros, manicures</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-laptop"></i>
+                </div>
+                <h4>Tecnologia</h4>
+                <p>Assistência técnica, designers, desenvolvedores</p>
+            </div>
+            <div class="category-card">
+                <div class="category-icon">
+                    <i class="fas fa-dumbbell"></i>
+                </div>
+                <h4>Saúde</h4>
+                <p>Personal trainers, massagistas, nutricionistas</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section de demostraçãos de Prestadores -->
+    <section class="categories">
+        <div class="section-title">
+            <h3>Conheça Alguns dos nossos Prestadores</h3>
+            <p>Encontre profissionais qualificados para diversos tipos de serviços</p>
+        </div>
+        <div id="listaPrestadores" class="grid grid-cols-3 gap-4 p-4">
+            <!-- Os cards vão aparecer aqui -->
+        </div>
+    </section>
+    <!-- Section de Informações sobre o site -->
+    <section class="how-it-works">
+        <div class="section-title">
+            <h3>Como funciona</h3>
+            <p>Encontrar o profissional perfeito nunca foi tão fácil</p>
+        </div>
+        <div class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h4>Descreva seu serviço</h4>
+                <p>Conte-nos qual serviço você precisa e detalhes importantes</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h4>Receba orçamentos</h4>
+                <p>Profissionais qualificados entrarão em contato com propostas</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h4>Escolha o melhor</h4>
+                <p>Compare perfis, avaliações e preços para decidir</p>
+            </div>
+            <div class="step">
+                <div class="step-number">4</div>
+                <h4>Contrate com segurança</h4>
+                <p>Feche o serviço com garantia e pagamento seguro</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Section de Avaliações sobre o site (Exemplos fictícios) -->
+    <section class="testimonials">
+        <div class="section-title">
+            <h3>O que estão dizendo</h3>
+            <p>Veja a opinião de quem já usou a Periff APP</p>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <div class="quote">"</div>
+                <p>Encontrei uma costureira maravilhosa perto de casa que fez meu vestido de formatura por um preço justíssimo. A Periff APP mudou a forma como busco serviços!</p>
+                <div class="client-info">
+                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Ana Silva">
+                    <div class="client-details">
+                        <h5>Ana Silva</h5>
+                        <p>Cliente - Jardim São Luís</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"</div>
+                <p>Como eletricista autônomo, a Periff APP me ajudou a conseguir muitos mais clientes. Agora trabalho direto na minha comunidade e arredores.</p>
+                <div class="client-info">
+                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Carlos Oliveira">
+                    <div class="client-details">
+                        <h5>Carlos Oliveira</h5>
+                        <p>Profissional - Capão Redondo</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"</div>
+                <p>Contratei um DJ para o aniversário do meu filho e foi perfeito! Preço acessível e profissionalismo. Recomendo a todos da quebrada!</p>
+                <div class="client-info">
+                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Mariana Santos">
+                    <div class="client-details">
+                        <h5>Mariana Santos</h5>
+                        <p>Cliente - Grajaú</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="periff-benefits">
+        <div class="section-title">
+            <h3>Vantagens Periff</h3>
+            <p>Por que escolher profissionais da nossa plataforma</p>
+        </div>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h4>Feito para a quebrada</h4>
+                <p>Profissionais locais que entendem as necessidades da sua comunidade</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h4>Segurança garantida</h4>
+                <p>Perfis verificados e sistema de avaliações transparente</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-wallet"></i>
+                </div>
+                <h4>Preços justos</h4>
+                <p>Orçamentos competitivos direto do profissional</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">
+                    <i class="fas fa-comments"></i>
+                </div>
+                <h4>Comunicação fácil</h4>
+                <p>Chat integrado para combinar todos os detalhes do serviço</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="app-download">
+        <div class="section-title">
+            <h3>Em breve</h3>
+            <p>Em breve disponível para download, aguarde novidade!</p>
+        </div>
+        <div class="download-buttons">
+            <a  class="download-btn">
+                <i class="fab fa-google-play"></i>
+                <div class="download-text">
+                    <p>Em breve no</p>
+                    <h5>Google Play</h5>
+                </div>
+            </a>
+            <a class="download-btn">
+                <i class="fab fa-apple"></i>
+                <div class="download-text">
+                    <p>Em breve no</p>
+                    <h5>App Store</h5>
+                </div>
+            </a>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h4>Periff APP</h4>
+                <p>Conectando talentos das periferias com quem precisa de serviços de qualidade.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h4>Serviços</h4>
+                <ul>
+                    <li><a href="#">Reformas e Reparos</a></li>
+                    <li><a href="#">Limpeza</a></li>
+                    <li><a href="#">Costura</a></li>
+                    <li><a href="#">Alimentação</a></li>
+                    <li><a href="#">Eventos</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Para Profissionais</h4>
+                <ul>
+                    <li><a href="#">Cadastre-se</a></li>
+                    <li><a href="#">Como funciona</a></li>
+                    <li><a href="#">Dicas para o perfil</a></li>
+                    <li><a href="#">Cursos e capacitações</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="#">Sobre nós</a></li>
+                    <li><a href="#">Trabalhe conosco</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Periff APP - Todos os direitos reservados. | CNPJ: 12.345.678/0001-99</p>
+        </div>
+    </footer>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2>Entrar na Periff APP</h2>
+                <p>Bem-vindo de volta! Faça login para continuar</p>
+            </div>
+            
+            <div class="login-form-container">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">E-mail</label>
+                        <input type="email" id="loginEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Senha</label>
+                        <input type="password" id="loginPassword" required>
+                    </div>
+                    <div class="forgot-password">
+                        <a href="/RecuperacaoSenha/recuperacao.html">Esqueceu sua senha?</a>
+                    </div>
+                    <button type="submit" class="submit-btn" id="btnLogin">Entrar</button>
+                    <div class="register-link">
+                        Ainda não tem conta? <a href="/Cadastro/cadastro.html" id="showRegister">Cadastre-se</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+        
+    <!-- Widget do WhatsApp -->
+    <div class="whatsapp-widget" onclick="window.open('https://w.app/periffapp', '_blank')">
+        <div class="whatsapp-icon">
+            <i class="fab fa-whatsapp"></i>
+        </div>
+        <div class="whatsapp-tooltip">Precisa de ajuda? Fale conosco!</div>
+    </div>
+    
+</body>
+</html>

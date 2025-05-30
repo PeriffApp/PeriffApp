@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmação de Email</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="/ConfirmacaoEmail/confirmacao.css">
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div class="recovery-container">
+        <!-- Passo 2: Métodos de recuperação -->
+        <div id="step2" class="recovery-steps">
+            <h2 class="step-title">Confirmação de Email</h2>
+            <p class="step-description">Confirme seu email para concluir o cadastro</p>
+            
+            <div class="recovery-options">
+                <label class="recovery-option">
+                    <input type="radio" name="recoveryMethod" value="email" checked>
+                    <i class="fas fa-envelope"></i>
+                    <div>
+                        <strong>Enviar por e-mail</strong>
+                        <p>Enviaremos um link de confirmação para ex****@gmail.com</p>
+                    </div>
+                </label>
+                
+            </div>
+            
+            <button type="button" class="btn btn-primary" id="enviar">Enviar Código</button>
+            <button type="button" class="btn btn-secondary">Voltar</button>
+        </div>
+
+        
+        <!-- Passo 5: Confirmação -->
+        <div id="step5" class="recovery-steps">
+            <div class="success-message">
+                <i class="fas fa-check-circle"></i>
+                <h2> Enviamos um e-mail de confirmação para o seu Email!</h2>
+                <p> Por favor, verifique sua caixa de entrada para concluir o cadastro</p>
+                <button type="button" class="btn btn-primary" id="verifiquei"> Já Verifiquei! </button>
+            </div>
+        </div>
+
+        <script type="module" src="/ConfirmacaoEmail/confirmacao.js"></script>
+    
+</body>
+</html>
