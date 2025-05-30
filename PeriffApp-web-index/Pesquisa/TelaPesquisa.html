@@ -23,13 +23,24 @@
         <li><a href="#">Ajuda</a></li>
       </ul>
       <div class="search-box">
-        <input type="text" placeholder="Qual serviço você precisa? Ex: encanador, diarista...">
-        <button><i class="fas fa-search"></i> Buscar</button> <!-- Buscar Serviços -->
+        <input type="text" id="searchInput" placeholder="Qual serviço você precisa? Ex: encanador, diarista...">
+        <button id="searchBtn"><i class="fas fa-search"></i> Buscar</button> <!-- Buscar Serviços -->
     </div>
     </nav>
   </header>
 
   <section>
+    <div>
+      <div class="section-title">
+        <h3>Pesquisando por: </h3> 
+        <div class="pesq">
+          <h3>Tecnologia</h3>
+        </div>
+
+    </div>
+    </div>
+
+
     <div class="carousel" id="cardsContainer"></div>
     <div class="no-results" id="noResults" style="display: none;">Nenhum prestador encontrado.</div>
   </section>

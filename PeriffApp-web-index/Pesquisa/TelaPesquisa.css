@@ -111,20 +111,19 @@ header {
 }
 
 .carousel {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    padding: 16px;
-    gap: 16px;
-}
-
-.carousel::-webkit-scrollbar {
-    display: none;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+    justify-items: center;
+    align-items: stretch;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 32px 0;
 }
 
 .card {
-    flex: 0 0 auto;
     width: 280px;
+    flex: 0 0 auto;
     background-color: var(--cor-secundaria);
     border: 1px solid var(--cor-cinza-medio);
     border-radius: 12px;
@@ -175,6 +174,13 @@ header {
 }
 
 /* Responsivo */
+@media (max-width: 1000px) {
+  .carousel {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 650px;
+  }
+}
+
 @media (max-width: 700px) {
   .navbar {
     flex-direction: column;
@@ -188,5 +194,35 @@ header {
   .search-box input[type="text"] {
     width: 100px;
   }
+  .carousel {
+    grid-template-columns: 1fr;
+    max-width: 350px;
+    padding: 16px 0;
+  }
+  .card {
+    width: 100%;
+  }
 }
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: 150px;
+    margin-top: 40px;
+    margin-bottom: 3rem;
+}
+
+.section-title h3 {
+    font-size: 25px;
+    margin-bottom: 1rem;
+}
+
+
+.pesq {
+    color: var(--primary);
+    margin-left: 5px;
+}
+
+
 
