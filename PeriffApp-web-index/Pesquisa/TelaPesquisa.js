@@ -12,13 +12,14 @@ async function buscarPrestadoresFirestore(termo) {
   const q = query(prestadoresRef, where("Tipo", "==", "Prestador"));
   const snap = await getDocs(q);
 
-  // Filtro local por categoria ou subCategoria (case-insensitive)
+  // Filtro local por categoria, subCategoria OU nome (case-insensitive)
   const termoLower = termo.toLowerCase();
   const prestadores = snap.docs
     .map(doc => ({ id: doc.id, ...doc.data() }))
     .filter(p =>
       (p.Categoria && p.Categoria.toLowerCase() === termoLower) ||
-      (p.subCategoria && p.subCategoria.toLowerCase() === termoLower)
+      (p.subCategoria && p.subCategoria.toLowerCase() === termoLower) ||
+      (p.Nome && p.Nome.toLowerCase().includes(termoLower))
     );
   return prestadores;
 }
@@ -55,6 +56,15 @@ searchBtn.addEventListener("click", pesquisar);
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") pesquisar();
 });
+
+// Ao carregar a página, verifica se veio termo de pesquisa na URL
+const urlParams = new URLSearchParams(window.location.search);
+const termoPesquisa = urlParams.get("pesquisa");
+if (termoPesquisa) {
+  searchInput.value = termoPesquisa;
+  pesquisandoPor.textContent = termoPesquisa;
+  pesquisar();
+}
 
 // Opcional: carregar todos ao abrir (ou deixar vazio)
 pesquisandoPor.textContent = 'Todos';

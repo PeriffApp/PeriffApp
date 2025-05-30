@@ -151,6 +151,31 @@ document.addEventListener("DOMContentLoaded", async function () {
           alert("Erro ao realizar login!");
         });
     });
+
+    // Script para redirecionar para a tela de pesquisa
+    const indexSearchInput = document.getElementById("indexSearchInput");
+    const indexSearchBtn = document.getElementById("indexSearchBtn");
+
+    if (indexSearchBtn && indexSearchInput) {
+      indexSearchBtn.addEventListener("click", () => {
+        const termo = indexSearchInput.value.trim();
+        if (termo) {
+          window.location.href = `Pesquisa/TelaPesquisa.html?pesquisa=${encodeURIComponent(termo)}`;
+        } else {
+          window.location.href = "Pesquisa/TelaPesquisa.html";
+        }
+      });
+      indexSearchInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const termo = indexSearchInput.value.trim();
+          if (termo) {
+            window.location.href = `Pesquisa/TelaPesquisa.html?pesquisa=${encodeURIComponent(termo)}`;
+          } else {
+            window.location.href = "Pesquisa/TelaPesquisa.html";
+          }
+        }
+      });
+    }
   } finally {
     // Esconde overlay depois de tudo
     hideLoading();
