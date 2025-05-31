@@ -52,33 +52,44 @@ async function carregarPrestadores() {
   const q = query(prestadoresRef, where("Tipo", "==", "Prestador"));
   const querySnapshot = await getDocs(q);
 
+  const prestadores = [];
   querySnapshot.forEach((doc) => {
     if (doc.id === loggedUid) return; // Não renderiza o card do usuário logado
     const dados = doc.data();
-    renderizarCardPrestador(dados, doc.id);
+    prestadores.push({
+      id: doc.id,
+      ...dados,
+      avaliacao: dados.mediaAvaliacao || '-',
+      totalAvaliacoes: typeof dados.totalAvaliacoes === 'number' ? dados.totalAvaliacoes : '-'
+    });
   });
+  renderCards(prestadores);
 }
-function renderizarCardPrestador(dados, uid) {
-  const container = document.getElementById("listaPrestadores");
 
-  const card = document.createElement("div");
-  card.classList.add("card-prestador");
-
-  card.innerHTML = `
-      <div class="card-header">
-        <div class="info-prestador">
-          <h3 class="nome-prestador">${dados.Nome || "Nome não disponível"}</h3>
-          <p class="email-prestador">${
-            dados.Email || "Email não disponível"
-          }</p>
-        </div>
-      </div>
-      <div class="card-footer">
-        <a href="perfilPrestador2/perfilPrestador.html?uid=${uid}" class="btn-ver-perfil">Ver Perfil</a>
-      </div>
-    `;
-
-  container.appendChild(card);
+// Função para renderizar cards no mesmo formato da tela de pesquisa
+function renderCards(prestadoresList) {
+  const cardsContainer = document.getElementById("listaPrestadores");
+  if (!cardsContainer) return;
+  cardsContainer.innerHTML = "";
+  if (!prestadoresList.length) {
+    cardsContainer.innerHTML = '<div style="text-align:center; color:#999; width:100%">Nenhum prestador encontrado.</div>';
+    return;
+  }
+  prestadoresList.forEach((p) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+        <img src="${p.foto || 'imagens/perfilusuario2.jpg'}" alt="Foto de ${p.Nome || ''}" />
+        <div class="name">${p.Nome || ''}</div>
+        <div class="rating"><span class="star">⭐</span> ${p.avaliacao || '-'} (${p.totalAvaliacoes || '-'} avaliações)</div>
+        <div class="category">Categoria: ${p.Categoria || ''}${p.subCategoria ? ' / ' + p.subCategoria : ''}</div>
+        
+      `;
+    card.addEventListener('click', () => {
+      window.location.href = `perfilPrestador2/perfilPrestador.html?uid=${p.id}`;
+    });
+    cardsContainer.appendChild(card);
+  });
 }
 
 // ------------------------------

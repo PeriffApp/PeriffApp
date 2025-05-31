@@ -1,10 +1,12 @@
 import { db, collection, getDocs, query, where } from "../firebase.js";
+import { auth } from "../firebase.js";
 
 const cardsContainer = document.getElementById("cardsContainer");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 const pesquisandoPor = document.querySelector(".pesq h3");
+const loadingOverlay = document.getElementById("loading-overlay");
 
 async function buscarPrestadoresFirestore(termo) {
   // Busca todos os prestadores
@@ -32,11 +34,12 @@ async function buscarPrestadoresFirestore(termo) {
   return prestadores;
 }
 
-function renderCards(prestadoresList) {
+function renderCards(prestadoresList, loggedUid) {
   cardsContainer.innerHTML = "";
   noResults.style.display = prestadoresList.length ? "none" : "block";
 
   prestadoresList.forEach((p) => {
+    if (loggedUid && p.id === loggedUid) return; // Não renderiza o card do usuário logado
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
@@ -45,24 +48,63 @@ function renderCards(prestadoresList) {
         <div class="rating"><span class="star">⭐</span> ${p.avaliacao} (${p.totalAvaliacoes} avaliações)</div>
         <div class="category">Categoria: ${p.Categoria || ''}${p.subCategoria ? ' / ' + p.subCategoria : ''}</div>
       `;
+    card.addEventListener('click', () => {
+      window.location.href = `../perfilPrestador2/perfilPrestador.html?uid=${p.id}`;
+    });
     cardsContainer.appendChild(card);
   });
+}
+
+// ------------------------------
+// Funções de Loading (igual index.js)
+// ------------------------------
+function showLoading() {
+  const ov = document.getElementById("loading-overlay");
+  if (ov) {
+    ov.style.opacity = "1";
+    ov.style.display = "flex";
+  }
+}
+
+function hideLoading() {
+  const ov = document.getElementById("loading-overlay");
+  if (!ov) return;
+  ov.style.transition = "opacity 0.3s ease";
+  ov.style.opacity = "0";
+  setTimeout(() => {
+    ov.style.display = "none";
+    ov.style.transition = "";
+    ov.style.opacity = "1";
+  }, 300);
 }
 
 async function pesquisar() {
   const termo = searchInput.value.trim();
   pesquisandoPor.textContent = termo || 'Todos';
+  showLoading();
   if (!termo) {
-    renderCards([]);
+    renderCards([], auth.currentUser ? auth.currentUser.uid : null);
+    hideLoading();
     return;
   }
   const prestadores = await buscarPrestadoresFirestore(termo);
-  renderCards(prestadores);
+  renderCards(prestadores, auth.currentUser ? auth.currentUser.uid : null);
+  hideLoading();
 }
 
 searchBtn.addEventListener("click", pesquisar);
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") pesquisar();
+});
+
+// Exibe o loading assim que a página começa a carregar
+showLoading();
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Ajuste para carregar todos ao abrir (ou deixar vazio)
+  pesquisandoPor.textContent = 'Todos';
+  renderCards([], auth.currentUser ? auth.currentUser.uid : null);
+  hideLoading();
 });
 
 // Ao carregar a página, verifica se veio termo de pesquisa na URL
@@ -71,9 +113,6 @@ const termoPesquisa = urlParams.get("pesquisa");
 if (termoPesquisa) {
   searchInput.value = termoPesquisa;
   pesquisandoPor.textContent = termoPesquisa;
+  showLoading();
   pesquisar();
 }
-
-// Opcional: carregar todos ao abrir (ou deixar vazio)
-pesquisandoPor.textContent = 'Todos';
-renderCards([]);

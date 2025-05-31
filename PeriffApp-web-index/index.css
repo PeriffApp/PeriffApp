@@ -787,32 +787,57 @@ footer {
 
 /* Estilos para o container dos cards */
 #listaPrestadores {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    justify-content: space-around;
-    padding: 20px;
+    display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+        justify-items: center;
+        align-items: stretch;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 0;
 }
 
-/* Estilo geral do card */
-.card-prestador {
+.card {
     width: 280px;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease;
+    flex: 0 0 auto;
+    background-color: var(--cor-secundaria);
+    border: 1px solid var(--cor-cinza-medio);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    padding: 10px;
+    transition: transform 0.2s, box-shadow 0.2s;
+    scroll-snap-align: start;
+    cursor: pointer;
 }
 
-.card-prestador:hover {
-    transform: translateY(-10px);
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
 }
 
-/* Estilos para o cabeçalho do card */
-.card-header {
-    display: flex;
-    padding: 15px;
-    align-items: center;
+.card img {
+    width: 25%;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.card .name {
+    font-weight: bold;
+    color: var(--cor-fundo-escuro);
+    margin-bottom: 6px;
+}
+
+.card .rating {
+    color: var(--cor-cinza-medio);
+    margin-bottom: 6px;
+}
+
+.card .rating .star {
+    color: var(--cor-primaria);
+}
+
+.card .category {
+    color: var(--cor-cinza-medio);
 }
 
 .foto-prestador {

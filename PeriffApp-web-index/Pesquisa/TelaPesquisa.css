@@ -131,6 +131,7 @@ header {
     padding: 10px;
     transition: transform 0.2s, box-shadow 0.2s;
     scroll-snap-align: start;
+    cursor: pointer;
 }
 
 .card:hover {
@@ -290,4 +291,32 @@ header {
 .pesq {
     color: var(--primary);
     margin-left: 5px;
+}
+
+/* spinner */
+#loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(255,255,255,0.6);
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.spinner {
+    width: 60px;
+    height: 60px;
+    border: 6px solid #ddd;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
 }
