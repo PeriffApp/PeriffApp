@@ -125,7 +125,11 @@ function renderServices() {
         <i class="material-icons">delete</i>
       </button>
     `;
-
+    // Adiciona evento para abrir modal de visualização ao clicar no card (exceto no botão de deletar)
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".delete-service-btn")) return; // Não abre modal se clicar no botão de deletar
+      openServiceModal(service.title, service.description, service.price, service.details);
+    });
     container.appendChild(card);
 
     // 1. Detecta uid na URL
@@ -450,6 +454,23 @@ function closeModal() {
     .forEach((modal) => (modal.style.display = "none"));
 }
 
+// --------------------------
+// Modal: Exibir Serviço (deve ser global para uso em renderServices)
+// --------------------------
+function openServiceModal(title, description, price, details) {
+  document.getElementById("modalServiceTitle").textContent = title;
+  document.getElementById("modalServiceDescription").textContent = description;
+  document.getElementById("modalServicePrice").textContent = price;
+  const list = document.getElementById("modalServiceDetailsList");
+  list.innerHTML = "";
+  (details || []).forEach((d) => {
+    const li = document.createElement("li");
+    li.textContent = d;
+    list.appendChild(li);
+  });
+  document.getElementById("serviceModal").style.display = "flex";
+}
+
 // -------------------------------------------------------------------------
 // Interações de UI
 // -------------------------------------------------------------------------
@@ -577,23 +598,6 @@ document.addEventListener("DOMContentLoaded", function () {
       alert("Não foi possível salvar o serviço. Tente novamente.");
     }
   });
-
-  // RESOLVER!!!!!!! ----------------------------------------------------
-  // Abre modal de detalhes do serviço
-  function openServiceModal(title, description, price, details) {
-    document.getElementById("modalServiceTitle").textContent = title;
-    document.getElementById("modalServiceDescription").textContent =
-      description;
-    document.getElementById("modalServicePrice").textContent = price;
-    const list = document.getElementById("modalServiceDetailsList");
-    list.innerHTML = "";
-    details.forEach((d) => {
-      const li = document.createElement("li");
-      li.textContent = d;
-      list.appendChild(li);
-    });
-    document.getElementById("serviceModal").style.display = "flex";
-  }
 
   // Fecha modais de serviço/produto
   document.getElementById("closeService").addEventListener("click", (e) => {
