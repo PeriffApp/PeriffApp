@@ -191,6 +191,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     // Esconde overlay depois de tudo
     hideLoading();
   }
+  
+  // Para ativar o modo Dark!
+  if (localStorage.getItem("dark-mode") === "true") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
+
 });
 
 

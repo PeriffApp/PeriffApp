@@ -1068,3 +1068,223 @@ footer {
     }
 
 }
+
+/* MODO DARK */
+.dark-mode {
+    --primary: #e65a00;         /* Laranja mais escuro */
+    --primary-light: #ff944d;   /* Variante mais escura */
+    --secondary: #232323;
+    --dark: #FAFAFA;            /* Textos mais claros */
+    --light-gray: #2D2D2D;
+    --gray: #444;
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode body,
+.dark-mode {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode header,
+.dark-mode .navbar,
+.dark-mode .category-card,
+.dark-mode .testimonial-card,
+.dark-mode .modal-content,
+.dark-mode .app-download,
+.dark-mode .category-card,
+.dark-mode .footer-content,
+.dark-mode .card,
+.dark-mode .modal-content {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode .category-card,
+.dark-mode .testimonial-card,
+.dark-mode .card,
+.dark-mode .modal-content {
+    border-color: var(--gray);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.dark-mode .category-icon,
+.dark-mode .user-icon {
+    background-color: #333;
+    color: var(--primary);
+}
+
+.dark-mode .category-card h4,
+.dark-mode .testimonial-card .client-details h5,
+.dark-mode .benefit-card h4,
+.dark-mode .modal-header h2,
+.dark-mode .form-container h3,
+.dark-mode .login-form-container h3 {
+    color: var(--primary);
+}
+
+.dark-mode .category-card p,
+.dark-mode .testimonial-card p,
+.dark-mode .client-details p,
+.dark-mode .benefit-card p,
+.dark-mode .modal-header p,
+.dark-mode .form-group label,
+.dark-mode .form-group input,
+.dark-mode .form-group select,
+.dark-mode .login-link,
+.dark-mode .register-link,
+.dark-mode .forgot-password a {
+    color: #FFF; /* Textos ainda mais claros */
+}
+
+.dark-mode .search-box,
+.dark-mode .form-group input,
+.dark-mode .form-group select {
+    background-color: #232323;
+    color: var(--dark);
+    border-color: #444;
+}
+
+.dark-mode .search-box input,
+.dark-mode .form-group input,
+.dark-mode .form-group select {
+    background-color: #ffffff;
+    color: var(--dark);
+}
+
+.dark-mode .search-box button,
+.dark-mode .cta-button,
+.dark-mode .logout-button,
+.dark-mode .botaoPerfil,
+.dark-mode .submit-btn,
+.dark-mode .btn-ver-perfil {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.dark-mode .search-box button:hover,
+.dark-mode .cta-button:hover,
+.dark-mode .logout-button:hover,
+.dark-mode .botaoPerfil:hover,
+.dark-mode .submit-btn:hover,
+.dark-mode .btn-ver-perfil:hover {
+    background-color: var(--primary-light);
+}
+
+.dark-mode .how-it-works,
+.dark-mode .periff-benefits {
+    background-color: #181818;
+    color: var(--dark);
+}
+
+.dark-mode .step-number {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.dark-mode .benefit-icon {
+    color: var(--primary-light);
+}
+
+.dark-mode .app-download {
+    background-color: #232323;
+}
+
+.dark-mode .app-download .section-title h3 {
+    color: var(--primary);
+}
+
+.dark-mode .download-btn {
+    background-color: #111;
+    color: var(--secondary);
+}
+
+.dark-mode .download-btn:hover {
+    background-color: #222;
+}
+
+.dark-mode footer,
+.dark-mode .footer-bottom {
+    background-color: #111;
+    color: #bbb;
+}
+
+.dark-mode .footer-column h4 {
+    color: var(--primary);
+}
+
+.dark-mode .footer-column ul li a {
+    color: #eee;
+}
+
+.dark-mode .footer-column ul li a:hover {
+    color: var(--primary);
+}
+
+.dark-mode .social-links a {
+    background-color: rgba(255,255,255,0.08);
+    color: var(--primary-light);
+}
+
+.dark-mode .social-links a:hover {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.dark-mode .card-footer {
+    background-color: #232323;
+    border-top: 1px solid #444;
+    color: var(--dark);
+}
+
+.dark-mode .spinner {
+    border: 6px solid #444;
+    border-top-color: var(--primary);
+}
+
+.dark-mode #loading-overlay {
+    background: rgba(30, 30, 30, 0.95);
+}
+
+.dark-mode .modal-content {
+    background-color: #232323;
+    color: var(--dark);
+}
+
+.dark-mode .close-modal {
+    color: #eee;
+}
+
+.dark-mode .close-modal:hover {
+    color: var(--primary);
+}
+
+.dark-mode .user-type-card {
+    background-color: #232323;
+    border-color: #444;
+    color: var(--dark);
+}
+
+.dark-mode .user-type-card.selected {
+    background-color: rgba(255, 140, 66, 0.08);
+    border-color: var(--primary);
+}
+
+.dark-mode .whatsapp-widget {
+    background-color: #128C7E;
+    color: white;
+}
+
+.dark-mode .whatsapp-tooltip {
+    background-color: #232323;
+    color: #fff;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.5);
+}
+
+.dark-mode .form-group input:focus,
+.dark-mode .form-group select:focus {
+    border-color: var(--primary);
+    background-color: #232323;
+    color: var(--dark);
+}
