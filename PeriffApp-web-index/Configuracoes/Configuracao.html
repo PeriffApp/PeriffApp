@@ -24,7 +24,7 @@
         <!-- Conteúdo Principal -->
         <div class="main-content">
             <div class="header">
-                <h2>Configurações do Cliente</h2>
+                <h2>Configurações</h2>
             </div>
             
             <div class="settings-container">
@@ -37,7 +37,7 @@
                 
                 <div class="form-group">
                     <label>Excluir Conta</label>
-                    <button class="btn btn-secondary">Excluir Conta</button>
+                    <button class="btn btn-secondary" id="excluirConta">Excluir Conta</button>
                 </div>
 
                 <h3>Preferências</h3>
@@ -45,7 +45,7 @@
                 <div class="form-group">
                     <label>Modo Dark</label>
                     <div class="checkbox-group">
-                        <input type="checkbox" id="dark-mode" onclick="toggleDarkMode()">
+                        <input type="checkbox" id="dark-mode">
                         <label for="dark-mode">Ativar modo escuro</label>
                     </div>
                 </div>
@@ -66,6 +66,6 @@
         </div>
     </div>
     
-    <script src="configura.js" ></script>
+    <script src="configura.js" type="module"></script>
 </body>
 </html>
