@@ -208,14 +208,14 @@ header {
         padding: 32px 0;
     }
 
-        .section-title {
-            position: relative;
-            right: 100px;
-        }
-    
-        .section-title h3 {
-            font-size: 20px !important;
-        }
+    .section-title {
+        position: relative;
+        right: 100px;
+    }
+
+    .section-title h3 {
+        font-size: 20px !important;
+    }
 
 }
 
@@ -224,7 +224,7 @@ header {
         min-width: 400px;
     }
 
-    
+
 }
 
 @media (max-width: 455px) {
@@ -265,6 +265,7 @@ header {
         max-width: 150px !important;
         height: 32px;
     }
+
     .search-box input {
         padding: 0.5rem 0.5rem !important;
         min-width: 0 !important;
