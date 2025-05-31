@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil Prestador2</title>
+    <link rel="stylesheet" href="/perfilPrestador2/perfilPrestador.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=arrow_back" />
+    
+</head>
+<body>
+    <!-- Spinner de Loading -->
+    <div id="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+    <div class="profile-container">
+        <header class="profile-header">
+            <div class="profile-picture">
+                <img src="/imagens/perfilusuario2.jpg" alt="Foto do perfil" class="profile-pic" id="profilePic">
+                <!-- Retirado botão de adicionar foto por enquanto 
+                    <button class="edit-btn" id="profileAction"><i class="fas fa-camera"></i> Alterar</button>
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                -->
+            </div>
+            <div class="profile-info">
+                <h1 id="profileName"></h1>
+            <!--    
+                <i class="fas fa-map-marker-alt"></i>  - icon de localização
+            -->  
+                <div class="rating">
+                    <span class="stars">★★★★☆</span>
+                    <span class="rating-text"> 4.0 (12 avaliações) </span>
+                </div>
+            </div>
+             
+            <!-- Botão de voltar pro home -->
+            <div class="botaoHome">
+                <a href="/index.html"><i class="fas fa-home"></i></a>
+            </div>
+            
+        </header>
+    
+        <main class="profile-content">
+            <section class="profile-section">
+
+                <!-- Seção Sobre -->
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="material-icons">info</i>
+                            Sobre Mim
+                        </h2>
+                        <span class="edit-section" id="editAbout"> <!-- Botão de editar -->
+                            <i class="material-icons">edit</i>
+                            Editar
+                        </span>
+                    </div>
+                    <p class="about-text" id="aboutText"></p> <!-- Texto -->
+                </div>
+            </section>
+            
+            <!-- Endereços -->
+            <section class="profile-section">
+                <div class="section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-home"></i>Localização</h2>
+                        <span class="edit-section" id="editEndereco"> <!-- Editar endereço -->
+                            <i class="material-icons">edit</i>
+                                Editar
+                        </span>
+                    </div>
+                </div>
+                <div class="info-item">
+                    <strong>Endereço completo:</strong>
+                    <span id="enderecoCompleto"></span>
+                </div>
+            </section>
+
+
+            <!-- Serviços & Produtos -->
+            <section class="profile-section">
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="material-icons">handyman</i>
+                            Serviços & Produtos
+                        </h2>
+                        <span class="edit-section" id="openAddServiceModal"> <!-- Adicionar Serviços ou -->
+                            <i class="material-icons">add</i>
+                            Adicionar
+                        </span>
+                    </div>
+                <div class="services-container" id="servicesContainer">
+                    <!-- Serviços serão adicionados dinamicamente -->
+                </div>
+                </div>
+            </section>
+
+            
+            <!-- Avaliações -->
+            <section class="profile-section">
+                    <div class="section-header">
+                        <h2><i class="fas fa-comment"></i> Avaliações Recebidas</h2>
+                        <button id="openAddReview" class="btn btn-primary">Adicionar Avaliação</button>
+                    </div>
+                            
+                <div id="reviewsList">
+                    <!-- Avaliações serão adicionadas dinamicamente -->
+                </div>
+            
+                <div class="reviews-actions">
+                    <button class="view-more">Ver todas</button>
+                </div>
+            </section>
+            
+
+            <!-- Portfólio -->
+            <section class="profile-section">
+                <div class="section">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="material-icons">photo_library</i>
+                            Portfólio
+                        </h2>
+                    </div>
+                    <div class="portfolio-grid">
+                        <!-- Botão “+” para adicionar -->
+                        <div class="portfolio-item add-photo" id="portifolioAdd">
+                            <i class="material-icons">add</i>
+                            <span>Adicionar Foto</span>
+                        </div>
+                        <!-- Input oculto -->
+                        <input type="file" id="portifolioInput" accept="image/*" style="display: none;">
+                        <!-- Aqui as imagens serão inseridas dinamicamente -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Modal de pré‑visualização de imagem -->
+            <div class="image-modal" id="imageModal">
+                <span class="close-image-modal material-icons" id="closeImagemModal">close</span>
+                <div class="image-modal-content">
+                    <img id="modalImage" src="" alt="Imagem ampliada">
+                </div>
+            </div>
+
+             <!-- Modal de edição sobre -->
+            <div class="modal" id="editAboutModal">
+                <div class="modal-content">
+                    <span class="close-modal material-icons" id="closeEditAbout">close</span>
+                    <h3 class="modal-title">Editar Sobre Mim</h3>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <textarea id="aboutTextInput" maxlength="400" placeholder="Máximo 400 caracteres"></textarea>
+                        <span style="font-size:12px;color:#888;">Limite: 400 caracteres</span>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="cancelEditAbout">Cancelar</button>
+                        <button class="btn btn-primary" id="saveAbout">Salvar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de adicionar serviço -->
+            <div class="modal" id="addServiceModal">
+                <div class="modal-content">
+                    <span class="close-modal material-icons" id="closeService">close</span>
+                        <h3 class="modal-title">Adicionar Serviço</h3>
+                    <div class="form-group">
+                        <label>Título:</label>
+                        <input type="text" id="serviceTitleInput" maxlength="60">
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição:</label>
+                        <textarea id="serviceDescriptionInput" maxlength="300" placeholder="Máximo 300 caracteres"></textarea>
+                        <span style="font-size:12px;color:#888;">Limite: 300 caracteres</span>
+                    </div>
+                    <div class="form-group">
+                        <label>Preço (R$):</label>
+                        <div style="display: flex; gap: 8px; align-items: center;">
+                            <input type="number" id="servicePriceFromInput" placeholder="De" min="0" style="width: 80px;"> -
+                            <input type="number" id="servicePriceToInput" placeholder="Até" min="0" style="width: 80px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Detalhes (um por linha):</label>
+                        <textarea id="serviceDetailsInput" maxlength="300" placeholder="Cada linha será um item da lista de detalhes (máx. 300 caracteres)"></textarea>
+                        <span style="font-size:12px;color:#888;">Limite: 300 caracteres</span>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="cancelService">Cancelar</button>
+                        <button class="btn btn-primary" id="addNewService">Adicionar</button>
+                    </div>
+                </div>
+            </div>  
+
+            <!-- Modal de visualização do serviço -->
+            <div class="modal" id="serviceModal">
+                <div class="modal-content">
+                    <span class="close-modal material-icons" id="closeModalService">close</span>
+                    <h3 class="modal-service-title" id="modalServiceTitle"></h3>
+                    <p class="modal-service-description" id="modalServiceDescription"></p>
+                    <p class="modal-service-price" id="modalServicePrice"></p>
+                    <div class="modal-service-details">
+                        <h4 class="modal-service-details-title">Detalhes do serviço:</h4>
+                        <ul class="modal-service-details-list" id="modalServiceDetailsList"></ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de alterar o endereço -->          
+            <div class="modal" id="editEnderecoModal">
+                <div class="modal-content">
+                    <span class="close-modal material-icons" id="closeEditEndereco">close</span>
+                    <h3 class="modal-title">Editar Endereço</h3>
+
+                    <div class="form-group">
+                        <label for="estadoInput">Estado:</label>
+                        <select id="estadoInput">
+                            <option value="">Selecione o estado</option>
+                            <option value="BA">Bahia</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="PR">Paraná</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="PE">Pernambuco</option>
+                            <option value="CE">Ceará</option>
+                            <option value="GO">Goiás</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="ES">Espírito Santo</option>
+                            <option value="PA">Pará</option>
+                            <option value="AM">Amazonas</option>
+                            <option value="MA">Maranhão</option>
+                            <option value="PB">Paraíba</option>
+                            <option value="RN">Rio Grande do Norte</option>
+                            <option value="AL">Alagoas</option>
+                            <option value="PI">Piauí</option>
+                            <option value="MT">Mato Grosso</option>
+                            <option value="MS">Mato Grosso do Sul</option>
+                            <option value="SE">Sergipe</option>
+                            <option value="RO">Rondônia</option>
+                            <option value="TO">Tocantins</option>
+                            <option value="AC">Acre</option>
+                            <option value="AP">Amapá</option>
+                            <option value="RR">Roraima</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cidadeInput">Cidade:</label>
+                        <select id="cidadeInput">
+                            <option value="">Selecione a cidade</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="bairroInput">Bairro:</label>
+                        <input type="text" id="bairroInput" placeholder="Ex: Centro" maxlength="40">
+                    </div>
+                    <div class="form-group">
+                        <label for="ruaInput">Rua:</label>
+                        <input type="text" id="ruaInput" placeholder="Ex: Rua das Flores" maxlength="60">
+                    </div>
+                    <div class="form-group">
+                        <label for="numeroInput">Número / Complemento:</label>
+                        <input type="text" id="numeroInput" placeholder="Ex: 123 – Apto 42" maxlength="20">
+                    </div>
+                    <div class="form-group">
+                        <label for="cepInput">CEP:</label>
+                        <input type="text" id="cepInput" placeholder="Ex: 40000-000" maxlength="9">
+                    </div>
+
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="cancelEditEndereco">Cancelar</button>
+                        <button class="btn btn-primary" id="saveEditEndereco">Salvar</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal de Adicionar Avaliação -->
+            <div class="modal" id="addReviewModal">
+                <div class="modal-content">
+                    <span class="close-modal" id="closeAddReview">&times;</span>
+                    <h3 class="modal-title">Nova Avaliação</h3>
+                    <div class="form-group">
+                        <label for="reviewerName">Seu nome:</label>
+                        <input type="text" id="reviewerName" placeholder="Ex: Ana Silva" maxlength="40">
+                    </div>
+                    <div class="form-group">
+                        <label for="reviewText">Descrição:</label>
+                        <textarea id="reviewText" placeholder="Escreva sua avaliação (máx. 300 caracteres)" maxlength="300"></textarea>
+                        <span style="font-size:12px;color:#888;">Limite: 300 caracteres</span>
+                    </div>
+                    <div class="form-group rating-input">
+                        <label>Sua nota:</label>
+                        <div id="starRating">
+                            <span data-value="1">☆</span>
+                            <span data-value="2">☆</span>
+                            <span data-value="3">☆</span>
+                            <span data-value="4">☆</span>
+                            <span data-value="5">☆</span>
+                        </div>
+                    </div>
+                    <div class="modal-actions">
+                        <button class="btn btn-secondary" id="cancelAddReview">Cancelar</button>
+                        <button class="btn btn-primary" id="submitReview">Enviar</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </main>
+
+        <footer class="profile-footer">
+            <button class="contact-btn" id="contatarButton"><i class="fas fa-comment-dots"></i> Contatar Prestador</button>
+            <button class="contact-btn" id="logoutButton"> Sair da conta </button>
+            <div class="footer-links">
+                <a href="#"><i class="fas fa-user-shield"></i> Privacidade</a>
+                <a href="#"><i class="fas fa-question-circle"></i> Suporte</a>
+                <a href="#"><i class="fas fa-cog"></i> Configurações</a>
+            </div>
+        </footer>
+    </div>
+    <script type="module" src="/perfilPrestador2/perfilPrestador.js"></script>
+</body>
+</html>
