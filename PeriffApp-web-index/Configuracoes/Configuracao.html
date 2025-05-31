@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações do Cliente | Nome da Plataforma</title>
+    <link rel="stylesheet" href="configura.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <img src="/PeriffApp-web-index/imagens/logo.png" alt="Logo">
+            </div>
+            
+            <ul class="nav-menu">
+                <li class="active"><a href="#">⚙️ Configurações</a></li>
+                <li><a href="servicos.html">🔧 Serviços Contratados</a></li>
+                <li><a href="/PeriffApp-web-index/perfilPrestador2/perfilPrestador.html" id="logout-btn">🚪 Voltar</a></li>
+            </ul>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="main-content">
+            <div class="header">
+                <h2>Configurações do Cliente</h2>
+            </div>
+            
+            <div class="settings-container">
+                <h3>Segurança</h3>
+                
+                <div class="form-group">
+                    <label>Redefinir Senha</label>
+                    <button class="btn btn-primary">Alterar Senha</button>
+                </div>
+                
+                <div class="form-group">
+                    <label>Excluir Conta</label>
+                    <button class="btn btn-secondary">Excluir Conta</button>
+                </div>
+
+                <h3>Preferências</h3>
+                
+                <div class="form-group">
+                    <label>Modo Dark</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="dark-mode" onclick="toggleDarkMode()">
+                        <label for="dark-mode">Ativar modo escuro</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Perfil Visível</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="profile-visible" checked>
+                        <label for="profile-visible">Tornar meu perfil visível</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <button class="btn btn-primary">Salvar Alterações</button>
+                    <button class="btn btn-secondary">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="configura.js" ></script>
+</body>
+</html>

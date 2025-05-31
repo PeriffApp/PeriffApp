@@ -1,0 +1,227 @@
+:root {
+    --primary: #FF6B00;
+    --secondary: #FFFFFF;
+    --dark-bg: #333333;
+    --light-gray: #F5F5F5;
+    --medium-gray: #DDDDDD;
+}
+
+body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--light-gray);
+    color: var(--dark-bg);
+}
+
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    width: 250px;
+    background-color: var(--secondary);
+    border-right: 1px solid var(--medium-gray);
+    padding: 20px 0;
+}
+
+.logo {
+    display: flex;
+    padding: 0 20px 20px;
+    border-bottom: 1px solid var(--medium-gray);
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.logo img {
+    height: 120px;
+}
+
+.logo h1 {
+    color: var(--primary);
+    font-size: 20px;
+    margin: 0;
+}
+
+.nav-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.nav-menu li {
+    padding: 10px 20px;
+}
+
+.nav-menu li a {
+    color: var(--dark-bg);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.nav-menu li a:hover {
+    color: var(--primary);
+}
+
+.nav-menu li.active a {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h2 {
+    color: var(--primary);
+    margin: 0;
+}
+
+/* Configurações do Cliente */
+.settings-container {
+    background-color: var(--secondary);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 25px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 4px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+.btn-secondary {
+    background-color: var(--medium-gray);
+    color: var(--dark-bg);
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-group input {
+    margin-right: 10px;
+}
+
+/* MODO DARK PADRÃO */
+.dark-mode {
+    --primary: #e65a00;
+    --primary-light: #ff944d;
+    --secondary: #232323;
+    --dark: #FAFAFA;
+    --light-gray: #2D2D2D;
+    --gray: #444;
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode,
+.dark-mode body {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode .container,
+.dark-mode .main-content,
+.dark-mode .sidebar,
+.dark-mode .settings-container,
+.dark-mode .form-group,
+.dark-mode .header {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode .sidebar {
+    border-right: 1px solid var(--gray);
+}
+
+.dark-mode .nav-menu li a,
+.dark-mode .nav-menu li.active a {
+    color: var(--dark);
+}
+
+.dark-mode .nav-menu li.active a {
+    color: var(--primary);
+}
+
+.dark-mode .btn,
+.dark-mode .btn-primary {
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: none;
+}
+
+.dark-mode .btn-secondary {
+    background-color: var(--gray);
+    color: var(--dark);
+}
+
+.dark-mode .btn:hover,
+.dark-mode .btn-primary:hover {
+    background-color: var(--primary-light);
+}
+
+.dark-mode .form-group label,
+.dark-mode .settings-container h3,
+.dark-mode .header h2 {
+    color: white;
+}
+
+.dark-mode input[type="checkbox"] + label,
+.dark-mode .checkbox-group label {
+    color: #FFF;
+}
+
+.dark-mode input,
+.dark-mode select,
+.dark-mode textarea {
+    background-color: #232323;
+    color: var(--dark);
+    border: 1px solid var(--gray);
+}
+
+.dark-mode input:focus,
+.dark-mode select:focus,
+.dark-mode textarea:focus {
+    border-color: var(--primary);
+    background-color: #232323;
+    color: var(--dark);
+}
