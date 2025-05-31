@@ -4,3 +4,4 @@ package.json
 .vscode
 public
 .firebase
+firebase-debug.log
