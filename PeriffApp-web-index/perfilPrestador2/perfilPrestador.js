@@ -806,5 +806,11 @@ submitReviewBtn.addEventListener("click", async () => {
     // Cidade padrão: Salvador
     setTimeout(() => { cidadeInput.value = "Salvador"; }, 0);
   }
+  //Script para ativar modo dark conforme configuração 
+  if (localStorage.getItem("dark-mode") === "true") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
 
 });
