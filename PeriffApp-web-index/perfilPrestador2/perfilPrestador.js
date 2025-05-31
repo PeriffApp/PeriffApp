@@ -507,13 +507,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Links de configurações: mostra alerta ao clicar
-  document.querySelectorAll(".footer-links a").forEach((link) => {
-    link.addEventListener("click", function (e) {
-      e.preventDefault();
-      alert(`Abrindo ${this.textContent.trim()}...`);
-    });
-  });
+  
 
   // --------------------------
   // Modal "Sobre"
