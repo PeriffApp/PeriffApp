@@ -52,7 +52,7 @@ header {
 }
 
 .nav-links li {
-    margin-left: 2rem;
+    margin-left: 1rem;
 }
 
 .nav-links a {
@@ -151,6 +151,8 @@ header {
     padding: 0 2rem;
     cursor: pointer;
     transition: background-color 0.3s;
+    white-space: nowrap;
+
 }
 
 .search-box button:hover {
@@ -483,6 +485,7 @@ footer {
     font-size: 0.9rem;
 }
 
+/* Se houver url('imagens/...'), trocar para url('/imagens/...') */
 /* Estilos para os modais e formulários */
 .modal {
     display: none;
@@ -780,101 +783,7 @@ footer {
     height: 53px;
 }
 
-@media (max-width: 768px) {
-    .navbar {
-        flex-wrap: wrap;
-        padding: 1rem;
-    }
 
-    .logo {
-        margin-bottom: 1rem;
-        flex: 0 0 50%;
-    }
-
-    .botaoPerfil {
-        flex: 0 0 10%;
-
-
-    }
-
-    .nav-links {
-        margin: 1rem 0;
-        order: 1;
-        flex-basis: 100%;
-        /* força nova linha */
-        display: flex;
-        /* vira contêiner flex */
-        justify-content: center;
-        /* centraliza no eixo principal */
-
-    }
-
-    .nav-links li {
-        margin: 0 0.5rem;
-        font-size: 14px;
-    }
-
-    .search-box {
-        flex-direction: column;
-        border-radius: 10px;
-    }
-
-    .search-box input {
-        padding: 1rem;
-    }
-
-    .search-box button {
-        padding: 1rem;
-        border-radius: 0 0 10px 10px;
-    }
-
-    .steps {
-        flex-direction: column;
-    }
-
-    .step {
-        margin-bottom: 2rem;
-    }
-
-    .user-type-selector {
-        flex-direction: column;
-    }
-
-    .modal-content {
-        width: 95%;
-        padding: 1.5rem;
-    }
-
-    .radio-group {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .whatsapp-widget {
-        bottom: 20px;
-        right: 20px;
-        width: 50px;
-        height: 50px;
-    }
-
-    .whatsapp-icon {
-        font-size: 25px;
-    }
-
-    .whatsapp-tooltip {
-        display: none;
-    }
-
-}
-
-@media (max-width: 383px) {
-
-    .nav-links li {
-        font-size: 13px;
-    }
-
-
-}
 
 /* Estilos para o container dos cards */
 #listaPrestadores {
@@ -978,4 +887,159 @@ footer {
     to {
         transform: rotate(360deg);
     }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-wrap: wrap;
+        padding: 1rem;
+    }
+
+    .logo {
+        margin-bottom: 1rem;
+        flex: 0 0 50%;
+    }
+
+    .botaoPerfil {
+        flex: 0 0 10%;
+
+
+    }
+
+    .nav-links {
+        margin: 1rem 0;
+        order: 1;
+        flex-basis: 100%;
+        /* força nova linha */
+        display: flex;
+        /* vira contêiner flex */
+        justify-content: center;
+        /* centraliza no eixo principal */
+
+    }
+
+    .nav-links li {
+        margin: 0 0.5rem;
+        font-size: 14px;
+    }
+
+    .steps {
+        flex-direction: column;
+    }
+
+    .step {
+        margin-bottom: 2rem;
+    }
+
+    .user-type-selector {
+        flex-direction: column;
+    }
+
+    .modal-content {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .radio-group {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .whatsapp-widget {
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+    }
+
+    .whatsapp-icon {
+        font-size: 25px;
+    }
+
+    .whatsapp-tooltip {
+        display: none;
+    }
+
+}
+
+@media (max-width: 723px) {
+
+    .hero h2 {
+        font-size: 2rem;
+    }
+
+
+    .hero p {
+        font-size: 1rem;
+    }
+
+}
+
+@media (max-width: 422px) {
+
+    .hero h2 {
+        font-size: 1.8rem;
+    }
+
+
+    .hero p {
+        font-size: 0.9rem;
+
+    }
+
+    .search-box {
+
+        max-width: 350px;
+        max-height: 50px;
+
+    }
+
+}
+
+@media (max-width: 386px) {
+
+    .nav-links li {
+        font-size: 13px;
+    }
+
+    .hero h2 {
+        font-size: 1.7rem;
+    }
+
+
+    .hero p {
+        font-size: 0.9rem;
+
+    }
+
+}
+
+@media (max-width: 376px) {
+    .search-box {
+        max-width: 300px;
+    }
+
+    .search-box button {
+        font-size: 10px;
+    }
+
+
+}
+
+@media (max-width: 362px) {
+
+    .hero h2 {
+        font-size: 1.6rem;
+
+    }
+
+}
+
+@media (max-width: 338px) {
+
+    .hero h2 {
+        font-size: 1.5rem;
+
+    }
+
 }
