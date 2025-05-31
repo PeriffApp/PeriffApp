@@ -15,7 +15,15 @@ async function buscarPrestadoresFirestore(termo) {
   // Filtro local por categoria, subCategoria OU nome (case-insensitive)
   const termoLower = termo.toLowerCase();
   const prestadores = snap.docs
-    .map(doc => ({ id: doc.id, ...doc.data() }))
+    .map(doc => {
+      const data = doc.data();
+      return {
+        id: doc.id,
+        ...data,
+        avaliacao: data.mediaAvaliacao || '-',
+        totalAvaliacoes: typeof data.totalAvaliacoes === 'number' ? data.totalAvaliacoes : '-' // Mostra '-' se não existir
+      };
+    })
     .filter(p =>
       (p.Categoria && p.Categoria.toLowerCase() === termoLower) ||
       (p.subCategoria && p.subCategoria.toLowerCase() === termoLower) ||
@@ -34,7 +42,7 @@ function renderCards(prestadoresList) {
     card.innerHTML = `
         <img src="${p.foto || '../imagens/perfilUsuario2.jpg'}" alt="Foto de ${p.Nome || ''}" />
         <div class="name">${p.Nome || ''}</div>
-        <div class="rating"><span class="star">⭐</span> ${p.avaliacao || '-'} (${p.totalAvaliacoes || 0} avaliações)</div>
+        <div class="rating"><span class="star">⭐</span> ${p.avaliacao} (${p.totalAvaliacoes} avaliações)</div>
         <div class="category">Categoria: ${p.Categoria || ''}${p.subCategoria ? ' / ' + p.subCategoria : ''}</div>
       `;
     cardsContainer.appendChild(card);

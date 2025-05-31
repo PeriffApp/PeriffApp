@@ -179,8 +179,28 @@ async function addReviewDB(uidPrestador, review) {
     rating: review.rating,
     date: review.date,           // Timestamp ou string "dd/mm/yyyy"
   });
+  // Atualiza a média após adicionar avaliação
+  await atualizarMediaAvaliacao(uidPrestador);
   showToast("Avaliação enviada com sucesso");
   return ref.id;
+}
+
+// Atualiza a média de avaliações e a quantidade no documento do usuário
+async function atualizarMediaAvaliacao(uidPrestador) {
+  // Busca todas as avaliações
+  const snap = await getDocs(collection(db, "Usuario", uidPrestador, "Avaliacoes"));
+  const avaliacoes = snap.docs.map(doc => doc.data());
+  const notas = avaliacoes.map(a => Number(a.rating)).filter(n => !isNaN(n));
+  let media = 0;
+  if (notas.length > 0) {
+    const soma = notas.reduce((acc, cur) => acc + cur, 0);
+    media = soma / notas.length;
+  }
+  // Salva a média e a quantidade no campo mediaAvaliacao e totalAvaliacoes do usuário
+  await updateDoc(doc(db, "Usuario", uidPrestador), {
+    mediaAvaliacao: media.toFixed(1),
+    totalAvaliacoes: avaliacoes.length
+  });
 }
 
 // Carrega avaliações do Firestore e ordena por data
