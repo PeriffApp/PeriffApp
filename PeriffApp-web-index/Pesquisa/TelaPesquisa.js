@@ -32,7 +32,7 @@ function renderCards(prestadoresList) {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-        <img src="${p.foto || 'https://via.placeholder.com/300'}" alt="Foto de ${p.Nome || ''}" />
+        <img src="${p.foto || '../imagens/perfilUsuario2.jpg'}" alt="Foto de ${p.Nome || ''}" />
         <div class="name">${p.Nome || ''}</div>
         <div class="rating"><span class="star">⭐</span> ${p.avaliacao || '-'} (${p.totalAvaliacoes || 0} avaliações)</div>
         <div class="category">Categoria: ${p.Categoria || ''}${p.subCategoria ? ' / ' + p.subCategoria : ''}</div>

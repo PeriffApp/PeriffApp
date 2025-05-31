@@ -128,7 +128,7 @@ header {
     border: 1px solid var(--cor-cinza-medio);
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    padding: 10px;
     transition: transform 0.2s, box-shadow 0.2s;
     scroll-snap-align: start;
 }
@@ -139,7 +139,7 @@ header {
 }
 
 .card img {
-    width: 100%;
+    width: 25%;
     border-radius: 8px;
     margin-bottom: 12px;
 }
@@ -175,42 +175,109 @@ header {
 
 /* Responsivo */
 @media (max-width: 1000px) {
-  .carousel {
-    grid-template-columns: repeat(2, 1fr);
-    max-width: 650px;
-  }
+    .carousel {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 650px;
+    }
 }
 
-@media (max-width: 700px) {
-  .navbar {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 10px 10px;
-  }
-  .nav-links {
-    gap: 15px;
-  }
-  .search-box input[type="text"] {
-    width: 100px;
-  }
-  .carousel {
-    grid-template-columns: 1fr;
-    max-width: 350px;
-    padding: 16px 0;
-  }
-  .card {
-    width: 100%;
-  }
+@media (max-width: 1235px) {
+    .navbar {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+}
+
+@media (max-width: 745px) {
+    .card {
+        width: 250px;
+    }
+
+}
+
+@media (max-width: 590px) {
+    .carousel {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+        gap: 32px;
+        justify-items: center;
+        align-items: stretch;
+        max-width: 1000px;
+        margin: 0 auto;
+        padding: 32px 0;
+    }
+
+        .section-title {
+            position: relative;
+            right: 100px;
+        }
+    
+        .section-title h3 {
+            font-size: 20px !important;
+        }
+
+}
+
+@media (max-width: 535px) {
+    .search-box {
+        min-width: 400px;
+    }
+
+    
+}
+
+@media (max-width: 455px) {
+    .nav-links {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 420px) {
+    .nav-links {
+        font-size: 12px;
+    }
+
+    .search-box {
+        min-width: 300px;
+    }
+
+}
+
+@media (max-width: 380px) {
+    .nav-links li {
+        margin-left: 1rem;
+    }
+
+}
+
+@media (max-width: 358px) {
+    .section-title h3 {
+        font-size: 20px !important;
+    }
+
+    .section-title {
+        right: 120px;
+    }
+
+    .search-box {
+        min-width: 270px !important;
+        max-width: 150px !important;
+        height: 32px;
+    }
+    .search-box input {
+        padding: 0.5rem 0.5rem !important;
+        min-width: 0 !important;
+    }
 }
 
 .section-title {
     display: flex;
-    align-items: center;
-    gap: 10px;
     margin-left: 150px;
+    gap: 10px;
     margin-top: 40px;
     margin-bottom: 3rem;
+    white-space: nowrap;
 }
 
 .section-title h3 {
@@ -223,6 +290,3 @@ header {
     color: var(--primary);
     margin-left: 5px;
 }
-
-
-
