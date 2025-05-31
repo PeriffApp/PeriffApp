@@ -2,13 +2,13 @@ import { auth } from '../firebase.js';
 import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', function() {
-  const recoveryForm = document.getElementById('recoveryForm');
+  const recoveryForm = document.getElementById("recoveryForm");
   if (recoveryForm) {
-    recoveryForm.addEventListener('submit', function(e) {
+    recoveryForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      const email = document.getElementById('userIdentity').value.trim();
+      const email = document.getElementById("userIdentity").value.trim();
       if (!email || !validarEmail(email)) {
-        alert('Por favor, informe um e-mail válido para recuperação.');
+        alert("Por favor, informe um e-mail válido para recuperação.");
         return;
       }
       sendPasswordResetEmail(auth, email)
@@ -16,9 +16,18 @@ document.addEventListener('DOMContentLoaded', function() {
           mostrarSucesso();
         })
         .catch((error) => {
-          alert('Erro ao enviar e-mail de redefinição: ' + traduzirErro(error.code));
+          alert(
+            "Erro ao enviar e-mail de redefinição: " + traduzirErro(error.code)
+          );
         });
     });
+  }
+
+  // Para ativar o modo Dark!
+  if (localStorage.getItem("dark-mode") === "true") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
   }
 });
 

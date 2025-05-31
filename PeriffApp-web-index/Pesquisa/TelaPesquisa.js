@@ -102,9 +102,15 @@ showLoading();
 
 document.addEventListener("DOMContentLoaded", () => {
   // Ajuste para carregar todos ao abrir (ou deixar vazio)
-  pesquisandoPor.textContent = 'Todos';
+  pesquisandoPor.textContent = "Todos";
   renderCards([], auth.currentUser ? auth.currentUser.uid : null);
   hideLoading();
+  // Para ativar o modo Dark!
+  if (localStorage.getItem("dark-mode") === "true") {
+    document.body.classList.add("dark-mode");
+  } else {
+    document.body.classList.remove("dark-mode");
+  }
 });
 
 // Ao carregar a página, verifica se veio termo de pesquisa na URL

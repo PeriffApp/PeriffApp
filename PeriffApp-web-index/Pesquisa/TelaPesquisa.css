@@ -320,3 +320,83 @@ header {
         transform: rotate(360deg);
     }
 }
+
+/* MODO DARK PADRÃO */
+.dark-mode {
+    --primary: #e65a00;
+    --primary-light: #ff944d;
+    --secondary: #232323;
+    --dark: #FAFAFA;
+    --light-gray: #2D2D2D;
+    --gray: #444;
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode,
+.dark-mode body {
+    background-color: var(--secondary) !important;
+    color: var(--dark);
+}
+
+.dark-mode header,
+.dark-mode .navbar,
+.dark-mode .search-section,
+.dark-mode .results-section,
+.dark-mode .card,
+.dark-mode .modal-content {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
+
+.dark-mode .nav-links a,
+.dark-mode .nav-links a:visited {
+    color: var(--dark);
+}
+
+.dark-mode .nav-links a.active,
+.dark-mode .nav-links a:hover {
+    color: var(--primary);
+}
+
+.dark-mode .search-box input,
+.dark-mode .search-box select {
+    background-color: white;
+    color: var(--dark);
+    border: 1px solid var(--gray);
+}
+
+.dark-mode .search-box input:focus,
+.dark-mode .search-box select:focus {
+    border-color: var(--primary);
+    background-color: #232323;
+    color: var(--dark);
+}
+
+.dark-mode .btn,
+.dark-mode .btn-primary {
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: none;
+}
+
+.dark-mode .btn:hover,
+.dark-mode .btn-primary:hover {
+    background-color: var(--primary-light);
+}
+
+.dark-mode .card {
+    background-color: var(--light-gray);
+    color: var(--dark);
+    border-color: var(--gray);
+}
+
+.dark-mode .spinner {
+    border: 6px solid #444;
+    border-top-color: var(--primary);
+}
+
+.dark-mode .modal-content {
+    background-color: var(--secondary);
+    color: var(--dark);
+}
