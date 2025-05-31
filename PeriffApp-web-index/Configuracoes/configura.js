@@ -15,4 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
           localStorage.setItem('dark-mode', 'false');
       }
   });
+
+  document.getElementById("alterarSenha").addEventListener('click', function(){
+    window.location.href = "../RecuperacaoSenha/recuperacao.html";
+  })
+
 });
