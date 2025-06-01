@@ -1,4 +1,4 @@
-import { auth } from '../firebase.js';
+import {db, auth, onAuthStateChanged, doc, getDoc,  } from "../firebase.js";
 import { sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -23,12 +23,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   }
 
-  // Para ativar o modo Dark!
-  if (localStorage.getItem("dark-mode") === "true") {
-    document.body.classList.add("dark-mode");
-  } else {
-    document.body.classList.remove("dark-mode");
-  }
 });
 
 function mostrarSucesso() {
@@ -53,5 +47,22 @@ function traduzirErro(code) {
 window.redirectToLogin = function() {
   window.location.href = '../index.html';
 };
+
+// Buscar preferencia de tema
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userRef = doc(db, "Usuario", user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+    } catch (e) {
+      console.error("Erro ao buscar preferência de modo dark:", e);
+    }
+  }
+});
 
 

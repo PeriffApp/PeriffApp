@@ -7,6 +7,8 @@ import {
   collection,
   db,
   getDocs,
+  doc,
+  getDoc
 } from "./firebase.js"; // Importando o Firebase
 
 
@@ -32,6 +34,17 @@ onAuthStateChanged(auth, async (user) => {
     console.log("STATUS: Usuário logado com UID: " + uid);
     document.getElementById("btnEntrar").style.display = "none"; // Esconde o botão de entrar se o usuario estiver logado
     document.getElementById("btnPerfil").style.display = "block"; // Exibe o botão para ir pro perfil
+    try {
+      const userRef = doc(db, "Usuario", user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+    } catch (e) {
+      console.error("Erro ao buscar preferência de modo dark:", e);
+    } 
   } else {
     console.log("STATUS: Usuário não logado");
     document.getElementById("btnEntrar").style.display = "block";
@@ -192,12 +205,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     hideLoading();
   }
   
-  // Para ativar o modo Dark!
-  if (localStorage.getItem("dark-mode") === "true") {
-    document.body.classList.add("dark-mode");
-  } else {
-    document.body.classList.remove("dark-mode");
-  }
+
 
 });
 

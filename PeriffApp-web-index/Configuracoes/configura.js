@@ -1,21 +1,41 @@
-import { auth, db, deleteDoc, doc } from "../firebase.js";
+import { auth, db, deleteDoc, doc, setDoc, getDoc } from "../firebase.js";
 import { getAuth, deleteUser, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
 // Alterna a classe dark-mode no body ao clicar no checkbox
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
   const checkbox = document.getElementById('dark-mode');
-  // Mantém o estado ao recarregar a página
-  if (localStorage.getItem('dark-mode') === 'true') {
-      document.body.classList.add('dark-mode');
-      checkbox.checked = true;
-  }
-  checkbox.addEventListener('change', function() {
+  onAuthStateChanged(auth, async (user) => {
+    if (user) {
+      try {
+        const userRef = doc(db, "Usuario", user.uid);
+        const userSnap = await getDoc(userRef);
+        if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
+          document.body.classList.add("dark-mode");
+          checkbox.checked = true;
+        } else {
+          document.body.classList.remove("dark-mode");
+          checkbox.checked = false;
+        }
+      } catch (e) {
+        console.error("Erro ao buscar preferência de modo dark:", e);
+      }
+    }
+  });
+  checkbox.addEventListener('change', async function() {
       if (checkbox.checked) {
           document.body.classList.add('dark-mode');
-          localStorage.setItem('dark-mode', 'true');
       } else {
           document.body.classList.remove('dark-mode');
-          localStorage.setItem('dark-mode', 'false');
+      }
+      // Salva preferência no Firestore
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, 'Usuario', user.uid);
+          await setDoc(userRef, { preferenciaDarkMode: checkbox.checked }, { merge: true });
+        }
+      } catch (e) {
+        console.error('Erro ao salvar preferência de modo dark:', e);
       }
   });
 

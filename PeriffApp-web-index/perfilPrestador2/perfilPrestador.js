@@ -331,6 +331,17 @@ onAuthStateChanged(auth, async (user) => {
         const data = userSnap.data();
         const endereco = endSnap.exists() ? endSnap.data() : null;
         updateProfileInfo(data, endereco);
+
+        // Busca preferência de tema ao carregar a página
+        try {
+          if (userSnap.data().preferenciaDarkMode === true) {
+            document.body.classList.add("dark-mode");
+          } else {
+            document.body.classList.remove("dark-mode");
+          }
+        } catch (e) {
+          console.error("Erro ao buscar preferência de modo dark:", e);
+        }
       }
       renderServices();
 
@@ -341,7 +352,6 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
         document.getElementById("contatarButton").style.display = "block";
-        
       } else {
         document.getElementById("contatarButton").style.display = "none";
         document.getElementById("openAddReview").style.display = "none";
@@ -800,11 +810,6 @@ submitReviewBtn.addEventListener("click", async () => {
     // Cidade padrão: Salvador
     setTimeout(() => { cidadeInput.value = "Salvador"; }, 0);
   }
-  //Script para ativar modo dark conforme configuração 
-  if (localStorage.getItem("dark-mode") === "true") {
-    document.body.classList.add("dark-mode");
-  } else {
-    document.body.classList.remove("dark-mode");
-  }
+  
 
 });
