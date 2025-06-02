@@ -33,13 +33,34 @@ const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 const pesquisandoPor = document.querySelector(".pesq h3");
 
+// Função para calcular distância de Levenshtein (fuzzy search)
+function levenshtein(a, b) {
+  if (!a.length) return b.length;
+  if (!b.length) return a.length;
+  const matrix = [];
+  for (let i = 0; i <= b.length; i++) matrix[i] = [i];
+  for (let j = 0; j <= a.length; j++) matrix[0][j] = j;
+  for (let i = 1; i <= b.length; i++) {
+    for (let j = 1; j <= a.length; j++) {
+      if (b.charAt(i - 1) === a.charAt(j - 1)) {
+        matrix[i][j] = matrix[i - 1][j - 1];
+      } else {
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j - 1] + 1, // substituição
+          matrix[i][j - 1] + 1,     // inserção
+          matrix[i - 1][j] + 1      // remoção
+        );
+      }
+    }
+  }
+  return matrix[b.length][a.length];
+}
+
+// Busca prestadores com filtro fuzzy
 async function buscarPrestadoresFirestore(termo) {
-  // Busca todos os prestadores
   const prestadoresRef = collection(db, "Usuario");
   const q = query(prestadoresRef, where("Tipo", "==", "Prestador"));
   const snap = await getDocs(q);
-
-  // Filtro local por categoria, subCategoria OU nome (case-insensitive)
   const termoLower = termo.toLowerCase();
   const prestadores = snap.docs
     .map(doc => {
@@ -48,15 +69,23 @@ async function buscarPrestadoresFirestore(termo) {
         id: doc.id,
         ...data,
         avaliacao: data.mediaAvaliacao || '-',
-        totalAvaliacoes: typeof data.totalAvaliacoes === 'number' ? data.totalAvaliacoes : '-' // Mostra '-' se não existir
+        totalAvaliacoes: typeof data.totalAvaliacoes === 'number' ? data.totalAvaliacoes : '-'
       };
-    })
-    .filter(p =>
-      (p.Categoria && p.Categoria.toLowerCase() === termoLower) ||
-      (p.subCategoria && p.subCategoria.toLowerCase() === termoLower) ||
-      (p.Nome && p.Nome.toLowerCase().includes(termoLower))
-    );
-  return prestadores;
+    });
+  // Filtro exato/parcial
+  let filtrados = prestadores.filter(p =>
+    (p.Categoria && p.Categoria.toLowerCase().includes(termoLower)) ||
+    (p.subCategoria && p.subCategoria.toLowerCase().includes(termoLower)) ||
+    (p.Nome && p.Nome.toLowerCase().includes(termoLower))
+  );
+  // Se não achou nada, faz fuzzy
+  if (filtrados.length === 0 && termoLower.length > 2) {
+    filtrados = prestadores.filter(p => {
+      const campos = [p.Categoria, p.subCategoria, p.Nome].filter(Boolean).map(x => x.toLowerCase());
+      return campos.some(campo => levenshtein(campo, termoLower) <= 2 || campo.includes(termoLower));
+    });
+  }
+  return filtrados;
 }
 
 function renderCards(prestadoresList, loggedUid) {
