@@ -361,7 +361,7 @@ header {
 
 .dark-mode .search-box input,
 .dark-mode .search-box select {
-    background-color: white;
+    background-color: rgb(75, 71, 71);
     color: var(--dark);
     border: 1px solid var(--gray);
 }
