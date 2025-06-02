@@ -71,9 +71,6 @@ function resetForms() {
   providerForm.style.display = 'none';
   document.getElementById('clientRegisterForm').reset();
   document.getElementById('providerRegisterForm').reset();
-  document.querySelector('input[name="docType"][value="cpf"]').checked = true;
-  cpfField.style.display = 'block';
-  cnpjField.style.display = 'none';
 }
 
 
@@ -174,6 +171,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cria usuário no Firebase Auth
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
+        // Salva o e-mail no localStorage para a tela de confirmação
+        localStorage.setItem('emailCadastro', email);
         const uid = userCredential.user.uid;
     
         // Usa setDoc e propaga o UID para o próximo then
@@ -262,6 +261,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Cria usuário no Firebase Auth
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
+        // Salva o e-mail no localStorage para a tela de confirmação
+        localStorage.setItem('emailCadastro', email);
         const uid = userCredential.user.uid;
         // Usa setDoc e propaga o UID para o próximo then
         return setDoc(doc(db, "Usuario", uid), {

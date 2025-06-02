@@ -293,7 +293,6 @@ btnLogout.addEventListener("click", (e) => {
   e.preventDefault();
   signOut(auth)
     .then(() => {
-      alert("Você saiu da sua conta.");
       window.location.replace("../index.html");
     })
     .catch((error) => {

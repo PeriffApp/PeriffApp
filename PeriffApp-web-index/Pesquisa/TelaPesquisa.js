@@ -125,12 +125,22 @@ searchInput.addEventListener("keydown", (e) => {
 // Exibe o loading assim que a página começa a carregar
 showLoading();
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   // Ajuste para carregar todos ao abrir (ou deixar vazio)
-  pesquisandoPor.textContent = "Todos";
-  renderCards([], auth.currentUser ? auth.currentUser.uid : null);
-  hideLoading();
-  
+  const urlParams = new URLSearchParams(window.location.search);
+  const termoPesquisa = urlParams.get("pesquisa");
+  if (termoPesquisa) {
+    searchInput.value = termoPesquisa;
+    pesquisandoPor.textContent = termoPesquisa;
+    showLoading();
+    await pesquisar();
+  } else {
+    pesquisandoPor.textContent = "Todos";
+    showLoading();
+    const prestadores = await buscarPrestadoresFirestore("");
+    renderCards(prestadores, auth.currentUser ? auth.currentUser.uid : null);
+    hideLoading();
+  }
 });
 
 // Ao carregar a página, verifica se veio termo de pesquisa na URL

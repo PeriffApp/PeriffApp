@@ -178,7 +178,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           const user = userCredential.user;
 
           if (user.emailVerified) {
-            alert("Login realizado com sucesso!");
             window.location.replace("./index.html");
           } else {
             alert("Por favor, verifique seu e-mail antes de fazer login.");

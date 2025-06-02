@@ -42,6 +42,28 @@ document.addEventListener("DOMContentLoaded", () => {
   const step5 = document.getElementById("step5");
   if (step5) step5.style.display = "none";
 
+  // Exibe o e-mail real do usuário na tela de confirmação
+  const emailCadastro = localStorage.getItem("emailCadastro");
+  if (emailCadastro) {
+    // Função para mascarar o e-mail (ex: ex****@gmail.com)
+    function mascararEmail(email) {
+      const [user, domain] = email.split("@");
+      if (user.length <= 2) return email;
+      return (
+        user.substring(0, 2) +
+        "*".repeat(user.length - 2) +
+        "@" +
+        domain
+      );
+    }
+    const emailMasc = mascararEmail(emailCadastro);
+    // Atualiza o texto na tela
+    const recoveryOptions = document.querySelector(".recovery-option p");
+    if (recoveryOptions) {
+      recoveryOptions.textContent = `Enviaremos um link de confirmação para ${emailMasc}`;
+    }
+  }
+
   /**
    * Envio de e-mail de verificação
    * Ao clicar no botão "enviar", envia um e-mail de verificação para o usuário autenticado.
