@@ -216,7 +216,6 @@ document.addEventListener('DOMContentLoaded', function() {
   document.getElementById('providerRegisterForm').addEventListener('submit', function(e) {
     // Previne envio padrão e coleta dados do formulário
     e.preventDefault();
-    const tipoDoc = document.querySelector('input[name="docType"]:checked').value;
     const email = document.getElementById('providerEmail').value;
     const nome = document.getElementById('providerName').value;
     const password = document.getElementById('providerPassword').value;
@@ -225,13 +224,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoriaServico = document.getElementById("providerService").value;
     const subCategoria = document.getElementById("subCategoria").value;
   
-    let cnpj = null;
-    let cpf = null;
-    if (tipoDoc === 'cpf') {
-      cpf = document.getElementById('providerCPF').value;
-    } else {
-      cnpj = document.getElementById('providerCNPJ').value;
-    }
+    let cpf = document.getElementById('providerCPF').value;
+ 
     // Validações
     if (password !== confirmPassword) {
       alert('As senhas não coincidem!');
@@ -268,7 +262,6 @@ document.addEventListener('DOMContentLoaded', function() {
         return setDoc(doc(db, "Usuario", uid), {
           UID: uid,
           CPF: cpf,
-          CNPJ: cnpj,
           Email: email,
           Nome: nome,
           Senha: password,
