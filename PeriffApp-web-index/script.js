@@ -105,6 +105,20 @@ function renderCards(prestadoresList) {
   });
 }
 
+// Redireciona para pesquisa ao clicar em uma categoria
+function ativarClickCategorias() {
+  const categoryCards = document.querySelectorAll(".category-card");
+  categoryCards.forEach(card => {
+    card.style.cursor = "pointer";
+    card.addEventListener("click", function () {
+      const categoria = card.querySelector("h4")?.innerText?.trim();
+      if (categoria) {
+        window.location.href = `Pesquisa/TelaPesquisa.html?pesquisa=${encodeURIComponent(categoria)}`;
+      }
+    });
+  });
+}
+
 // ------------------------------
 // Reseta o formulário de login
 // ------------------------------
@@ -200,6 +214,7 @@ document.addEventListener("DOMContentLoaded", async function () {
         }
       });
     }
+    ativarClickCategorias();
   } finally {
     // Esconde overlay depois de tudo
     hideLoading();
