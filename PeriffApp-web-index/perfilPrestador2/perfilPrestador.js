@@ -332,6 +332,21 @@ onAuthStateChanged(auth, async (user) => {
         const endereco = endSnap.exists() ? endSnap.data() : null;
         updateProfileInfo(data, endereco);
 
+        // NOVO: Esconde se for Cliente
+        if (data.Tipo === "Cliente") {
+          // Esconde seções de serviços, avaliações e portfólio
+          const servicosSec = document.getElementById("serv");
+          if (servicosSec) servicosSec.parentElement.style.display = "none";
+          const avaliacoesSec = document.getElementById("reviewsList");
+          if (avaliacoesSec) avaliacoesSec.parentElement.style.display = "none";
+          const portSec = document.getElementById("port");
+          if (portSec) portSec.style.display = "none";
+          const rating = document.getElementById("rating");
+          if (rating) rating.style.display = "none";
+        } else {
+          renderServices();
+        }
+
         // Busca preferência de tema ao carregar a página
         try {
           if (userSnap.data().preferenciaDarkMode === true) {
