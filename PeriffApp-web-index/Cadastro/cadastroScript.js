@@ -54,6 +54,13 @@ function validarApenasNumeros(valor) {
   return re.test(valor);
 }
 
+// Valida se o nome completo contém apenas letras e espaços
+function validarNomeCompleto(nome) {
+  // Aceita letras maiúsculas/minúsculas e espaços (nomes compostos)
+  const re = /^[A-Za-zÀ-ÿ\s]+$/;
+  return re.test(nome.trim());
+}
+
 // ---------------------------------------------
 // Função para resetar os formulários e UI
 // ---------------------------------------------
@@ -158,6 +165,10 @@ document.addEventListener('DOMContentLoaded', function() {
       alert("Você deve aceitar os Termos de Uso!");
       return;
     }
+    if (!validarNomeCompleto(nome)) {
+      alert("Nome inválido! O nome deve conter apenas letras e espaços.");
+      return;
+    }
 
     
     // Cria usuário no Firebase Auth
@@ -241,6 +252,10 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     if (!validarApenasNumeros(telefone)) {
       alert("Por favor, digite apenas números");
+      return;
+    }
+    if (!validarNomeCompleto(nome)) {
+      alert("Nome inválido! O nome deve conter apenas letras e espaços.");
       return;
     }
 
