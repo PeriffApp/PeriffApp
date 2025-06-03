@@ -267,12 +267,9 @@ function updateHeaderRating() {
   const total = reviews.length;
   const sum = reviews.reduce((acc, r) => acc + (Number(r.rating) || 0), 0);
   const avg = sum / total;
-  const fullStars = Math.floor(avg);
-  const halfStar = avg - fullStars >= 0.5 ? 1 : 0;
-  const emptyStars = 5 - fullStars - halfStar;
-  let stars = "★".repeat(fullStars) + (halfStar ? "½" : "") + "☆".repeat(emptyStars);
-  // Se quiser usar só estrelas cheias/vazias, com arredondamento:
-  // let stars = "★".repeat(Math.round(avg)) + "☆".repeat(5 - Math.round(avg));
+  // Exibe apenas estrelas cheias e vazias, arredondando para o inteiro mais próximo
+  const rounded = Math.round(avg);
+  let stars = "★".repeat(rounded) + "☆".repeat(5 - rounded);
   ratingContainer.innerHTML = `<span class="stars">${stars}</span> <span class="rating-text"> ${avg.toFixed(1)} (${total} avaliação${total > 1 ? 's' : ''}) </span>`;
 }
 
