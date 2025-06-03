@@ -356,7 +356,10 @@ onAuthStateChanged(auth, async (user) => {
 
         // Busca preferência de tema ao carregar a página
         try {
-          if (userSnap.data().preferenciaDarkMode === true) {
+          // Sempre busca a preferência do usuário autenticado, não do perfil visitado
+          const userAuthDocRef = doc(db, "Usuario", user.uid);
+          const userAuthSnap = await getDoc(userAuthDocRef);
+          if (userAuthSnap.exists() && userAuthSnap.data().preferenciaDarkMode === true) {
             document.body.classList.add("dark-mode");
           } else {
             document.body.classList.remove("dark-mode");
@@ -374,6 +377,7 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
         document.getElementById("contatarButton").style.display = "block";
+        document.getElementById("footer-links").style.display = "none";
       } else {
         document.getElementById("contatarButton").style.display = "none";
         document.getElementById("openAddReview").style.display = "none";
@@ -387,6 +391,7 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById("openAddReview").style.display = "none";
       document.getElementById("logoutButton").style.display = "none";
       document.getElementById("contatarButton").style.display = "none";
+      document.getElementById("profile-footer").style.display = "none";
       const uidFromUrl = getUidFromUrl();
       const uid = uidFromUrl;
       currentUserUID = uid;
@@ -399,9 +404,25 @@ onAuthStateChanged(auth, async (user) => {
         const endSnap = await getDoc(enderecoDocRef);
         const endereco = endSnap.exists() ? endSnap.data() : null;
         updateProfileInfo(data, endereco);
+        // NOVO: Exibe disponibilidade conforme perfilDisponivel
+        const disponibilidade = document.getElementById(
+          "disponibilidadeHeader"
+        );
+        const indisponibilidade = document.getElementById(
+          "indisponibilidadeHeader"
+        );
+        if (data.perfilDisponivel === true) {
+          if (disponibilidade) disponibilidade.style.display = "flex";
+          if (indisponibilidade) indisponibilidade.style.display = "none";
+        } else {
+          if (disponibilidade) disponibilidade.style.display = "none";
+          if (indisponibilidade) indisponibilidade.style.display = "flex";
+        }
       } else {
         console.log("Documento não encontrado para UID:", uid);
       }
+
+      
 
       await loadServicesDB(currentUserUID);
       renderServices();
@@ -692,7 +713,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("closeEditEndereco").addEventListener("click", closeModal);
   document.getElementById("cancelEditEndereco").addEventListener("click", closeModal);
  
-  document.getElementById("saveEditEndereco").addEventListener("click", () => {
+  document.getElementById("saveEditEndereco").addEventListener("click", async () => {
     const e = document.getElementById("estadoInput").value.trim();
     const c = document.getElementById("cidadeInput").value.trim();
     const b = document.getElementById("bairroInput").value.trim();
@@ -711,7 +732,11 @@ document.addEventListener("DOMContentLoaded", function () {
     Endereco.cep = z;
 
     if (currentUserUID) {
-      addEnderecoDB(currentUserUID);
+      await addEnderecoDB(currentUserUID);
+      // Atualiza o endereço na tela imediatamente
+      let partes = [e, c, b, r, n, z];
+      let enderecoCompleto = partes.filter(p => p && p.trim()).join(", ");
+      document.getElementById("enderecoCompleto").textContent = enderecoCompleto ? enderecoCompleto : "Adicione seu endereço aqui. ";
     } else {
       alert("Usuário não autenticado.");
     }
