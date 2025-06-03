@@ -218,6 +218,16 @@ document.addEventListener("DOMContentLoaded", async function () {
   } finally {
     // Removido hideLoading() daqui
   }
+
+  document.querySelectorAll(".footer-categoria").forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      e.preventDefault();
+      const categoria = link.textContent.trim();
+      window.location.href = `Pesquisa/TelaPesquisa.html?pesquisa=${encodeURIComponent(
+        categoria
+      )}`;
+    });
+  });
   
 });
 
