@@ -754,6 +754,7 @@
 
         .stars {
             font-size: 25px;
+            margin-left: 6px;
         }
         .reviews-actions {
             display: flex;
@@ -1018,8 +1019,12 @@
 
 @media (max-width: 600px) {
     .profile-info-row {
-        flex-direction: column;
         align-items: flex-start;
         gap: 6px;
+    }
+
+    .disp{
+        margin-top: 11.5px;
+        margin-left: 90px;
     }
 }
