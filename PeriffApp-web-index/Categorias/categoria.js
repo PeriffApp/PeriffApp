@@ -10,25 +10,6 @@ import {
 } from "../firebase.js";
 import { auth } from "../firebase.js";
 
-// Buscar preferencia de tema
-onAuthStateChanged(auth, async (user) => {
-  if (user) {
-    try {
-      const userRef = doc(db, "Usuario", user.uid);
-      const userSnap = await getDoc(userRef);
-      if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
-        document.body.classList.add("dark-mode");
-      } else {
-        document.body.classList.remove("dark-mode");
-      }
-    } catch (e) {
-      console.error("Erro ao buscar preferência de modo dark:", e);
-    }
-  }
-});
-
-
-
 // ------------------------------
 // Funções de Loading (igual index.js)
 // ------------------------------
@@ -65,5 +46,30 @@ function ativarClickCategorias() {
     });
   });
 }
+
+showLoading();
+
+// Buscar preferencia de tema
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    try {
+      const userRef = doc(db, "Usuario", user.uid);
+      const userSnap = await getDoc(userRef);
+      if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+    } catch (e) {
+      console.error("Erro ao buscar preferência de modo dark:", e);
+    }
+  }
+  // Só esconde o loading após aplicar o tema e o DOM estar pronto
+  if (document.readyState === "complete" || document.readyState === "interactive") {
+    hideLoading();
+  } else {
+    window.addEventListener("DOMContentLoaded", hideLoading);
+  }
+});
 
 ativarClickCategorias();
