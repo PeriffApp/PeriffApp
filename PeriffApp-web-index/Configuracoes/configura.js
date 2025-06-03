@@ -40,22 +40,35 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
 
   const checkbox = document.getElementById('dark-mode');
+  const perfilDisponivelCheckbox = document.getElementById('perfil-disponivel');
   // Aguarda o carregamento do usuário e preferências antes de esconder o loading
   onAuthStateChanged(auth, async (user) => {
     try {
       if (user) {
         const userRef = doc(db, "Usuario", user.uid);
         const userSnap = await getDoc(userRef);
-        if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
-          document.body.classList.add("dark-mode");
-          checkbox.checked = true;
+        if (userSnap.exists()) {
+          // Dark mode
+          if (userSnap.data().preferenciaDarkMode === true) {
+            document.body.classList.add("dark-mode");
+            checkbox.checked = true;
+          } else {
+            document.body.classList.remove("dark-mode");
+            checkbox.checked = false;
+          }
+          // Perfil disponível
+          if (perfilDisponivelCheckbox) {
+            perfilDisponivelCheckbox.checked = !!userSnap.data().perfilDisponivel;
+          }
         } else {
           document.body.classList.remove("dark-mode");
           checkbox.checked = false;
+          if (perfilDisponivelCheckbox) perfilDisponivelCheckbox.checked = false;
         }
       } else {
         document.body.classList.remove("dark-mode");
         checkbox.checked = false;
+        if (perfilDisponivelCheckbox) perfilDisponivelCheckbox.checked = false;
       }
     } catch (e) {
       console.error("Erro ao buscar preferência de modo dark:", e);
@@ -81,6 +94,21 @@ document.addEventListener('DOMContentLoaded', async function() {
         console.error('Erro ao salvar preferência de modo dark:', e);
       }
   });
+
+  if (perfilDisponivelCheckbox) {
+    perfilDisponivelCheckbox.addEventListener('change', async function() {
+      // Salva preferência de perfil disponível no Firestore
+      try {
+        const user = auth.currentUser;
+        if (user) {
+          const userRef = doc(db, 'Usuario', user.uid);
+          await setDoc(userRef, { perfilDisponivel: perfilDisponivelCheckbox.checked }, { merge: true });
+        }
+      } catch (e) {
+        console.error('Erro ao salvar preferência de perfil disponível:', e);
+      }
+    });
+  }
 
   document.getElementById("alterarSenha").addEventListener('click', function(){
     window.location.href = "../RecuperacaoSenha/recuperacao.html";

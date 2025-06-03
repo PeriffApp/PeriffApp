@@ -973,3 +973,53 @@
 
     color: whitesmoke;
 }
+
+.disponibilidade-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: var(--primary);
+    font-weight: 500;
+    margin-left: 20px;
+    margin-bottom: 23px;
+}
+
+.disponibilidade-header i {
+    font-size: 18px;
+    color: var(--primary);
+}
+
+.dark-mode .disponibilidade-header,
+.dark-mode .disponibilidade-header i {
+    color: var(--primary);
+}
+
+.profile-info-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 5px;
+}
+
+.rating {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.profile-info-row {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 5px;
+}
+
+@media (max-width: 600px) {
+    .profile-info-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}

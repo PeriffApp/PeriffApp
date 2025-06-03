@@ -331,6 +331,17 @@ onAuthStateChanged(auth, async (user) => {
         const endereco = endSnap.exists() ? endSnap.data() : null;
         updateProfileInfo(data, endereco);
 
+        // NOVO: Exibe disponibilidade conforme perfilDisponivel
+        const disponibilidade = document.getElementById("disponibilidadeHeader");
+        const indisponibilidade = document.getElementById("indisponibilidadeHeader");
+        if (data.perfilDisponivel === true) {
+          if (disponibilidade) disponibilidade.style.display = "flex";
+          if (indisponibilidade) indisponibilidade.style.display = "none";
+        } else {
+          if (disponibilidade) disponibilidade.style.display = "none";
+          if (indisponibilidade) indisponibilidade.style.display = "flex";
+        }
+
         // NOVO: Esconde se for Cliente
         if (data.Tipo === "Cliente") {
           // Esconde seções de serviços, avaliações e portfólio
