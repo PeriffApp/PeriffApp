@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prestadores de Serviço</title>
+  <link rel="stylesheet" href="categoria.css">
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+  <!-- Spinenr de Loading --> 
+  <div id="loading-overlay">
+    <div class="spinner"></div>
+  </div>
+
+  <header>
+    <nav class="navbar">
+      <div class="logo">
+        <a href="/PeriffApp-web-index/index.html"><img src="/PeriffApp-web-index/imagens/logo.png" alt="Logo do PeriffApp"></a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="/PeriffApp-web-index/index.html">Início</a></li>
+        <li><a href="/PeriffApp-web-index/Pesquisa/TelaPesquisa.html">Pesquisar</a></li>
+        <li><a href="categoria.html" class="active">Categorias</a></li>
+        <li><a href="/PeriffApp-web-index/perfilPrestador2/perfilPrestador.html">Meu Perfil</a></li>
+        <li><a href="#">Ajuda</a></li>
+      </ul>
+      <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Qual serviço você precisa? Ex: encanador, diarista...">
+        <button id="searchBtn"><i class="fas fa-search"></i> Buscar</button> <!-- Buscar Serviços -->
+    </div>
+    </nav>
+  </header>
+
+  <section>
+    
+      <div class="section-title">
+        <h3>Categorias: </h3>
+      </div>
+
+      <!-- Section de Categorias -->
+    <section class="categories">
+      <div class="category-grid">
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-tools"></i>
+              </div>
+              <h4>Reformas e Reparos</h4>
+              <p>Pedreiros, pintores, eletricistas e mais</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-broom"></i>
+              </div>
+              <h4>Limpeza</h4>
+              <p>Diaristas, faxineiras, limpeza pós-obra</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-tshirt"></i>
+              </div>
+              <h4>Costura</h4>
+              <p>Costureiras, modistas, ajustes de roupas</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-utensils"></i>
+              </div>
+              <h4>Alimentação</h4>
+              <p>Chefs, cozinheiras, marmitas fitness</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-music"></i>
+              </div>
+              <h4>Eventos</h4>
+              <p>DJs, músicos, decoradores de festa</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-cut"></i>
+              </div>
+              <h4>Beleza</h4>
+              <p>Cabeleireiros, barbeiros, manicures</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-laptop"></i>
+              </div>
+              <h4>Tecnologia</h4>
+              <p>Assistência técnica, designers, desenvolvedores</p>
+          </div>
+          <div class="category-card">
+              <div class="category-icon">
+                  <i class="fas fa-dumbbell"></i>
+              </div>
+              <h4>Saúde</h4>
+              <p>Personal trainers, massagistas, nutricionistas</p>
+          </div>
+      </div>
+  </section>
+    
+
+  </section>
+
+  <script type="module" src="categoria.js"></script>
+
+</body>
+</html>
