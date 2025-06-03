@@ -1,12 +1,49 @@
 import { auth, db, deleteDoc, doc, setDoc, getDoc } from "../firebase.js";
 import { getAuth, deleteUser, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
+// ------------------------------
+// Funções de Loading
+// ------------------------------
+function showLoading() {
+  const ov = document.getElementById("loading-overlay");
+  if (ov) ov.style.display = "flex";
+}
+function hideLoading() {
+  const ov = document.getElementById("loading-overlay");
+  if (!ov) return;
+  ov.style.transition = "opacity 0.3s ease";
+  ov.style.opacity = "0";
+  setTimeout(() => ov.remove(), 300);
+}
+
 // Alterna a classe dark-mode no body ao clicar no checkbox
 document.addEventListener('DOMContentLoaded', async function() {
+  // Garante que o overlay de loading exista
+  let ov = document.getElementById("loading-overlay");
+  if (!ov) {
+    ov = document.createElement("div");
+    ov.id = "loading-overlay";
+    ov.innerHTML = '<div class="spinner"></div>';
+    ov.style.position = 'fixed';
+    ov.style.top = 0;
+    ov.style.left = 0;
+    ov.style.width = '100vw';
+    ov.style.height = '100vh';
+    ov.style.background = 'rgba(255,255,255,0.8)';
+    ov.style.display = 'flex';
+    ov.style.alignItems = 'center';
+    ov.style.justifyContent = 'center';
+    ov.style.zIndex = 9999;
+    document.body.appendChild(ov);
+  } else {
+    showLoading();
+  }
+
   const checkbox = document.getElementById('dark-mode');
+  // Aguarda o carregamento do usuário e preferências antes de esconder o loading
   onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      try {
+    try {
+      if (user) {
         const userRef = doc(db, "Usuario", user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
@@ -16,9 +53,15 @@ document.addEventListener('DOMContentLoaded', async function() {
           document.body.classList.remove("dark-mode");
           checkbox.checked = false;
         }
-      } catch (e) {
-        console.error("Erro ao buscar preferência de modo dark:", e);
+      } else {
+        document.body.classList.remove("dark-mode");
+        checkbox.checked = false;
       }
+    } catch (e) {
+      console.error("Erro ao buscar preferência de modo dark:", e);
+    } finally {
+      // Só esconde o loading depois de tudo pronto
+      hideLoading();
     }
   });
   checkbox.addEventListener('change', async function() {

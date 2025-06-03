@@ -51,6 +51,7 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById("btnPerfil").style.display = "none";
   }
   await carregarPrestadores(); // Chama aqui, após saber o usuário logado
+  hideLoading(); 
 });
 
 // ------------------------------
@@ -215,12 +216,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     ativarClickCategorias();
   } finally {
-    // Esconde overlay depois de tudo
-    hideLoading();
+    // Removido hideLoading() daqui
   }
   
-
-
 });
 
 
