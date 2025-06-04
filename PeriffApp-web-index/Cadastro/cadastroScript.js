@@ -336,23 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
    
-    if (!validarEmail(email)) {
-      Swal.fire({
-        toast: true,
-        position: 'top-end',
-        icon: 'error',
-        title: 'Email inválido',
-        text: 'Verifique se foi digitado corretamente.',
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: '#d33',
-        customClass: {
-          popup: 'swal2-border-radius',
-        },
-      });
-      return;
-    }
+    
     if (!validarApenasNumeros(telefone)) {
       Swal.fire({
         toast: true,
