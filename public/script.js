@@ -170,12 +170,38 @@ document.addEventListener("DOMContentLoaded", async function () {
           if (user.emailVerified) {
             window.location.replace("./index.html");
           } else {
-            alert("Por favor, verifique seu e-mail antes de fazer login.");
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              icon: "error",
+              title: "E-mail não verificado",
+              text: "Por favor, verifique seu e-mail antes de continuar.",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              iconColor: "#d33",
+              customClass: {
+                popup: "swal2-border-radius",
+              },
+            });
             auth.signOut();
           }
         })
         .catch((error) => {
-          alert("Erro ao realizar login!");
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              icon: "error",
+              title: "Erro ao fazer login",
+              text: "Email ou senha incorretos.",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              iconColor: "#d33",
+              customClass: {
+                popup: "swal2-border-radius",
+              },
+            });
         });
     });
 
