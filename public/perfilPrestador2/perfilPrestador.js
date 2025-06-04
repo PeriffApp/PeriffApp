@@ -355,7 +355,7 @@ onAuthStateChanged(auth, async (user) => {
         const data = userSnap.data();
         const endereco = endSnap.exists() ? endSnap.data() : null;
         updateProfileInfo(data, endereco);
-
+        profileData.user = data; // <-- Adiciona esta linha para garantir que os dados do usuário estejam disponíveis
         // Exibe disponibilidade conforme perfilDisponivel do perfil visitado
         const disponibilidade = document.getElementById("disponibilidadeHeader");
         const indisponibilidade = document.getElementById("indisponibilidadeHeader");
@@ -401,12 +401,17 @@ onAuthStateChanged(auth, async (user) => {
 
       // Ajusta botões e visibilidade de acordo com o contexto
       if (uidFromUrl !== null) {
+        // Só mostra o botão se o usuário estiver autenticado
+        if (user) {
+          document.getElementById("contatarButton").style.display = "block";
+        } else {
+          document.getElementById("contatarButton").style.display = "none";
+        }
         document.getElementById("editAbout").style.display = "none";
         document.getElementById("editEndereco").style.display = "none";
         document.getElementById("openAddServiceModal").style.display = "none";
         document.getElementById("portifolioAdd").style.display = "none";
         document.getElementById("logoutButton").style.display = "none";
-        document.getElementById("contatarButton").style.display = "block";
         document.getElementById("footer-links").style.display = "none";
       } else {
         document.getElementById("contatarButton").style.display = "none";
@@ -518,6 +523,24 @@ function openServiceModal(title, description, price, details) {
   });
   document.getElementById("serviceModal").style.display = "flex";
 }
+
+// --------------------------
+// Modal: Contatar Prestador
+// --------------------------
+const contatarButton = document.getElementById("contatarButton");
+const contactProviderModal = document.getElementById("contactProviderModal");
+const closeContactProvider = document.getElementById("closeContactProvider");
+
+contatarButton.addEventListener("click", () => {
+  // Preenche os dados do prestador no modal
+  if (profileData && profileData.user) {
+    document.getElementById("providerPhone").textContent = profileData.user.Telefone || "(00) 00000-0000";
+    document.getElementById("providerEmail").textContent = profileData.user.Email || "email@exemplo.com";
+  }
+  contactProviderModal.style.display = "flex";
+});
+
+closeContactProvider.addEventListener("click", closeModal);
 
 // -------------------------------------------------------------------------
 // Interações de UI

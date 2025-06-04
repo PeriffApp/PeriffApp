@@ -1028,3 +1028,18 @@
         margin-left: 90px;
     }
 }
+
+.contact-label{
+    font-size: 12px;
+    
+}
+
+.profile-contact{
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-left: 12px;
+    margin-top: 11px;
+    color: var(--primary);
+}
+
