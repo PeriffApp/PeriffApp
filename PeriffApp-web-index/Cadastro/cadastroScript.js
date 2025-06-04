@@ -37,21 +37,11 @@ function validarCPF(cpf) {
   return true;
 }
 
-// Valida formato de e-mail
-function validarEmail(email) {
-  // regex simples: texto@texto.texto
-  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return re.test(email.toLowerCase());
-}
 
-// Valida se o valor contém apenas números
+// Valida se o valor contém apenas números e se tem o tamanho correto
 function validarApenasNumeros(valor) {
-  // ^   início da string
-  // \d  qualquer dígito (0–9)
-  // +   um ou mais dígitos
-  // $   fim da string
   const re = /^\d+$/;
-  return re.test(valor);
+  return re.test(valor) && valor.length === 11;
 }
 
 // Valida se o nome completo contém apenas letras e espaços
@@ -143,27 +133,73 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Validações
     if (password !== confirmPassword) {
-      alert('As senhas não coincidem!');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: "error",
+        title: "Erro!",
+        text: "As senhas não coincidem.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
       return;
     }
     if (!validarCPF(cpf)) {
-      alert('CPF inválido!');
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "CPF inválido",
+        text: "Digite um CPF válido.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
       return;
     }
-    if(!validarEmail(email)) {
-      alert('Email inválido! Verifique se foi digitado corretamente');
-      return;
-    }
+    
     if(!validarApenasNumeros(telefone)){
-      alert('Por favor, digite apenas números');
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Número de telefone inválido",
+        text: "Digite um número válido.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
       return;
     }
-    if (!document.getElementById("providerTermsC").checked) {
-      alert("Você deve aceitar os Termos de Uso!");
-      return;
-    }
+
     if (!validarNomeCompleto(nome)) {
-      alert("Nome inválido! O nome deve conter apenas letras e espaços.");
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Nome inválido",
+        text: "Por favor, digite apenas letras!",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
       return;
     }
 
@@ -192,7 +228,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
         await setDoc(enderecoRef, { ...Endereco });
         console.log('Documento criado com ID:', uid);
-        alert('Cadastro de cliente realizado com sucesso!');
         resetForms();
         // Redireciona para página de confirmação de e-mail
         window.location.replace("../ConfirmacaoEmail/confirmacao.html");
@@ -200,12 +235,51 @@ document.addEventListener('DOMContentLoaded', function() {
       .catch(error => {
         // Tratamento de erros específicos do Firebase Auth
         if (error.code === 'auth/email-already-in-use') {
-          alert('Este e-mail já está em uso.');
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "Este e-mail já está em uso",
+            text: "",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            iconColor: "#d33",
+            customClass: {
+              popup: "swal2-border-radius",
+            },
+          });
         } else if (error.code === 'auth/password-does-not-meet-requirements') {
-          alert('A senha deve ter pelo menos 6 caracteres.');
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "A senha deve conter pelo menor 6 digítos",
+            text: "",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            iconColor: "#d33",
+            customClass: {
+              popup: "swal2-border-radius",
+            },
+          });
         } else {
           console.error('Erro ao criar o usuário:', error);
-          alert('Erro ao criar o usuário. Tente novamente mais tarde.');
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "Erro ao criar usuário",
+            text: "Tente novamente mais tarde",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            iconColor: "#d33",
+            customClass: {
+              popup: "swal2-border-radius",
+            },
+          });
         }
       });
   });
@@ -228,27 +302,89 @@ document.addEventListener('DOMContentLoaded', function() {
  
     // Validações
     if (password !== confirmPassword) {
-      alert('As senhas não coincidem!');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Erro!',
+        text: 'As senhas não coincidem.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: '#d33',
+        customClass: {
+          popup: 'swal2-border-radius',
+        },
+      });
       return;
     }
     if (!validarCPF(cpf)) {
-      alert('CPF inválido!');
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'CPF inválido',
+        text: 'Digite um CPF válido.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: '#d33',
+        customClass: {
+          popup: 'swal2-border-radius',
+        },
+      });
       return;
     }
-    if (!document.getElementById('providerTerms').checked) {
-      alert('Você deve aceitar os Termos de Uso!');
-      return;
-    }
+   
     if (!validarEmail(email)) {
-      alert("Email inválido! Verifique se foi digitado corretamente");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Email inválido',
+        text: 'Verifique se foi digitado corretamente.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: '#d33',
+        customClass: {
+          popup: 'swal2-border-radius',
+        },
+      });
       return;
     }
     if (!validarApenasNumeros(telefone)) {
-      alert("Por favor, digite apenas números");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Número de telefone inválido',
+        text: 'Digite um número válido.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: '#d33',
+        customClass: {
+          popup: 'swal2-border-radius',
+        },
+      });
       return;
     }
     if (!validarNomeCompleto(nome)) {
-      alert("Nome inválido! O nome deve conter apenas letras e espaços.");
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'error',
+        title: 'Nome inválido',
+        text: 'O nome deve conter apenas letras e espaços.',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: '#d33',
+        customClass: {
+          popup: 'swal2-border-radius',
+        },
+      });
       return;
     }
 
@@ -277,7 +413,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const enderecoRef = doc(db, "Usuario", uid, "Endereco", uid);
         await setDoc(enderecoRef, { ...Endereco });
         console.log('Documento criado com ID:', uid);
-        alert('Cadastro de cliente realizado com sucesso!');
         resetForms();
         // Redireciona para página de confirmação de e-mail
         window.location.replace("../ConfirmacaoEmail/confirmacao.html");
@@ -285,12 +420,51 @@ document.addEventListener('DOMContentLoaded', function() {
       .catch(error => {
         // Tratamento de erros específicos do Firebase Auth
         if (error.code === 'auth/email-already-in-use') {
-          alert('Este e-mail já está em uso.');
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "Este e-mail já está em uso",
+            text: "",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            iconColor: "#d33",
+            customClass: {
+              popup: "swal2-border-radius",
+            },
+          });
         } else if (error.code === 'auth/password-does-not-meet-requirements') {
-          alert('A senha deve ter pelo menos 6 caracteres.');
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "A senha deve conter pelo menor 6 digítos",
+            text: "",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            iconColor: "#d33",
+            customClass: {
+              popup: "swal2-border-radius",
+            },
+          });
         } else {
           console.error('Erro ao criar o usuário:', error);
-          alert('Erro ao criar o usuário. Tente novamente mais tarde.');
+          Swal.fire({
+            toast: true,
+            position: "top-end",
+            icon: "error",
+            title: "Erro ao criar usuário",
+            text: "Tente novamente mais tarde",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            iconColor: "#d33",
+            customClass: {
+              popup: "swal2-border-radius",
+            },
+          });
         }
       });
   });
