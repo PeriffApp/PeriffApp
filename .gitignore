@@ -2,7 +2,6 @@ firebase.js
 package-lock.json
 package.json
 .vscode
-public
 .firebase
 firebase-debug.log
 pop-up
