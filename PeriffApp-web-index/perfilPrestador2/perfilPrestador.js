@@ -67,8 +67,20 @@ async function updateAboutDB(uid, newAbout) {
     await setDoc(userRef, { Sobre: newAbout }, { merge: true });
     showToast("Texto “Sobre” salvo com sucesso");
   } catch (err) {
-    console.error("Erro ao salvar Sobre:", err);
-    alert("Falha ao salvar o Sobre. Tente novamente.");
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "error",
+      title: "Erro ao salvar sobre",
+      text: "Tente novamente mais tarde",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      iconColor: "#d33",
+      customClass: {
+        popup: "swal2-border-radius",
+      },
+    });
   }
 }
 
@@ -294,7 +306,20 @@ btnLogout.addEventListener("click", (e) => {
     })
     .catch((error) => {
       console.error("Erro ao sair:", error);
-      alert("Não foi possível deslogar. Tente novamente.");
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Erro ao deslogar",
+        text: "Não foi possível deslogar. Tente novamente.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
     });
 });
 
@@ -556,7 +581,19 @@ document.addEventListener("DOMContentLoaded", function () {
     button.addEventListener("click", function () {
       const sectionTitle =
         this.closest(".profile-section").querySelector("h2").textContent;
-      alert(`Mostrando todo o ${sectionTitle.toLowerCase()}`);
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "info",
+        title: `Mostrando todo o ${sectionTitle.toLowerCase()}`,
+        showConfirmButton: false,
+        timer: 2500,
+        timerProgressBar: true,
+        iconColor: "#3498db",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
     });
   });
 
@@ -577,16 +614,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
   document.getElementById("saveAbout").addEventListener("click", async function () {
     const newAbout = document.getElementById("aboutTextInput").value;
-    if (newAbout) {
-      if (!newAbout) return alert("Digite algo antes de salvar.");
-      if (!currentUserUID) return alert("Usuário não autenticado.");
-
-      // 1) envia pro Firestore
-      await updateAboutDB(currentUserUID, newAbout);
-      document.getElementById("aboutText").innerHTML = newAbout;
-      closeModal();
-      showToast("Texto atualizado com sucesso!");
+    if (!newAbout) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: "Campo obrigatório",
+        text: "Digite algo antes de salvar.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#f39c12",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
+      return;
     }
+    if (!currentUserUID) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Usuário não autenticado",
+        text: "Faça login novamente.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
+      return;
+    }
+    // 1) envia pro Firestore
+    await updateAboutDB(currentUserUID, newAbout);
+    document.getElementById("aboutText").innerHTML = newAbout;
+    closeModal();
+    showToast("Texto atualizado com sucesso!");
   });
 
   // --------------------------
@@ -620,7 +686,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // 2.2) Valida campos obrigatórios
     if (!(title && description && priceFrom)) {
-      return alert("Preencha todos os campos obrigatórios (Título, Descrição e Preço De)");
+      return Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: "Campos obrigatórios",
+        text: "Preencha todos os campos obrigatórios (Título, Descrição e Preço De)",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#f39c12",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
     }
 
     // Monta faixa de preço
@@ -642,7 +721,20 @@ document.addEventListener("DOMContentLoaded", function () {
       closeModal();
     } catch (err) {
       console.error(err);
-      alert("Não foi possível salvar o serviço. Tente novamente.");
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Erro ao salvar serviço",
+        text: "Não foi possível salvar o serviço. Tente novamente.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
     }
   });
 
@@ -721,7 +813,20 @@ document.addEventListener("DOMContentLoaded", function () {
     const n = document.getElementById("numeroInput").value.trim();
     const z = document.getElementById("cepInput").value.trim();
     if (!e || !c || !b || !r || !n || !z) {
-      alert("Preencha todos os campos antes de salvar.");
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: "Campos obrigatórios",
+        text: "Preencha todos os campos antes de salvar.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#f39c12",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
       return;
     }
     Endereco.estado = e;
@@ -738,7 +843,21 @@ document.addEventListener("DOMContentLoaded", function () {
       let enderecoCompleto = partes.filter(p => p && p.trim()).join(", ");
       document.getElementById("enderecoCompleto").textContent = enderecoCompleto ? enderecoCompleto : "Adicione seu endereço aqui. ";
     } else {
-      alert("Usuário não autenticado.");
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "error",
+        title: "Usuário não autenticado",
+        text: "Faça login novamente.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#d33",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
+      return;
     }
 
     closeModal();
@@ -771,11 +890,24 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
 submitReviewBtn.addEventListener("click", async () => {
-  const name =
-    document.getElementById("reviewerName").value.trim() || "Anônimo";
+  const name = document.getElementById("reviewerName").value.trim() || "Anônimo";
   const text = document.getElementById("reviewText").value.trim();
   if (!text || selectedStars === 0) {
-    return alert("Preencha a descrição e selecione uma nota.");
+    Swal.fire({
+      toast: true,
+      position: "top-end",
+      icon: "warning",
+      title: "Campos obrigatórios",
+      text: "Preencha a descrição e selecione uma nota.",
+      showConfirmButton: false,
+      timer: 3000,
+      timerProgressBar: true,
+      iconColor: "#f39c12",
+      customClass: {
+        popup: "swal2-border-radius",
+      },
+    });
+    return;
   }
   const newReview = {
     name,
