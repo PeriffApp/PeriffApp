@@ -327,13 +327,16 @@ btnLogout.addEventListener("click", (e) => {
 onAuthStateChanged(auth, async (user) => {
   showLoading();
   try {
-    if (user) {
-      const uidFromUrl = getUidFromUrl();
-      const uid = uidFromUrl || user.uid;
-      currentUserUID = uid;
-      console.log("STATUS: Usuário logado com UID: " + uid);
-      console.log(user.emailVerified);
-
+    // Sempre prioriza o UID da URL, se existir
+    const uidFromUrl = getUidFromUrl();
+    let uid = null;
+    if (uidFromUrl) {
+      uid = uidFromUrl;
+    } else if (user) {
+      uid = user.uid;
+    }
+    currentUserUID = uid;
+    if (uid) {
       // referências dos docs
       const userDocRef = doc(db, "Usuario", uid);
       const enderecoDocRef = doc(db, "Usuario", uid, "Endereco", uid);
@@ -353,7 +356,7 @@ onAuthStateChanged(auth, async (user) => {
         const endereco = endSnap.exists() ? endSnap.data() : null;
         updateProfileInfo(data, endereco);
 
-        // NOVO: Exibe disponibilidade conforme perfilDisponivel
+        // Exibe disponibilidade conforme perfilDisponivel do perfil visitado
         const disponibilidade = document.getElementById("disponibilidadeHeader");
         const indisponibilidade = document.getElementById("indisponibilidadeHeader");
         if (data.perfilDisponivel === true) {
@@ -364,7 +367,7 @@ onAuthStateChanged(auth, async (user) => {
           if (indisponibilidade) indisponibilidade.style.display = "flex";
         }
 
-        // NOVO: Esconde se for Cliente
+        // Esconde se for Cliente
         if (data.Tipo === "Cliente") {
           // Esconde seções de serviços, avaliações e portfólio
           const servicosSec = document.getElementById("serv");
@@ -379,15 +382,16 @@ onAuthStateChanged(auth, async (user) => {
           renderServices();
         }
 
-        // Busca preferência de tema ao carregar a página
+        // Busca preferência de tema do usuário logado (não do perfil visitado)
         try {
-          // Sempre busca a preferência do usuário autenticado, não do perfil visitado
-          const userAuthDocRef = doc(db, "Usuario", user.uid);
-          const userAuthSnap = await getDoc(userAuthDocRef);
-          if (userAuthSnap.exists() && userAuthSnap.data().preferenciaDarkMode === true) {
-            document.body.classList.add("dark-mode");
-          } else {
-            document.body.classList.remove("dark-mode");
+          if (user && user.uid) {
+            const userAuthDocRef = doc(db, "Usuario", user.uid);
+            const userAuthSnap = await getDoc(userAuthDocRef);
+            if (userAuthSnap.exists() && userAuthSnap.data().preferenciaDarkMode === true) {
+              document.body.classList.add("dark-mode");
+            } else {
+              document.body.classList.remove("dark-mode");
+            }
           }
         } catch (e) {
           console.error("Erro ao buscar preferência de modo dark:", e);
@@ -395,6 +399,7 @@ onAuthStateChanged(auth, async (user) => {
       }
       renderServices();
 
+      // Ajusta botões e visibilidade de acordo com o contexto
       if (uidFromUrl !== null) {
         document.getElementById("editAbout").style.display = "none";
         document.getElementById("editEndereco").style.display = "none";
@@ -408,49 +413,14 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById("openAddReview").style.display = "none";
       }
     } else {
-      console.log("STATUS: Usuário não logado");
+      // Usuário não logado e sem uid na URL
       document.getElementById("editAbout").style.display = "none";
       document.getElementById("editEndereco").style.display = "none";
       document.getElementById("openAddServiceModal").style.display = "none";
       document.getElementById("portifolioAdd").style.display = "none";
-      document.getElementById("openAddReview").style.display = "none";
       document.getElementById("logoutButton").style.display = "none";
       document.getElementById("contatarButton").style.display = "none";
-      document.getElementById("profile-footer").style.display = "none";
-      const uidFromUrl = getUidFromUrl();
-      const uid = uidFromUrl;
-      currentUserUID = uid;
-
-      const userDocRef = doc(db, "Usuario", uid);
-      const docSnap = await getDoc(userDocRef);
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const enderecoDocRef = doc(db, "Usuario", uid, "Endereco", uid);
-        const endSnap = await getDoc(enderecoDocRef);
-        const endereco = endSnap.exists() ? endSnap.data() : null;
-        updateProfileInfo(data, endereco);
-        // NOVO: Exibe disponibilidade conforme perfilDisponivel
-        const disponibilidade = document.getElementById(
-          "disponibilidadeHeader"
-        );
-        const indisponibilidade = document.getElementById(
-          "indisponibilidadeHeader"
-        );
-        if (data.perfilDisponivel === true) {
-          if (disponibilidade) disponibilidade.style.display = "flex";
-          if (indisponibilidade) indisponibilidade.style.display = "none";
-        } else {
-          if (disponibilidade) disponibilidade.style.display = "none";
-          if (indisponibilidade) indisponibilidade.style.display = "flex";
-        }
-      } else {
-        console.log("Documento não encontrado para UID:", uid);
-      }
-
-      
-
-      await loadServicesDB(currentUserUID);
-      renderServices();
+      document.getElementById("footer-links").style.display = "none";
     }
   } catch (err) {
     console.error("Erro no preload:", err);

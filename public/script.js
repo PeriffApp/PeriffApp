@@ -188,6 +188,22 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
         })
         .catch((error) => {
+          if (error.code === "auth/too-many-requests") {
+            Swal.fire({
+              toast: true,
+              position: "top-end",
+              icon: "error",
+              title: "Muitas tentativas",
+              text: "O acesso foi temporariamente bloqueado por excesso de tentativas. Tente novamente em alguns minutos ou recupere sua senha.",
+              showConfirmButton: false,
+              timer: 5000,
+              timerProgressBar: true,
+              iconColor: "#d33",
+              customClass: {
+                popup: "swal2-border-radius",
+              },
+            });
+          } else {
             Swal.fire({
               toast: true,
               position: "top-end",
@@ -202,6 +218,7 @@ document.addEventListener("DOMContentLoaded", async function () {
                 popup: "swal2-border-radius",
               },
             });
+          }
         });
     });
 
