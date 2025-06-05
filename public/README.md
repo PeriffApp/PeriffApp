@@ -1,6 +1,6 @@
 # PeriffApp
 
-*Plataforma Web para Conectar Prestadores de Serviços de Comunidades Periféricas com Clientes*
+*Plataforma Web para Conectar Prestadores de Serviços de Comunidades Periféricas com Cliente*
 
 ---
 
