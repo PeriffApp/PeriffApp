@@ -48,8 +48,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         const userRef = doc(db, "Usuario", user.uid);
         const userSnap = await getDoc(userRef);
         if (userSnap.exists()) {
+          // Dados pessoais
+          const dados = userSnap.data();
+          document.getElementById('user-nome').textContent = dados.nome || dados.Nome || 'Não informado';
+          document.getElementById('user-telefone').textContent = dados.telefone || dados.Telefone || 'Não informado';
           // Dark mode
-          if (userSnap.data().preferenciaDarkMode === true) {
+          if (dados.preferenciaDarkMode === true) {
             document.body.classList.add("dark-mode");
             checkbox.checked = true;
           } else {
@@ -58,14 +62,18 @@ document.addEventListener('DOMContentLoaded', async function() {
           }
           // Perfil disponível
           if (perfilDisponivelCheckbox) {
-            perfilDisponivelCheckbox.checked = !!userSnap.data().perfilDisponivel;
+            perfilDisponivelCheckbox.checked = !!dados.perfilDisponivel;
           }
         } else {
+          document.getElementById('user-nome').textContent = 'Não informado';
+          document.getElementById('user-telefone').textContent = 'Não informado';
           document.body.classList.remove("dark-mode");
           checkbox.checked = false;
           if (perfilDisponivelCheckbox) perfilDisponivelCheckbox.checked = false;
         }
       } else {
+        document.getElementById('user-nome').textContent = 'Não informado';
+        document.getElementById('user-telefone').textContent = 'Não informado';
         document.body.classList.remove("dark-mode");
         checkbox.checked = false;
         if (perfilDisponivelCheckbox) perfilDisponivelCheckbox.checked = false;
@@ -240,6 +248,80 @@ document.addEventListener('DOMContentLoaded', async function() {
       }
     });
     return;
+  });
+
+  // Modal de edição de dados pessoais
+  const modal = document.getElementById('modal-editar');
+  const modalTitulo = document.getElementById('modal-titulo');
+  const modalInput = document.getElementById('modal-input');
+  const modalCancelar = document.getElementById('modal-cancelar');
+  const modalSalvar = document.getElementById('modal-salvar');
+  let campoAtual = null;
+
+  document.querySelectorAll('.btn-editar').forEach(btn => {
+    btn.addEventListener('click', function() {
+      campoAtual = btn.getAttribute('data-campo');
+      let valorAtual = '';
+      if (campoAtual === 'nome') valorAtual = document.getElementById('user-nome').textContent;
+      if (campoAtual === 'telefone') valorAtual = document.getElementById('user-telefone').textContent;
+      modalInput.value = valorAtual !== 'Não informado' ? valorAtual : '';
+      modalTitulo.textContent = 'Editar ' + (campoAtual.charAt(0).toUpperCase() + campoAtual.slice(1));
+      modal.style.display = 'flex';
+      modalInput.type = 'text';
+      setTimeout(() => modalInput.focus(), 100);
+    });
+  });
+
+  modalCancelar.addEventListener('click', function() {
+    modal.style.display = 'none';
+    campoAtual = null;
+  });
+
+  modalSalvar.addEventListener('click', async function() {
+    if (!campoAtual) return;
+    const novoValor = modalInput.value.trim();
+    if (!novoValor) {
+      Swal.fire({ icon: 'warning', title: 'Campo obrigatório', text: 'Preencha o campo para continuar.' });
+      return;
+    }
+    try {
+      const user = auth.currentUser;
+      if (!user) throw new Error('Usuário não autenticado.');
+      const userRef = doc(db, 'Usuario', user.uid);
+      const updateObj = {};
+      updateObj[campoAtual] = novoValor;
+      // Atualiza também a versão com inicial maiúscula, se existir
+      if (campoAtual === 'nome') updateObj['Nome'] = novoValor;
+      if (campoAtual === 'telefone') updateObj['Telefone'] = novoValor;
+      await setDoc(userRef, updateObj, { merge: true });
+      if (campoAtual === 'nome') document.getElementById('user-nome').textContent = novoValor;
+      if (campoAtual === 'telefone') document.getElementById('user-telefone').textContent = novoValor;
+      Swal.fire({
+        toast: true,
+        position: 'top-end',
+        icon: 'success',
+        title: 'Alterado com sucesso!',
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: '#4CAF50',
+        customClass: {
+          popup: 'swal2-border-radius',
+        },
+      });
+      modal.style.display = 'none';
+      campoAtual = null;
+    } catch (e) {
+      Swal.fire({ icon: 'error', title: 'Erro ao atualizar', text: e.message || e });
+    }
+  });
+
+  // Fecha modal ao clicar fora
+  modal.addEventListener('click', function(e) {
+    if (e.target === modal) {
+      modal.style.display = 'none';
+      campoAtual = null;
+    }
   });
 
 });

@@ -122,14 +122,29 @@ body {
     font-weight: 500;
 }
 
-.btn-primary {
+/* Botões padrão */
+.btn-primary,
+.btn-secondary {
     background-color: var(--primary);
     color: var(--secondary);
+    border: none;
+    transition: background 0.2s;
+}
+.btn-primary:hover,
+.btn-secondary:hover {
+    background-color: #ff944d;
 }
 
-.btn-secondary {
-    background-color: var(--medium-gray);
-    color: var(--dark-bg);
+/* Botões no modo dark */
+.dark-mode .btn-primary,
+.dark-mode .btn-secondary {
+    background-color: var(--primary);
+    color: var(--secondary);
+    border: none;
+}
+.dark-mode .btn-primary:hover,
+.dark-mode .btn-secondary:hover {
+    background-color: var(--primary-light);
 }
 
 .checkbox-group {
@@ -247,3 +262,4 @@ body {
     background-color: #232323;
     color: var(--dark);
 }
+
