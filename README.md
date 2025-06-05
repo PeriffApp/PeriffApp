@@ -122,4 +122,4 @@ Distribuído sob a licença **MIT**. Veja o arquivo `LICENSE` para mais informa�
 
 ---
 
-> *Desenvolvido com 💜 para valorizar os empreendedores periféricos e fortalecer a economia local.*
+> *Desenvolvido com 🧡 para valorizar os empreendedores periféricos e fortalecer a economia local.*
