@@ -1,3 +1,4 @@
+// Importa funções do Firebase para autenticação e acesso ao Firestore
 import {
   db,
   collection,
@@ -7,11 +8,10 @@ import {
   onAuthStateChanged,
   doc,
   getDoc,
-  auth
+  auth,
 } from "../firebase.js";
 
-
-// Buscar preferencia de tema
+// Ao detectar mudança de autenticação, exibe/esconde botão de perfil e aplica tema escuro se necessário
 onAuthStateChanged(auth, async (user) => {
   const meuPerfilBtn = document.getElementById("meuPerfilBtn");
   if (meuPerfilBtn) {
@@ -23,6 +23,7 @@ onAuthStateChanged(auth, async (user) => {
   }
   if (user) {
     try {
+      // Busca preferência de tema do usuário
       const userRef = doc(db, "Usuario", user.uid);
       const userSnap = await getDoc(userRef);
       if (userSnap.exists() && userSnap.data().preferenciaDarkMode === true) {
@@ -36,13 +37,14 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
+// Elementos principais da tela de pesquisa
 const cardsContainer = document.getElementById("cardsContainer");
 const noResults = document.getElementById("noResults");
 const searchInput = document.getElementById("searchInput");
 const searchBtn = document.getElementById("searchBtn");
 const pesquisandoPor = document.querySelector(".pesq h3");
 
-// Função para calcular distância de Levenshtein (fuzzy search)
+// Função para calcular a distância de Levenshtein (busca fuzzy)
 function levenshtein(a, b) {
   if (!a.length) return b.length;
   if (!b.length) return a.length;
@@ -56,8 +58,8 @@ function levenshtein(a, b) {
       } else {
         matrix[i][j] = Math.min(
           matrix[i - 1][j - 1] + 1, // substituição
-          matrix[i][j - 1] + 1,     // inserção
-          matrix[i - 1][j] + 1      // remoção
+          matrix[i][j - 1] + 1, // inserção
+          matrix[i - 1][j] + 1 // remoção
         );
       }
     }
@@ -65,38 +67,45 @@ function levenshtein(a, b) {
   return matrix[b.length][a.length];
 }
 
-// Busca prestadores com filtro fuzzy
+// Busca prestadores no Firestore aplicando filtro exato/parcial e fuzzy
 async function buscarPrestadoresFirestore(termo) {
   const prestadoresRef = collection(db, "Usuario");
   const q = query(prestadoresRef, where("Tipo", "==", "Prestador"));
   const snap = await getDocs(q);
   const termoLower = termo.toLowerCase();
-  const prestadores = snap.docs
-    .map(doc => {
-      const data = doc.data();
-      return {
-        id: doc.id,
-        ...data,
-        avaliacao: data.mediaAvaliacao || '-',
-        totalAvaliacoes: typeof data.totalAvaliacoes === 'number' ? data.totalAvaliacoes : '-'
-      };
-    });
+  const prestadores = snap.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      ...data,
+      avaliacao: data.mediaAvaliacao || "-",
+      totalAvaliacoes:
+        typeof data.totalAvaliacoes === "number" ? data.totalAvaliacoes : "-",
+    };
+  });
   // Filtro exato/parcial
-  let filtrados = prestadores.filter(p =>
-    (p.Categoria && p.Categoria.toLowerCase().includes(termoLower)) ||
-    (p.subCategoria && p.subCategoria.toLowerCase().includes(termoLower)) ||
-    (p.Nome && p.Nome.toLowerCase().includes(termoLower))
+  let filtrados = prestadores.filter(
+    (p) =>
+      (p.Categoria && p.Categoria.toLowerCase().includes(termoLower)) ||
+      (p.subCategoria && p.subCategoria.toLowerCase().includes(termoLower)) ||
+      (p.Nome && p.Nome.toLowerCase().includes(termoLower))
   );
   // Se não achou nada, faz fuzzy
   if (filtrados.length === 0 && termoLower.length > 2) {
-    filtrados = prestadores.filter(p => {
-      const campos = [p.Categoria, p.subCategoria, p.Nome].filter(Boolean).map(x => x.toLowerCase());
-      return campos.some(campo => levenshtein(campo, termoLower) <= 2 || campo.includes(termoLower));
+    filtrados = prestadores.filter((p) => {
+      const campos = [p.Categoria, p.subCategoria, p.Nome]
+        .filter(Boolean)
+        .map((x) => x.toLowerCase());
+      return campos.some(
+        (campo) =>
+          levenshtein(campo, termoLower) <= 2 || campo.includes(termoLower)
+      );
     });
   }
   return filtrados;
 }
 
+// Renderiza os cards dos prestadores encontrados
 function renderCards(prestadoresList, loggedUid) {
   cardsContainer.innerHTML = "";
   noResults.style.display = prestadoresList.length ? "none" : "block";
@@ -106,12 +115,16 @@ function renderCards(prestadoresList, loggedUid) {
     const card = document.createElement("div");
     card.className = "card";
     card.innerHTML = `
-        <img src="${p.foto || '../imagens/perfilusuario2.jpg'}" alt="Foto de ${p.Nome || ''}" />
-        <div class="name">${p.Nome || ''}</div>
+        <img src="${p.foto || "../imagens/perfilusuario2.jpg"}" alt="Foto de ${
+      p.Nome || ""
+    }" />
+        <div class="name">${p.Nome || ""}</div>
         <div class="rating"><span class="star">⭐</span> ${p.avaliacao} (${p.totalAvaliacoes} avaliações)</div>
-        <div class="category">Categoria: ${p.Categoria || ''}${p.subCategoria ? ' / ' + p.subCategoria : ''}</div>
+        <div class="category">Categoria: ${p.Categoria || ""}${
+      p.subCategoria ? " / " + p.subCategoria : ""
+    }</div>
       `;
-    card.addEventListener('click', () => {
+    card.addEventListener("click", () => {
       window.location.href = `../perfilPrestador2/perfilPrestador.html?uid=${p.id}`;
     });
     cardsContainer.appendChild(card);
@@ -121,6 +134,7 @@ function renderCards(prestadoresList, loggedUid) {
 // ------------------------------
 // Funções de Loading (igual index.js)
 // ------------------------------
+// Exibe o overlay de loading
 function showLoading() {
   const ov = document.getElementById("loading-overlay");
   if (ov) {
@@ -128,7 +142,7 @@ function showLoading() {
     ov.style.display = "flex";
   }
 }
-
+// Esconde o overlay de loading
 function hideLoading() {
   const ov = document.getElementById("loading-overlay");
   if (!ov) return;
@@ -141,9 +155,10 @@ function hideLoading() {
   }, 300);
 }
 
+// Função principal de pesquisa, integra busca e renderização
 async function pesquisar() {
   const termo = searchInput.value.trim();
-  pesquisandoPor.textContent = termo || 'Todos';
+  pesquisandoPor.textContent = termo || "Todos";
   showLoading();
   if (!termo) {
     renderCards([], auth.currentUser ? auth.currentUser.uid : null);
@@ -155,6 +170,7 @@ async function pesquisar() {
   hideLoading();
 }
 
+// Eventos de pesquisa (botão e enter)
 searchBtn.addEventListener("click", pesquisar);
 searchInput.addEventListener("keydown", (e) => {
   if (e.key === "Enter") pesquisar();
@@ -163,6 +179,8 @@ searchInput.addEventListener("keydown", (e) => {
 // Exibe o loading assim que a página começa a carregar
 showLoading();
 
+// Ao carregar a página, verifica se veio termo de pesquisa na URL e executa a busca
+// Caso não haja termo, carrega todos os prestadores
 document.addEventListener("DOMContentLoaded", async () => {
   // Ajuste para carregar todos ao abrir (ou deixar vazio)
   const urlParams = new URLSearchParams(window.location.search);

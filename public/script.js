@@ -126,8 +126,6 @@ document.addEventListener("DOMContentLoaded", async function () {
   // Exibe overlay de loading até carregar tudo
   showLoading();
   try {
-    // await carregarPrestadores(); // REMOVIDO DAQUI
-
     // Elementos do modal
     const modal = document.getElementById("loginModal");
 

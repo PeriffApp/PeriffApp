@@ -35,7 +35,6 @@ let Endereco = {
 
 let profileData = { services: [], portfolio: [], reviews: [] };
 
-
 // ------------------------------
 // Funções de Loading
 // ------------------------------
@@ -58,8 +57,6 @@ function hideLoading() {
 // Firestore CRUD Functions
 // ------------------------------
 // Funções para manipulação de dados no Firestore: Sobre, Endereço, Serviços, Avaliações
-// SOBRE
-// Atualiza o campo 'Sobre' do usuário no Firestore
 async function updateAboutDB(uid, newAbout) {
   const userRef = doc(db, "Usuario", uid);
   try {
@@ -123,7 +120,8 @@ function renderServices() {
   const container = document.getElementById("servicesContainer");
   container.innerHTML = "";
   if (!profileData.services || profileData.services.length === 0) {
-    container.innerHTML = '<div class="service-card" style="text-align:center; color:#999;">Sem serviços</div>';
+    container.innerHTML =
+      '<div class="service-card" style="text-align:center; color:#999;">Sem serviços</div>';
     return;
   }
   profileData.services.forEach((service) => {
@@ -140,7 +138,12 @@ function renderServices() {
     // Adiciona evento para abrir modal de visualização ao clicar no card (exceto no botão de deletar)
     card.addEventListener("click", (e) => {
       if (e.target.closest(".delete-service-btn")) return; // Não abre modal se clicar no botão de deletar
-      openServiceModal(service.title, service.description, service.price, service.details);
+      openServiceModal(
+        service.title,
+        service.description,
+        service.price,
+        service.details
+      );
     });
     container.appendChild(card);
 
@@ -193,7 +196,7 @@ async function addReviewDB(uidPrestador, review) {
     name: review.name,
     text: review.text,
     rating: review.rating,
-    date: review.date,           // Timestamp ou string "dd/mm/yyyy"
+    date: review.date, // Timestamp ou string "dd/mm/yyyy"
   });
   // Atualiza a média após adicionar avaliação
   await atualizarMediaAvaliacao(uidPrestador);
@@ -204,9 +207,13 @@ async function addReviewDB(uidPrestador, review) {
 // Atualiza a média de avaliações e a quantidade no documento do usuário
 async function atualizarMediaAvaliacao(uidPrestador) {
   // Busca todas as avaliações
-  const snap = await getDocs(collection(db, "Usuario", uidPrestador, "Avaliacoes"));
-  const avaliacoes = snap.docs.map(doc => doc.data());
-  const notas = avaliacoes.map(a => Number(a.rating)).filter(n => !isNaN(n));
+  const snap = await getDocs(
+    collection(db, "Usuario", uidPrestador, "Avaliacoes")
+  );
+  const avaliacoes = snap.docs.map((doc) => doc.data());
+  const notas = avaliacoes
+    .map((a) => Number(a.rating))
+    .filter((n) => !isNaN(n));
   let media = 0;
   if (notas.length > 0) {
     const soma = notas.reduce((acc, cur) => acc + cur, 0);
@@ -215,19 +222,22 @@ async function atualizarMediaAvaliacao(uidPrestador) {
   // Salva a média e a quantidade no campo mediaAvaliacao e totalAvaliacoes do usuário
   await updateDoc(doc(db, "Usuario", uidPrestador), {
     mediaAvaliacao: media.toFixed(1),
-    totalAvaliacoes: avaliacoes.length
+    totalAvaliacoes: avaliacoes.length,
   });
 }
 
 // Carrega avaliações do Firestore e ordena por data
 async function loadReviewsDB(uidPrestador) {
-  const snap = await getDocs(collection(db, "Usuario", uidPrestador, "Avaliacoes"));
+  const snap = await getDocs(
+    collection(db, "Usuario", uidPrestador, "Avaliacoes")
+  );
   const reviews = snap.docs
-    .map(d => ({ id: d.id, ...d.data() }))
+    .map((d) => ({ id: d.id, ...d.data() }))
     // opcional: ordenar por data desc
     .sort((a, b) => {
       // se for Timestamp: b.date.toMillis() - a.date.toMillis()
-      const da = parseDateBR(a.date), db_ = parseDateBR(b.date);
+      const da = parseDateBR(a.date),
+        db_ = parseDateBR(b.date);
       return db_ - da;
     });
   profileData.reviews = reviews;
@@ -245,7 +255,8 @@ function renderReviews() {
   const container = document.getElementById("reviewsList");
   container.innerHTML = "";
   if (!profileData.reviews || profileData.reviews.length === 0) {
-    container.innerHTML = '<div class="review" style="text-align:center; color:#999;">Sem avaliações</div>';
+    container.innerHTML =
+      '<div class="review" style="text-align:center; color:#999;">Sem avaliações</div>';
     updateHeaderRating();
     return;
   }
@@ -282,9 +293,10 @@ function updateHeaderRating() {
   // Exibe apenas estrelas cheias e vazias, arredondando para o inteiro mais próximo
   const rounded = Math.round(avg);
   let stars = "★".repeat(rounded) + "☆".repeat(5 - rounded);
-  ratingContainer.innerHTML = `<span class="stars">${stars}</span> <span class="rating-text"> ${avg.toFixed(1)} (${total} avaliação${total > 1 ? 's' : ''}) </span>`;
+  ratingContainer.innerHTML = `<span class="stars">${stars}</span> <span class="rating-text"> ${avg.toFixed(
+    1
+  )} (${total} avaliação${total > 1 ? "s" : ""}) </span>`;
 }
-
 
 // Destaca estrelas selecionadas na avaliação
 function highlightStars(count) {
@@ -347,7 +359,7 @@ onAuthStateChanged(auth, async (user) => {
         getDoc(enderecoDocRef),
         await loadServicesDB(uid),
         await loadReviewsDB(uid),
-        renderReviews()
+        renderReviews(),
       ]);
 
       // Atualiza UI
@@ -357,8 +369,12 @@ onAuthStateChanged(auth, async (user) => {
         updateProfileInfo(data, endereco);
         profileData.user = data; // <-- Adiciona esta linha para garantir que os dados do usuário estejam disponíveis
         // Exibe disponibilidade conforme perfilDisponivel do perfil visitado
-        const disponibilidade = document.getElementById("disponibilidadeHeader");
-        const indisponibilidade = document.getElementById("indisponibilidadeHeader");
+        const disponibilidade = document.getElementById(
+          "disponibilidadeHeader"
+        );
+        const indisponibilidade = document.getElementById(
+          "indisponibilidadeHeader"
+        );
         if (data.perfilDisponivel === true) {
           if (disponibilidade) disponibilidade.style.display = "flex";
           if (indisponibilidade) indisponibilidade.style.display = "none";
@@ -387,7 +403,10 @@ onAuthStateChanged(auth, async (user) => {
           if (user && user.uid) {
             const userAuthDocRef = doc(db, "Usuario", user.uid);
             const userAuthSnap = await getDoc(userAuthDocRef);
-            if (userAuthSnap.exists() && userAuthSnap.data().preferenciaDarkMode === true) {
+            if (
+              userAuthSnap.exists() &&
+              userAuthSnap.data().preferenciaDarkMode === true
+            ) {
               document.body.classList.add("dark-mode");
             } else {
               document.body.classList.remove("dark-mode");
@@ -445,11 +464,16 @@ function updateProfileInfo(data, endereco) {
     endereco && endereco.bairro ? endereco.bairro : "",
     endereco && endereco.rua ? endereco.rua : "",
     endereco && endereco.numero ? endereco.numero : "",
-    endereco && endereco.cep ? endereco.cep : ""
+    endereco && endereco.cep ? endereco.cep : "",
   ];
-  let enderecoCompleto = partes.filter(p => p && p.trim()).join(", ");
-  document.getElementById("enderecoCompleto").textContent = enderecoCompleto ? enderecoCompleto : "Adicione seu endereço aqui. ";
-  document.getElementById("aboutText").textContent = data.Sobre && data.Sobre.trim() ? data.Sobre : "Adicione um texto sobre você aqui. ";
+  let enderecoCompleto = partes.filter((p) => p && p.trim()).join(", ");
+  document.getElementById("enderecoCompleto").textContent = enderecoCompleto
+    ? enderecoCompleto
+    : "Adicione seu endereço aqui. ";
+  document.getElementById("aboutText").textContent =
+    data.Sobre && data.Sobre.trim()
+      ? data.Sobre
+      : "Adicione um texto sobre você aqui. ";
 }
 
 // ------------------------------
@@ -534,8 +558,10 @@ const closeContactProvider = document.getElementById("closeContactProvider");
 contatarButton.addEventListener("click", () => {
   // Preenche os dados do prestador no modal
   if (profileData && profileData.user) {
-    document.getElementById("providerPhone").textContent = profileData.user.Telefone || "(00) 00000-0000";
-    document.getElementById("providerEmail").textContent = profileData.user.Email || "email@exemplo.com";
+    document.getElementById("providerPhone").textContent =
+      profileData.user.Telefone || "(00) 00000-0000";
+    document.getElementById("providerEmail").textContent =
+      profileData.user.Email || "email@exemplo.com";
   }
   contactProviderModal.style.display = "flex";
 });
@@ -546,8 +572,7 @@ closeContactProvider.addEventListener("click", closeModal);
 // Interações de UI
 // -------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", function () {
-
-/*  
+  /*  
   // Foto de perfil
   const fileInput = document.getElementById("fileInput");
   const profileAction = document.getElementById("profileAction");
@@ -590,8 +615,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  
-
   // --------------------------
   // Modal "Sobre"
   // --------------------------
@@ -601,135 +624,154 @@ document.addEventListener("DOMContentLoaded", function () {
     el.addEventListener("click", closeModal)
   );
 
-  document.getElementById("editAbout").addEventListener("click",() => (
-    document.getElementById("editAboutModal").style.display = "flex")
-  );
+  document
+    .getElementById("editAbout")
+    .addEventListener(
+      "click",
+      () => (document.getElementById("editAboutModal").style.display = "flex")
+    );
 
-  document.getElementById("saveAbout").addEventListener("click", async function () {
-    const newAbout = document.getElementById("aboutTextInput").value;
-    if (!newAbout) {
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "warning",
-        title: "Campo obrigatório",
-        text: "Digite algo antes de salvar.",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: "#f39c12",
-        customClass: {
-          popup: "swal2-border-radius",
-        },
-      });
-      return;
-    }
-    if (!currentUserUID) {
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "error",
-        title: "Usuário não autenticado",
-        text: "Faça login novamente.",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: "#d33",
-        customClass: {
-          popup: "swal2-border-radius",
-        },
-      });
-      return;
-    }
-    // 1) envia pro Firestore
-    await updateAboutDB(currentUserUID, newAbout);
-    document.getElementById("aboutText").innerHTML = newAbout;
-    closeModal();
-    showToast("Texto atualizado com sucesso!");
-  });
+  document
+    .getElementById("saveAbout")
+    .addEventListener("click", async function () {
+      const newAbout = document.getElementById("aboutTextInput").value;
+      if (!newAbout) {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          title: "Campo obrigatório",
+          text: "Digite algo antes de salvar.",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          iconColor: "#f39c12",
+          customClass: {
+            popup: "swal2-border-radius",
+          },
+        });
+        return;
+      }
+      if (!currentUserUID) {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Usuário não autenticado",
+          text: "Faça login novamente.",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          iconColor: "#d33",
+          customClass: {
+            popup: "swal2-border-radius",
+          },
+        });
+        return;
+      }
+      // 1) envia pro Firestore
+      await updateAboutDB(currentUserUID, newAbout);
+      document.getElementById("aboutText").innerHTML = newAbout;
+      closeModal();
+      showToast("Texto atualizado com sucesso!");
+    });
 
   // --------------------------
   // Produtos e Serviços
   // --------------------------
-  document.getElementById("openAddServiceModal").addEventListener("click", () => {
-    // Limpa os campos do formulário corretamente
-    [
-      "serviceTitleInput",
-      "serviceDescriptionInput",
-      "serviceDetailsInput",
-      "servicePriceFromInput",
-      "servicePriceToInput"
-    ].forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
+  document
+    .getElementById("openAddServiceModal")
+    .addEventListener("click", () => {
+      // Limpa os campos do formulário corretamente
+      [
+        "serviceTitleInput",
+        "serviceDescriptionInput",
+        "serviceDetailsInput",
+        "servicePriceFromInput",
+        "servicePriceToInput",
+      ].forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) el.value = "";
+      });
+      document.getElementById("addServiceModal").style.display = "flex";
     });
-    document.getElementById("addServiceModal").style.display = "flex";
-  });
 
   // 2) Transforme o callback em async e chame addServiceDB:
-  document.getElementById("addNewService").addEventListener("click", async (e) => {
-    e.preventDefault();
+  document
+    .getElementById("addNewService")
+    .addEventListener("click", async (e) => {
+      e.preventDefault();
 
-    // 2.1) Lê valores do formulário
-    const title = document.getElementById("serviceTitleInput").value.trim();
-    const description = document.getElementById("serviceDescriptionInput").value.trim();
-    const priceFrom = document.getElementById("servicePriceFromInput").value.trim();
-    const priceTo = document.getElementById("servicePriceToInput").value.trim();
-    const details = document.getElementById("serviceDetailsInput").value.trim().split("\n").filter((l) => l.trim());
+      // 2.1) Lê valores do formulário
+      const title = document.getElementById("serviceTitleInput").value.trim();
+      const description = document
+        .getElementById("serviceDescriptionInput")
+        .value.trim();
+      const priceFrom = document
+        .getElementById("servicePriceFromInput")
+        .value.trim();
+      const priceTo = document
+        .getElementById("servicePriceToInput")
+        .value.trim();
+      const details = document
+        .getElementById("serviceDetailsInput")
+        .value.trim()
+        .split("\n")
+        .filter((l) => l.trim());
 
-    // 2.2) Valida campos obrigatórios
-    if (!(title && description && priceFrom)) {
-      return Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "warning",
-        title: "Campos obrigatórios",
-        text: "Preencha todos os campos obrigatórios (Título, Descrição e Preço De)",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: "#f39c12",
-        customClass: {
-          popup: "swal2-border-radius",
-        },
-      });
-    }
+      // 2.2) Valida campos obrigatórios
+      if (!(title && description && priceFrom)) {
+        return Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          title: "Campos obrigatórios",
+          text: "Preencha todos os campos obrigatórios (Título, Descrição e Preço De)",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          iconColor: "#f39c12",
+          customClass: {
+            popup: "swal2-border-radius",
+          },
+        });
+      }
 
-    // Monta faixa de preço
-    let price = "";
-    if (priceTo && Number(priceTo) > Number(priceFrom)) {
-      price = `R$ ${priceFrom} - R$ ${priceTo}`;
-    } else {
-      price = `R$ ${priceFrom}`;
-    }
+      // Monta faixa de preço
+      let price = "";
+      if (priceTo && Number(priceTo) > Number(priceFrom)) {
+        price = `R$ ${priceFrom} - R$ ${priceTo}`;
+      } else {
+        price = `R$ ${priceFrom}`;
+      }
 
-    // 2.3) Monta o objeto de serviço
-    const service = { title, description, price, details };
+      // 2.3) Monta o objeto de serviço
+      const service = { title, description, price, details };
 
-    // 2.4) Salva no Firestore e captura o ID
-    try {
-      const newId = await addServiceDB(currentUserUID, service);
-      profileData.services.push({ id: newId, ...service });
-      renderServices();
-      closeModal();
-    } catch (err) {
-      console.error(err);
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "error",
-        title: "Erro ao salvar serviço",
-        text: "Não foi possível salvar o serviço. Tente novamente.",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: "#d33",
-        customClass: {
-          popup: "swal2-border-radius",
-        },
-      });
-    }
-  });
+      // 2.4) Salva no Firestore e captura o ID
+      try {
+        const newId = await addServiceDB(currentUserUID, service);
+        profileData.services.push({ id: newId, ...service });
+        renderServices();
+        closeModal();
+      } catch (err) {
+        console.error(err);
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Erro ao salvar serviço",
+          text: "Não foi possível salvar o serviço. Tente novamente.",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          iconColor: "#d33",
+          customClass: {
+            popup: "swal2-border-radius",
+          },
+        });
+      }
+    });
 
   // Fecha modais de serviço/produto
   document.getElementById("closeService").addEventListener("click", (e) => {
@@ -738,7 +780,9 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("cancelService").addEventListener("click", (e) => {
     closeModal();
   });
-  document.getElementById("closeModalService").addEventListener("click", (e) => {
+  document
+    .getElementById("closeModalService")
+    .addEventListener("click", (e) => {
       closeModal();
     });
 
@@ -795,66 +839,73 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("editEndereco").addEventListener("click", () => {
     document.getElementById("editEnderecoModal").style.display = "flex";
   });
-  document.getElementById("closeEditEndereco").addEventListener("click", closeModal);
-  document.getElementById("cancelEditEndereco").addEventListener("click", closeModal);
- 
-  document.getElementById("saveEditEndereco").addEventListener("click", async () => {
-    const e = document.getElementById("estadoInput").value.trim();
-    const c = document.getElementById("cidadeInput").value.trim();
-    const b = document.getElementById("bairroInput").value.trim();
-    const r = document.getElementById("ruaInput").value.trim();
-    const n = document.getElementById("numeroInput").value.trim();
-    const z = document.getElementById("cepInput").value.trim();
-    if (!e || !c || !b || !r || !n || !z) {
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "warning",
-        title: "Campos obrigatórios",
-        text: "Preencha todos os campos antes de salvar.",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: "#f39c12",
-        customClass: {
-          popup: "swal2-border-radius",
-        },
-      });
-      return;
-    }
-    Endereco.estado = e;
-    Endereco.cidade = c;
-    Endereco.bairro = b;
-    Endereco.rua = r;
-    Endereco.numero = n;
-    Endereco.cep = z;
+  document
+    .getElementById("closeEditEndereco")
+    .addEventListener("click", closeModal);
+  document
+    .getElementById("cancelEditEndereco")
+    .addEventListener("click", closeModal);
 
-    if (currentUserUID) {
-      await addEnderecoDB(currentUserUID);
-      // Atualiza o endereço na tela imediatamente
-      let partes = [e, c, b, r, n, z];
-      let enderecoCompleto = partes.filter(p => p && p.trim()).join(", ");
-      document.getElementById("enderecoCompleto").textContent = enderecoCompleto ? enderecoCompleto : "Adicione seu endereço aqui. ";
-    } else {
-      Swal.fire({
-        toast: true,
-        position: "top-end",
-        icon: "error",
-        title: "Usuário não autenticado",
-        text: "Faça login novamente.",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        iconColor: "#d33",
-        customClass: {
-          popup: "swal2-border-radius",
-        },
-      });
-      return;
-    }
+  document
+    .getElementById("saveEditEndereco")
+    .addEventListener("click", async () => {
+      const e = document.getElementById("estadoInput").value.trim();
+      const c = document.getElementById("cidadeInput").value.trim();
+      const b = document.getElementById("bairroInput").value.trim();
+      const r = document.getElementById("ruaInput").value.trim();
+      const n = document.getElementById("numeroInput").value.trim();
+      const z = document.getElementById("cepInput").value.trim();
+      if (!e || !c || !b || !r || !n || !z) {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "warning",
+          title: "Campos obrigatórios",
+          text: "Preencha todos os campos antes de salvar.",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          iconColor: "#f39c12",
+          customClass: {
+            popup: "swal2-border-radius",
+          },
+        });
+        return;
+      }
+      Endereco.estado = e;
+      Endereco.cidade = c;
+      Endereco.bairro = b;
+      Endereco.rua = r;
+      Endereco.numero = n;
+      Endereco.cep = z;
 
-    closeModal();
-  });
+      if (currentUserUID) {
+        await addEnderecoDB(currentUserUID);
+        // Atualiza o endereço na tela imediatamente
+        let partes = [e, c, b, r, n, z];
+        let enderecoCompleto = partes.filter((p) => p && p.trim()).join(", ");
+        document.getElementById("enderecoCompleto").textContent =
+          enderecoCompleto ? enderecoCompleto : "Adicione seu endereço aqui. ";
+      } else {
+        Swal.fire({
+          toast: true,
+          position: "top-end",
+          icon: "error",
+          title: "Usuário não autenticado",
+          text: "Faça login novamente.",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          iconColor: "#d33",
+          customClass: {
+            popup: "swal2-border-radius",
+          },
+        });
+        return;
+      }
+
+      closeModal();
+    });
 
   // --------------------------
   // Modal: Avaliações
@@ -865,9 +916,9 @@ document.addEventListener("DOMContentLoaded", function () {
   const submitReviewBtn = document.getElementById("submitReview");
   let selectedStars = 0;
 
-  document.getElementById("openAddReview").addEventListener("click", () => (
-    addReviewModal.style.display = "flex")
-  );
+  document
+    .getElementById("openAddReview")
+    .addEventListener("click", () => (addReviewModal.style.display = "flex"));
 
   [closeAddReview, cancelAddReview].forEach((el) =>
     el.addEventListener("click", () => (addReviewModal.style.display = "none"))
@@ -882,82 +933,380 @@ document.addEventListener("DOMContentLoaded", function () {
     highlightStars(selectedStars)
   );
 
-submitReviewBtn.addEventListener("click", async () => {
-  const name = document.getElementById("reviewerName").value.trim() || "Anônimo";
-  const text = document.getElementById("reviewText").value.trim();
-  if (!text || selectedStars === 0) {
-    Swal.fire({
-      toast: true,
-      position: "top-end",
-      icon: "warning",
-      title: "Campos obrigatórios",
-      text: "Preencha a descrição e selecione uma nota.",
-      showConfirmButton: false,
-      timer: 3000,
-      timerProgressBar: true,
-      iconColor: "#f39c12",
-      customClass: {
-        popup: "swal2-border-radius",
-      },
-    });
-    return;
-  }
-  const newReview = {
-    name,
-    text,
-    rating: Number(selectedStars),
-    date: new Date().toLocaleDateString("pt-BR"),
-  };
+  submitReviewBtn.addEventListener("click", async () => {
+    const name =
+      document.getElementById("reviewerName").value.trim() || "Anônimo";
+    const text = document.getElementById("reviewText").value.trim();
+    if (!text || selectedStars === 0) {
+      Swal.fire({
+        toast: true,
+        position: "top-end",
+        icon: "warning",
+        title: "Campos obrigatórios",
+        text: "Preencha a descrição e selecione uma nota.",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        iconColor: "#f39c12",
+        customClass: {
+          popup: "swal2-border-radius",
+        },
+      });
+      return;
+    }
+    const newReview = {
+      name,
+      text,
+      rating: Number(selectedStars),
+      date: new Date().toLocaleDateString("pt-BR"),
+    };
 
-  try {
-    // 1) salva no Firestore
-    await addReviewDB(currentUserUID, newReview);
+    try {
+      // 1) salva no Firestore
+      await addReviewDB(currentUserUID, newReview);
 
-    // 2) atualiza array local e re-renderiza
-    profileData.reviews.unshift(newReview);
-    renderReviews();
+      // 2) atualiza array local e re-renderiza
+      profileData.reviews.unshift(newReview);
+      renderReviews();
 
-    // 3) limpa e fecha modal
-    document.getElementById("reviewerName").value = "";
-    document.getElementById("reviewText").value = "";
-    selectedStars = 0;
-    highlightStars(0);
-    addReviewModal.style.display = "none";
-  } catch (err) {
-    console.error(err);
-    alert("Falha ao enviar avaliação. Tente novamente.");
-  }
-});
+      // 3) limpa e fecha modal
+      document.getElementById("reviewerName").value = "";
+      document.getElementById("reviewText").value = "";
+      selectedStars = 0;
+      highlightStars(0);
+      addReviewModal.style.display = "none";
+    } catch (err) {
+      console.error(err);
+      alert("Falha ao enviar avaliação. Tente novamente.");
+    }
+  });
 
   // --- ESTADOS E CIDADES ---
   const cidadesPorEstado = {
-    BA: ["Salvador", "Feira de Santana", "Vitória da Conquista", "Camaçari", "Itabuna", "Juazeiro", "Lauro de Freitas", "Ilhéus", "Jequié", "Teixeira de Freitas"],
-    SP: ["São Paulo", "Campinas", "Santos", "São Bernardo do Campo", "Guarulhos", "Sorocaba", "Ribeirão Preto", "Osasco", "São José dos Campos", "Santo André"],
-    RJ: ["Rio de Janeiro", "Niterói", "Duque de Caxias", "Nova Iguaçu", "Campos dos Goytacazes", "São Gonçalo", "Petrópolis", "Volta Redonda", "Belford Roxo", "Macaé"],
-    MG: ["Belo Horizonte", "Uberlândia", "Contagem", "Juiz de Fora", "Betim", "Montes Claros", "Ribeirão das Neves", "Uberaba", "Governador Valadares", "Ipatinga"],
-    RS: ["Porto Alegre", "Caxias do Sul", "Pelotas", "Canoas", "Santa Maria", "Gravataí", "Viamão", "Novo Hamburgo", "São Leopoldo", "Rio Grande"],
-    PR: ["Curitiba", "Londrina", "Maringá", "Ponta Grossa", "Cascavel", "São José dos Pinhais", "Foz do Iguaçu", "Colombo", "Guarapuava", "Paranaguá"],
-    SC: ["Florianópolis", "Joinville", "Blumenau", "São José", "Chapecó", "Itajaí", "Criciúma", "Jaraguá do Sul", "Lages", "Balneário Camboriú"],
-    PE: ["Recife", "Jaboatão dos Guararapes", "Olinda", "Caruaru", "Petrolina", "Paulista", "Cabo de Santo Agostinho", "Camaragibe", "Garanhuns", "Vitória de Santo Antão"],
-    CE: ["Fortaleza", "Caucaia", "Juazeiro do Norte", "Maracanaú", "Sobral", "Crato", "Maranguape", "Iguatu", "Quixadá", "Aquiraz"],
-    GO: ["Goiânia", "Aparecida de Goiânia", "Anápolis", "Rio Verde", "Luziânia", "Águas Lindas de Goiás", "Valparaíso de Goiás", "Trindade", "Formosa", "Novo Gama"],
-    DF: ["Brasília", "Ceilândia", "Taguatinga", "Samambaia", "Planaltina", "Gama", "Guará", "Sobradinho", "Santa Maria", "Recanto das Emas"],
-    ES: ["Vitória", "Vila Velha", "Serra", "Cariacica", "Cachoeiro de Itapemirim", "Linhares", "Colatina", "Guarapari", "Aracruz", "Viana"],
-    PA: ["Belém", "Ananindeua", "Santarém", "Marabá", "Castanhal", "Parauapebas", "Abaetetuba", "Cametá", "Bragança", "Marituba"],
-    AM: ["Manaus", "Parintins", "Itacoatiara", "Manacapuru", "Coari", "Tabatinga", "Maués", "Tefé", "Manicoré", "Humaitá"],
-    MA: ["São Luís", "Imperatriz", "Timon", "Caxias", "Codó", "Paço do Lumiar", "Açailândia", "Bacabal", "Balsas", "Barra do Corda"],
-    PB: ["João Pessoa", "Campina Grande", "Santa Rita", "Patos", "Bayeux", "Sousa", "Cajazeiras", "Cabedelo", "Guarabira", "Sapé"],
-    RN: ["Natal", "Mossoró", "Parnamirim", "São Gonçalo do Amarante", "Macaíba", "Ceará-Mirim", "Caicó", "Assu", "Currais Novos", "São José de Mipibu"],
-    AL: ["Maceió", "Arapiraca", "Rio Largo", "Palmeira dos Índios", "União dos Palmares", "Penedo", "São Miguel dos Campos", "Campo Alegre", "Delmiro Gouveia", "Coruripe"],
-    PI: ["Teresina", "Parnaíba", "Picos", "Piripiri", "Floriano", "Barras", "Campo Maior", "União", "Altos", "José de Freitas"],
-    MT: ["Cuiabá", "Várzea Grande", "Rondonópolis", "Sinop", "Tangará da Serra", "Cáceres", "Sorriso", "Lucas do Rio Verde", "Primavera do Leste", "Barra do Garças"],
-    MS: ["Campo Grande", "Dourados", "Três Lagoas", "Corumbá", "Ponta Porã", "Naviraí", "Nova Andradina", "Aquidauana", "Sidrolândia", "Paranaíba"],
-    SE: ["Aracaju", "Nossa Senhora do Socorro", "Lagarto", "Itabaiana", "São Cristóvão", "Estância", "Tobias Barreto", "Itabaianinha", "Simão Dias", "Propriá"],
-    RO: ["Porto Velho", "Ji-Paraná", "Ariquemes", "Vilhena", "Cacoal", "Rolim de Moura", "Guajará-Mirim", "Jaru", "Pimenta Bueno", "Buritis"],
-    TO: ["Palmas", "Araguaína", "Gurupi", "Porto Nacional", "Paraíso do Tocantins", "Colinas do Tocantins", "Guaraí", "Dianópolis", "Formoso do Araguaia", "Augustinópolis"],
-    AC: ["Rio Branco", "Cruzeiro do Sul", "Sena Madureira", "Tarauacá", "Feijó", "Brasiléia", "Senador Guiomard", "Plácido de Castro", "Xapuri", "Mâncio Lima"],
-    AP: ["Macapá", "Santana", "Laranjal do Jari", "Oiapoque", "Porto Grande", "Mazagão", "Tartarugalzinho", "Pedra Branca do Amapari", "Vitória do Jari", "Amapá"],
-    RR: ["Boa Vista", "Rorainópolis", "Caracaraí", "Alto Alegre", "Mucajaí", "Cantá", "Pacaraima", "Amajari", "Bonfim", "Iracema"]
+    BA: [
+      "Salvador",
+      "Feira de Santana",
+      "Vitória da Conquista",
+      "Camaçari",
+      "Itabuna",
+      "Juazeiro",
+      "Lauro de Freitas",
+      "Ilhéus",
+      "Jequié",
+      "Teixeira de Freitas",
+    ],
+    SP: [
+      "São Paulo",
+      "Campinas",
+      "Santos",
+      "São Bernardo do Campo",
+      "Guarulhos",
+      "Sorocaba",
+      "Ribeirão Preto",
+      "Osasco",
+      "São José dos Campos",
+      "Santo André",
+    ],
+    RJ: [
+      "Rio de Janeiro",
+      "Niterói",
+      "Duque de Caxias",
+      "Nova Iguaçu",
+      "Campos dos Goytacazes",
+      "São Gonçalo",
+      "Petrópolis",
+      "Volta Redonda",
+      "Belford Roxo",
+      "Macaé",
+    ],
+    MG: [
+      "Belo Horizonte",
+      "Uberlândia",
+      "Contagem",
+      "Juiz de Fora",
+      "Betim",
+      "Montes Claros",
+      "Ribeirão das Neves",
+      "Uberaba",
+      "Governador Valadares",
+      "Ipatinga",
+    ],
+    RS: [
+      "Porto Alegre",
+      "Caxias do Sul",
+      "Pelotas",
+      "Canoas",
+      "Santa Maria",
+      "Gravataí",
+      "Viamão",
+      "Novo Hamburgo",
+      "São Leopoldo",
+      "Rio Grande",
+    ],
+    PR: [
+      "Curitiba",
+      "Londrina",
+      "Maringá",
+      "Ponta Grossa",
+      "Cascavel",
+      "São José dos Pinhais",
+      "Foz do Iguaçu",
+      "Colombo",
+      "Guarapuava",
+      "Paranaguá",
+    ],
+    SC: [
+      "Florianópolis",
+      "Joinville",
+      "Blumenau",
+      "São José",
+      "Chapecó",
+      "Itajaí",
+      "Criciúma",
+      "Jaraguá do Sul",
+      "Lages",
+      "Balneário Camboriú",
+    ],
+    PE: [
+      "Recife",
+      "Jaboatão dos Guararapes",
+      "Olinda",
+      "Caruaru",
+      "Petrolina",
+      "Paulista",
+      "Cabo de Santo Agostinho",
+      "Camaragibe",
+      "Garanhuns",
+      "Vitória de Santo Antão",
+    ],
+    CE: [
+      "Fortaleza",
+      "Caucaia",
+      "Juazeiro do Norte",
+      "Maracanaú",
+      "Sobral",
+      "Crato",
+      "Maranguape",
+      "Iguatu",
+      "Quixadá",
+      "Aquiraz",
+    ],
+    GO: [
+      "Goiânia",
+      "Aparecida de Goiânia",
+      "Anápolis",
+      "Rio Verde",
+      "Luziânia",
+      "Águas Lindas de Goiás",
+      "Valparaíso de Goiás",
+      "Trindade",
+      "Formosa",
+      "Novo Gama",
+    ],
+    DF: [
+      "Brasília",
+      "Ceilândia",
+      "Taguatinga",
+      "Samambaia",
+      "Planaltina",
+      "Gama",
+      "Guará",
+      "Sobradinho",
+      "Santa Maria",
+      "Recanto das Emas",
+    ],
+    ES: [
+      "Vitória",
+      "Vila Velha",
+      "Serra",
+      "Cariacica",
+      "Cachoeiro de Itapemirim",
+      "Linhares",
+      "Colatina",
+      "Guarapari",
+      "Aracruz",
+      "Viana",
+    ],
+    PA: [
+      "Belém",
+      "Ananindeua",
+      "Santarém",
+      "Marabá",
+      "Castanhal",
+      "Parauapebas",
+      "Abaetetuba",
+      "Cametá",
+      "Bragança",
+      "Marituba",
+    ],
+    AM: [
+      "Manaus",
+      "Parintins",
+      "Itacoatiara",
+      "Manacapuru",
+      "Coari",
+      "Tabatinga",
+      "Maués",
+      "Tefé",
+      "Manicoré",
+      "Humaitá",
+    ],
+    MA: [
+      "São Luís",
+      "Imperatriz",
+      "Timon",
+      "Caxias",
+      "Codó",
+      "Paço do Lumiar",
+      "Açailândia",
+      "Bacabal",
+      "Balsas",
+      "Barra do Corda",
+    ],
+    PB: [
+      "João Pessoa",
+      "Campina Grande",
+      "Santa Rita",
+      "Patos",
+      "Bayeux",
+      "Sousa",
+      "Cajazeiras",
+      "Cabedelo",
+      "Guarabira",
+      "Sapé",
+    ],
+    RN: [
+      "Natal",
+      "Mossoró",
+      "Parnamirim",
+      "São Gonçalo do Amarante",
+      "Macaíba",
+      "Ceará-Mirim",
+      "Caicó",
+      "Assu",
+      "Currais Novos",
+      "São José de Mipibu",
+    ],
+    AL: [
+      "Maceió",
+      "Arapiraca",
+      "Rio Largo",
+      "Palmeira dos Índios",
+      "União dos Palmares",
+      "Penedo",
+      "São Miguel dos Campos",
+      "Campo Alegre",
+      "Delmiro Gouveia",
+      "Coruripe",
+    ],
+    PI: [
+      "Teresina",
+      "Parnaíba",
+      "Picos",
+      "Piripiri",
+      "Floriano",
+      "Barras",
+      "Campo Maior",
+      "União",
+      "Altos",
+      "José de Freitas",
+    ],
+    MT: [
+      "Cuiabá",
+      "Várzea Grande",
+      "Rondonópolis",
+      "Sinop",
+      "Tangará da Serra",
+      "Cáceres",
+      "Sorriso",
+      "Lucas do Rio Verde",
+      "Primavera do Leste",
+      "Barra do Garças",
+    ],
+    MS: [
+      "Campo Grande",
+      "Dourados",
+      "Três Lagoas",
+      "Corumbá",
+      "Ponta Porã",
+      "Naviraí",
+      "Nova Andradina",
+      "Aquidauana",
+      "Sidrolândia",
+      "Paranaíba",
+    ],
+    SE: [
+      "Aracaju",
+      "Nossa Senhora do Socorro",
+      "Lagarto",
+      "Itabaiana",
+      "São Cristóvão",
+      "Estância",
+      "Tobias Barreto",
+      "Itabaianinha",
+      "Simão Dias",
+      "Propriá",
+    ],
+    RO: [
+      "Porto Velho",
+      "Ji-Paraná",
+      "Ariquemes",
+      "Vilhena",
+      "Cacoal",
+      "Rolim de Moura",
+      "Guajará-Mirim",
+      "Jaru",
+      "Pimenta Bueno",
+      "Buritis",
+    ],
+    TO: [
+      "Palmas",
+      "Araguaína",
+      "Gurupi",
+      "Porto Nacional",
+      "Paraíso do Tocantins",
+      "Colinas do Tocantins",
+      "Guaraí",
+      "Dianópolis",
+      "Formoso do Araguaia",
+      "Augustinópolis",
+    ],
+    AC: [
+      "Rio Branco",
+      "Cruzeiro do Sul",
+      "Sena Madureira",
+      "Tarauacá",
+      "Feijó",
+      "Brasiléia",
+      "Senador Guiomard",
+      "Plácido de Castro",
+      "Xapuri",
+      "Mâncio Lima",
+    ],
+    AP: [
+      "Macapá",
+      "Santana",
+      "Laranjal do Jari",
+      "Oiapoque",
+      "Porto Grande",
+      "Mazagão",
+      "Tartarugalzinho",
+      "Pedra Branca do Amapari",
+      "Vitória do Jari",
+      "Amapá",
+    ],
+    RR: [
+      "Boa Vista",
+      "Rorainópolis",
+      "Caracaraí",
+      "Alto Alegre",
+      "Mucajaí",
+      "Cantá",
+      "Pacaraima",
+      "Amajari",
+      "Bonfim",
+      "Iracema",
+    ],
   };
 
   const estadoInput = document.getElementById("estadoInput");
@@ -968,7 +1317,7 @@ submitReviewBtn.addEventListener("click", async () => {
       const estado = this.value;
       cidadeInput.innerHTML = '<option value="">Selecione a cidade</option>';
       if (cidadesPorEstado[estado]) {
-        cidadesPorEstado[estado].forEach(cidade => {
+        cidadesPorEstado[estado].forEach((cidade) => {
           const opt = document.createElement("option");
           opt.value = cidade;
           opt.textContent = cidade;
@@ -980,8 +1329,8 @@ submitReviewBtn.addEventListener("click", async () => {
     estadoInput.value = "BA";
     estadoInput.dispatchEvent(new Event("change"));
     // Cidade padrão: Salvador
-    setTimeout(() => { cidadeInput.value = "Salvador"; }, 0);
+    setTimeout(() => {
+      cidadeInput.value = "Salvador";
+    }, 0);
   }
-  
-
 });

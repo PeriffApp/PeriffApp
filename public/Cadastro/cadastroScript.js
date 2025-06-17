@@ -1,17 +1,23 @@
 // ---------------------------------------------
+// cadastroScript.js - Script de cadastro de usuários (Cliente e Prestador)
+// ---------------------------------------------
+// Este arquivo gerencia a validação de dados, manipulação de formulários,
+// integração com Firebase Auth e Firestore, e feedback ao usuário durante o cadastro.
+// ---------------------------------------------
 // Importações
 // ---------------------------------------------
 // Importa funções do Firebase para autenticação e manipulação do Firestore
 import { auth, db, collection, addDoc, setDoc, doc } from "../firebase.js";
 import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.6.0/firebase-auth.js";
 
-
-
-
 // ---------------------------------------------
 // Funções de Validação
 // ---------------------------------------------
-// Valida CPF conforme regras brasileiras
+/**
+ * Valida CPF conforme regras brasileiras.
+ * @param {string} cpf - CPF a ser validado
+ * @returns {boolean}
+ */
 function validarCPF(cpf) {
   cpf = cpf.replace(/\D/g, '');
   if (cpf.length !== 11) return false;
@@ -37,14 +43,17 @@ function validarCPF(cpf) {
   return true;
 }
 
-
-// Valida se o valor contém apenas números e se tem o tamanho correto
+/**
+ * Valida se o valor contém apenas números e se tem o tamanho correto (11 dígitos).
+ */
 function validarApenasNumeros(valor) {
   const re = /^\d+$/;
   return re.test(valor) && valor.length === 11;
 }
 
-// Valida se o nome completo contém apenas letras e espaços
+/**
+ * Valida se o nome completo contém apenas letras e espaços.
+ */
 function validarNomeCompleto(nome) {
   // Aceita letras maiúsculas/minúsculas e espaços (nomes compostos)
   const re = /^[A-Za-zÀ-ÿ\s]+$/;
@@ -54,6 +63,9 @@ function validarNomeCompleto(nome) {
 // ---------------------------------------------
 // Função para resetar os formulários e UI
 // ---------------------------------------------
+/**
+ * Reseta os formulários e oculta ambos os tipos de cadastro.
+ */
 function resetForms() {
   clientType.classList.remove('selected');
   providerType.classList.remove('selected');
@@ -62,8 +74,6 @@ function resetForms() {
   document.getElementById('clientRegisterForm').reset();
   document.getElementById('providerRegisterForm').reset();
 }
-
-
 
 // ---------------------------------------------
 // Lógica principal: manipulação de DOM e eventos
@@ -119,6 +129,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // ---------------------------------------------
   // SUBMISSÃO DO FORMULÁRIO DE CLIENTE
   // ---------------------------------------------
+  /**
+   * Evento de submissão do formulário de cadastro de cliente.
+   * Realiza validações, cria usuário no Firebase Auth e salva dados no Firestore.
+   */
   document.getElementById('clientRegisterForm').addEventListener('submit', function(e) {
     // Previne envio padrão e coleta dados do formulário
     e.preventDefault();
@@ -203,7 +217,6 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
-    
     // Cria usuário no Firebase Auth
     createUserWithEmailAndPassword(auth, email, password)
       .then(userCredential => {
@@ -287,6 +300,10 @@ document.addEventListener('DOMContentLoaded', function() {
   // ---------------------------------------------
   // SUBMISSÃO DO FORMULÁRIO DE PRESTADOR
   // ---------------------------------------------
+  /**
+   * Evento de submissão do formulário de cadastro de prestador.
+   * Realiza validações, cria usuário no Firebase Auth e salva dados no Firestore.
+   */
   document.getElementById('providerRegisterForm').addEventListener('submit', function(e) {
     // Previne envio padrão e coleta dados do formulário
     e.preventDefault();
@@ -297,7 +314,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const telefone = document.getElementById('providerPhone').value;
     const categoriaServico = document.getElementById("providerService").value;
     const subCategoria = document.getElementById("subCategoria").value;
-  
     let cpf = document.getElementById('providerCPF').value;
  
     // Validações

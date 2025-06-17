@@ -4,10 +4,16 @@ import { getAuth, deleteUser, onAuthStateChanged } from "https://www.gstatic.com
 // ------------------------------
 // Funções de Loading
 // ------------------------------
+/**
+ * Exibe o overlay de loading na tela.
+ */
 function showLoading() {
   const ov = document.getElementById("loading-overlay");
   if (ov) ov.style.display = "flex";
 }
+/**
+ * Esconde o overlay de loading da tela com animação de opacidade.
+ */
 function hideLoading() {
   const ov = document.getElementById("loading-overlay");
   if (!ov) return;
@@ -85,6 +91,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       hideLoading();
     }
   });
+  /**
+   * Listener para alternar o modo escuro e salvar a preferência no Firestore.
+   */
   checkbox.addEventListener('change', async function() {
       if (checkbox.checked) {
           document.body.classList.add('dark-mode');
@@ -104,6 +113,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
 
   if (perfilDisponivelCheckbox) {
+    /**
+     * Listener para alternar a disponibilidade do perfil e salvar no Firestore.
+     */
     perfilDisponivelCheckbox.addEventListener('change', async function() {
       // Salva preferência de perfil disponível no Firestore
       try {
@@ -118,6 +130,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
   }
 
+  /**
+   * Redireciona para a tela de recuperação de senha ao clicar no botão.
+   */
   document.getElementById("alterarSenha").addEventListener('click', function(){
     window.location.href = "../RecuperacaoSenha/recuperacao.html";
   })
@@ -125,6 +140,11 @@ document.addEventListener('DOMContentLoaded', async function() {
  const btnExcluir = document.getElementById("excluirConta");
 
   // Função para excluir conta e dados do Firestore
+  /**
+   * Listener para exclusão de conta do usuário.
+   * Exibe pop-up de confirmação, exclui dados do Firestore e a conta do Firebase Auth.
+   * Caso necessário, solicita reautenticação.
+   */
   btnExcluir.addEventListener('click', async function() {
     
     // Substitui o confirm por um pop-up SweetAlert2
@@ -258,6 +278,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   const modalSalvar = document.getElementById('modal-salvar');
   let campoAtual = null;
 
+  /**
+   * Adiciona listeners aos botões de edição de nome e telefone.
+   * Abre o modal de edição com o valor atual preenchido.
+   */
   document.querySelectorAll('.btn-editar').forEach(btn => {
     btn.addEventListener('click', function() {
       campoAtual = btn.getAttribute('data-campo');
@@ -272,11 +296,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
   });
 
+  /**
+   * Fecha o modal ao clicar no botão cancelar.
+   */
   modalCancelar.addEventListener('click', function() {
     modal.style.display = 'none';
     campoAtual = null;
   });
 
+  /**
+   * Salva a alteração de nome ou telefone no Firestore ao clicar em salvar.
+   */
   modalSalvar.addEventListener('click', async function() {
     if (!campoAtual) return;
     const novoValor = modalInput.value.trim();
@@ -316,7 +346,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
 
-  // Fecha modal ao clicar fora
+  /**
+   * Fecha o modal ao clicar fora dele.
+   */
   modal.addEventListener('click', function(e) {
     if (e.target === modal) {
       modal.style.display = 'none';
