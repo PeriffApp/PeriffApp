@@ -89,7 +89,7 @@ PeriffApp/
    - Crie um projeto no [Firebase](https://firebase.google.com/).
    - Copie as credenciais do Firebase para o arquivo `firebase.js`.
 4. **Abra o arquivo `index.html` em seu navegador.**
-   - Não é necessário servidor backend, pois o app é 100% front-end.
+   - Não é necessário servidor backend.
 
 ---
 
